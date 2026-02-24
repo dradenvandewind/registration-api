@@ -1,0 +1,19 @@
+Testing Strategy
+Unit Tests: Service layer logic
+
+Integration Tests: API endpoints with test database
+
+Mock External Services: Email service
+
+Coverage: Minimum 80% coverage
+
+Production Considerations
+Security: HTTPS, rate limiting, input validation
+
+Monitoring: Health checks, metrics, structured logging
+
+Resilience: Retry logic for email service, dead letter queues
+
+Scalability: Connection pooling, stateless design
+
+CI/CD: GitHub Actions for automated testing
