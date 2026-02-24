@@ -36,7 +36,16 @@ class UserService:
         user = await self.repository.get_by_id(user_id)
         if not user:
             raise UserNotFoundError("User not found")
-        return UserResponse.model_validate(user)
+        
+        # ✅ Conversion manuelle (comme dans create_user)
+        user_response = UserResponse(
+            id=user.id,
+            email=user.email,
+            is_active=user.is_active,
+            created_at=user.created_at
+        )
+        
+        return user_response
 
     async def get_user_by_email(self, email: str) -> Optional[UserInDB]:
         user = await self.repository.get_by_email(email)

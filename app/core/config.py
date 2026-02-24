@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict, BaseSettings
 from typing import Optional
 import os
 
@@ -25,8 +25,6 @@ class Settings(BaseSettings):
     
     # Activation
     activation_code_ttl_seconds: int = 60  # 1 minute
-    
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
