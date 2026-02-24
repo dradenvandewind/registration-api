@@ -5,7 +5,9 @@ from app.main import app
 @pytest.mark.asyncio
 async def test_health_check():
     """Test que l\'API répond"""
-    transport = ASGITransport(app=app)
+    transport = ASGITransport(
+        app=app
+        )
     
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/health")

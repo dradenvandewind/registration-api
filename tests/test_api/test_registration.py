@@ -5,7 +5,9 @@ from app.main import app
 @pytest.mark.asyncio
 async def test_register_user_success():
     """Test d\'inscription réussie"""
-    transport = ASGITransport(app=app)
+    transport = ASGITransport(
+        app=app
+        )
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.post(
             "/v1/registration",
@@ -26,9 +28,8 @@ async def test_register_user_success():
 async def test_register_user_invalid_email():
     """Test avec email invalide"""
     transport = ASGITransport(
-                app=app,
-                 lifespan="on"
-                )
+        app=app
+        )
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.post(
             "/v1/registration",
@@ -44,7 +45,9 @@ async def test_register_user_invalid_email():
 @pytest.mark.asyncio
 async def test_register_user_short_password():
     """Test avec mot de passe trop court"""
-    transport = ASGITransport(app=app)
+    transport = ASGITransport(
+        app=app
+        )
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.post(
             "/v1/registration",
@@ -60,7 +63,9 @@ async def test_register_user_short_password():
 @pytest.mark.asyncio
 async def test_register_duplicate_email():
     """Test d\'inscription avec email déjà utilisé"""
-    transport = ASGITransport(app=app)
+    transport = ASGITransport(
+        app=app
+        )
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         # Première inscription
         response1 = await client.post(

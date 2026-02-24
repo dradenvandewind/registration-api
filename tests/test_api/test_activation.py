@@ -12,7 +12,9 @@ def basic_auth_header(username: str, password: str) -> dict:
 @pytest.mark.asyncio
 async def test_activate_account_unauthorized():
     """Test sans authentification valide"""
-    transport = ASGITransport(app=app)
+    transport = ASGITransport(
+        app=app
+        )
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.post(
             "/v1/activation",
@@ -26,7 +28,9 @@ async def test_activate_account_unauthorized():
 @pytest.mark.asyncio
 async def test_activate_account_invalid_code():
     """Test avec code invalide"""
-    transport = ASGITransport(app=app)
+    transport = ASGITransport(
+        app=app
+       )
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         # D\'abord créer un utilisateur
         register_response = await client.post(
