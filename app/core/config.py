@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
+import os
 
 class Settings(BaseSettings):
     # Database
@@ -14,6 +15,13 @@ class Settings(BaseSettings):
     
     # Email
     smtp_api_url: str = "http://mailhog:8025/api/v1/send"
+
+    @property
+    def database_url(self) -> str:
+        """Retourne l'URL de la base de données selon l'environnement"""
+        if os.getenv("ENVIRONMENT") == "test":
+            return os.getenv("TEST_DATABASE_URL", "postgresql://user:pass@localhost:5432/test_db")
+        return os.getenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/main_db")
     
     # Activation
     activation_code_ttl_seconds: int = 60  # 1 minute
