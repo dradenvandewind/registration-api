@@ -23,5 +23,5 @@ docker compose logs -f api
 # Access API documentation
 # http://localhost:8000/docs
 
-#Stop
-docker compose down
+#Stop and remove Volume
+docker compose down -v
