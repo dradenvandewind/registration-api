@@ -22,35 +22,35 @@ class ActivationService:
 
     async def create_activation_code(self, user_id: int) -> ActivationCodeCreate:
         """
-        Crée un code d'activation pour un utilisateur
+        Creates an activation code for a user
         
         Args:
-            user_id: ID de l'utilisateur
+            user_id: User ID
             
         Returns:
-            ActivationCode: Le code d'activation créé
+            ActivationCode: The created activation code
         """
         try:
-            # Générer un code de 6 caractères (pour correspondre à la DB)
-            code = generate_activation_code(length=6)  # Forcer la longueur à 6
-            logger.info(f"Code d'activation généré pour l'utilisateur {user_id}: {code}")
+            # Generate a 6-character code (to match the database)
+            code = generate_activation_code(length=6)  # Force length to 6
+            logger.info(f"Activation code generated for user {user_id}: {code}")
             expires_at = datetime.utcnow() + timedelta(hours=1)
             
-            # Créer l'objet de données
+            # Create data object
             activation_data = ActivationCodeCreate(
                 user_id=user_id,
                 code=code,
                 expires_at=expires_at
             )
             
-            # Sauvegarder dans la base de données
+            # Save to database
             activation_code = await self.activation_repo.create(activation_data)
-            logger.info(f"Code d'activation sauvegardé avec l'ID: {activation_code.id}")
+            logger.info(f"Activation code saved with ID: {activation_code.id}")
             
             return activation_code
             
         except Exception as e:
-            logger.error(f"Erreur lors de la création du code d'activation: {e}")
+            logger.error(f"Error creating activation code: {e}")
             raise
 
     async def activate_user(self, user_id: UUID, code: str) -> bool:
