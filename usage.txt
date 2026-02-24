@@ -1,0 +1,27 @@
+# Clone the repository
+git clone https://github.com/dradenvandewind/registration-api.git
+cd registration-api
+
+# UPdate .env file if you need
+
+#Build and Run
+docker compose up -d --build
+
+# Start all services
+docker compose up -d
+
+# Run tests
+docker compose exec api pytest -v --cov=app
+
+docker compose exec api bash -c "cd /app && PYTHONPATH=. pytest tests/test_api/ -v --cov=app --cov-report=term-missing"
+
+
+
+# Check logs
+docker compose logs -f api
+
+# Access API documentation
+# http://localhost:8000/docs
+
+#Stop
+docker compose down
