@@ -4,19 +4,33 @@ from app.core.exceptions import UserAlreadyExistsError, UserNotFoundError
 from typing import Optional
 from uuid import UUID
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class UserService:
     def __init__(self):
         self.repository = UserRepository()
 
     async def create_user(self, user_data: UserCreate) -> UserResponse:
-        # Check if user already exists
+        # Vérifier si l'utilisateur existe déjà
         existing_user = await self.repository.get_by_email(user_data.email)
         if existing_user:
             raise UserAlreadyExistsError("User with this email already exists")
         
-        # Create user
-        user = await self.repository.create(user_data)
-        return UserResponse.model_validate(user)
+        # Créer l'utilisateur
+        user_in_db = await self.repository.create(user_data)
+        logger.info(f"Utilisateur créé en base: {user_in_db}")
+        
+        # SOLUTION: Créer manuellement le UserResponse
+        user_response = UserResponse(
+            id=user_in_db.id,
+            email=user_in_db.email,
+            is_active=user_in_db.is_active,
+            created_at=user_in_db.created_at
+        )
+        
+        return user_response
 
     async def get_user(self, user_id: UUID) -> Optional[UserResponse]:
         user = await self.repository.get_by_id(user_id)
