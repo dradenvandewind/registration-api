@@ -17,7 +17,7 @@ async def activate_account(
     current_user: UserInDB = Depends(get_current_user)
 ):
     """
-    Activate user account with 4-digit code
+    Activate user account with 6-digit code
     Requires Basic Auth with email and password
     """
     try:

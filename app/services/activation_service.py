@@ -11,29 +11,47 @@ from app.core.exceptions import (
 from datetime import datetime, timedelta
 from uuid import UUID
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class ActivationService:
     def __init__(self):
         self.activation_repo = ActivationRepository()
         self.user_repo = UserRepository()
 
-    async def create_activation_code(self, user_id: UUID) -> str:
-        """Generate and store activation code"""
-        # Invalidate previous codes
-        await self.activation_repo.invalidate_old_codes(user_id)
+    async def create_activation_code(self, user_id: int) -> ActivationCodeCreate:
+        """
+        Crée un code d'activation pour un utilisateur
         
-        # Generate new code
-        code = generate_activation_code()
-        expires_at = datetime.utcnow() + timedelta(seconds=settings.activation_code_ttl_seconds)
-        
-        # Store in database
-        activation_data = ActivationCodeCreate(
-            user_id=user_id,
-            code=code,
-            expires_at=expires_at
-        )
-        
-        await self.activation_repo.create(activation_data)
-        return code
+        Args:
+            user_id: ID de l'utilisateur
+            
+        Returns:
+            ActivationCode: Le code d'activation créé
+        """
+        try:
+            # Générer un code de 6 caractères (pour correspondre à la DB)
+            code = generate_activation_code(length=6)  # Forcer la longueur à 6
+            logger.info(f"Code d'activation généré pour l'utilisateur {user_id}: {code}")
+            expires_at = datetime.utcnow() + timedelta(hours=1)
+            
+            # Créer l'objet de données
+            activation_data = ActivationCodeCreate(
+                user_id=user_id,
+                code=code,
+                expires_at=expires_at
+            )
+            
+            # Sauvegarder dans la base de données
+            activation_code = await self.activation_repo.create(activation_data)
+            logger.info(f"Code d'activation sauvegardé avec l'ID: {activation_code.id}")
+            
+            return activation_code
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la création du code d'activation: {e}")
+            raise
 
     async def activate_user(self, user_id: UUID, code: str) -> bool:
         """Activate user with code"""
