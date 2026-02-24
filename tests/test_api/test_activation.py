@@ -18,7 +18,7 @@ async def test_activate_account_unauthorized():
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.post(
             "/v1/activation",
-            json={"code": "1234"},
+            json={"code": "123456"},
             headers=basic_auth_header("wrong@email.com", "wrongpassword")
         )
         
@@ -32,19 +32,21 @@ async def test_activate_account_invalid_code():
         app=app
        )
     async with AsyncClient(transport=transport, base_url="http://test") as client:
+        TEST_PASSWORD = "secure123"
+        TEST_EMAIL = "invalidcode@example.com"
         # D\'abord créer un utilisateur
         register_response = await client.post(
             "/v1/registration",
             json={
-                "email": "invalidcode@example.com",
-                "password": "secure123"
+                "email": TEST_EMAIL,
+                "password": TEST_PASSWORD
             }
         )
         assert register_response.status_code == 201
         print("✅ Utilisateur créé pour le test")
         
         # Essayer avec un mauvais code
-        headers = basic_auth_header("invalidcode@example.com", "secure123")
+        headers = basic_auth_header(TEST_EMAIL, TEST_PASSWORD)
         response = await client.post(
             "/v1/activation",
             json={"code": "9999"},

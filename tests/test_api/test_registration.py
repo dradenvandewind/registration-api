@@ -13,7 +13,7 @@ async def test_register_user_success():
             "/v1/registration",
             json={
                 "email": "test@example.com",
-                "password": "secure123"  # Mot de passe plus court
+                "password": "secure"  # Mot de passe plus court
             }
         )
         
@@ -72,7 +72,7 @@ async def test_register_duplicate_email():
             "/v1/registration",
             json={
                 "email": "duplicate@example.com",
-                "password": "secure123"
+                "password": "secure"
             }
         )
         assert response1.status_code == 201
