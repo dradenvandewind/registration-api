@@ -1,0 +1,35 @@
+
+#1 - Clone the repository
+git clone https://github.com/dradenvandewind/registration-api.git
+cd registration-api
+
+# 2 - You need generate a secret key
+./GenerateSecretKey.sh
+
+# 3 -1 Build and Run
+docker compose up -d --build
+
+or 
+
+# 3- 2  Start all services
+docker compose up -d
+
+
+
+# 4 - Access API documentation with your web browser
+
+http://localhost:8000/docs
+
+
+#5 -  Run tests
+docker compose exec api pytest -v --cov=app
+
+
+
+#6 -  Check logs
+docker compose logs -f api
+
+
+
+#7 Stop and remove Volume
+docker compose down -v
