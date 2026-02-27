@@ -1,0 +1,79 @@
+.TH "email_service.EmailService" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+email_service.EmailService
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB__init__\fP (self)"
+.br
+.ti -1c
+.RI "\fB__aenter__\fP (self)"
+.br
+.ti -1c
+.RI "\fB__aexit__\fP (self, exc_type, exc_val, exc_tb)"
+.br
+.ti -1c
+.RI "bool \fBsend_activation_code\fP (self, str email, str code)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBapi_url\fP"
+.br
+.ti -1c
+.RI "\fBclient\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line \fB5\fP of file \fBemail_service\&.py\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "email_service\&.EmailService\&.__init__ ( self)"
+
+.PP
+Definition at line \fB6\fP of file \fBemail_service\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "email_service\&.EmailService\&.__aenter__ ( self)"
+
+.PP
+Definition at line \fB10\fP of file \fBemail_service\&.py\fP\&.
+.SS "email_service\&.EmailService\&.__aexit__ ( self,  exc_type,  exc_val,  exc_tb)"
+
+.PP
+Definition at line \fB14\fP of file \fBemail_service\&.py\fP\&.
+.SS " bool email_service\&.EmailService\&.send_activation_code ( self, str email, str code)"
+
+.PP
+.nf
+Send activation code via third-party email service
+Mock implementation - in production this would call actual SMTP API
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB18\fP of file \fBemail_service\&.py\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "email_service\&.EmailService\&.api_url"
+
+.PP
+Definition at line \fB7\fP of file \fBemail_service\&.py\fP\&.
+.SS "email_service\&.EmailService\&.client"
+
+.PP
+Definition at line \fB11\fP of file \fBemail_service\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

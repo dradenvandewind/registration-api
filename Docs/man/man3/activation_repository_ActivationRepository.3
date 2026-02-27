@@ -1,0 +1,55 @@
+.TH "activation_repository.ActivationRepository" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+activation_repository.ActivationRepository
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "ActivationCodeInDB \fBcreate\fP (self, ActivationCodeCreate activation_data)"
+.br
+.ti -1c
+.RI "Optional[ActivationCodeInDB] \fBget_valid_code\fP (self, UUID user_id, str code)"
+.br
+.ti -1c
+.RI "None \fBmark_as_used\fP (self, UUID code_id)"
+.br
+.ti -1c
+.RI "None \fBinvalidate_old_codes\fP (self, UUID user_id)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line \fB7\fP of file \fBactivation_repository\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS " ActivationCodeInDB activation_repository\&.ActivationRepository\&.create ( self, ActivationCodeCreate activation_data)"
+
+.PP
+Definition at line \fB8\fP of file \fBactivation_repository\&.py\fP\&.
+.SS " Optional[ActivationCodeInDB] activation_repository\&.ActivationRepository\&.get_valid_code ( self, UUID user_id, str code)"
+
+.PP
+Definition at line \fB22\fP of file \fBactivation_repository\&.py\fP\&.
+.SS " None activation_repository\&.ActivationRepository\&.invalidate_old_codes ( self, UUID user_id)"
+
+.PP
+.nf
+Mark all previous codes as used
+.fi
+.PP
+ 
+.PP
+Definition at line \fB39\fP of file \fBactivation_repository\&.py\fP\&.
+.SS " None activation_repository\&.ActivationRepository\&.mark_as_used ( self, UUID code_id)"
+
+.PP
+Definition at line \fB35\fP of file \fBactivation_repository\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

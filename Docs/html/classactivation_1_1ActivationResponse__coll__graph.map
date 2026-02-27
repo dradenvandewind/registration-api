@@ -1,0 +1,7 @@
+<map id="activation.ActivationResponse" name="activation.ActivationResponse">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,93,225,119"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="19,5,113,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,41,111,91,106,94,77,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="138,5,194,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,44,125,94,120,91,150,41"/>
+</map>

@@ -1,0 +1,23 @@
+\doxysection{test\+\_\+health.\+py}
+\label{test__health_8py_source}\index{tests/test\_api/test\_health.py@{tests/test\_api/test\_health.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ httpx\ \textcolor{keyword}{import}\ AsyncClient,\ ASGITransport}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.main\ \textcolor{keyword}{import}\ app}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00006\ \textcolor{keyword}{async\ def\ }test\_health\_check():}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ que\ l\(\backslash\)'API\ répond"{}"{}"{}}}
+\DoxyCodeLine{00008\ \ \ \ \ transport\ =\ ASGITransport(}
+\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ app=app}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00011\ \ \ \ \ }
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ AsyncClient(transport=transport,\ base\_url=\textcolor{stringliteral}{"{}http://test"{}})\ \textcolor{keyword}{as}\ client:}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ response\ =\ await\ client.get(\textcolor{stringliteral}{"{}/health"{}})}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.status\_code\ ==\ 200}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ data\ =\ response.json()}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}status"{}}\ \textcolor{keywordflow}{in}\ data}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}✅\ Health\ check\ réussi:\ \{data\}"{}})}
+
+\end{DoxyCode}

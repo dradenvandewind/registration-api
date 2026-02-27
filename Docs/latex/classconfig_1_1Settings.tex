@@ -1,0 +1,143 @@
+\doxysection{config.\+Settings Class Reference}
+\label{classconfig_1_1Settings}\index{config.Settings@{config.Settings}}
+
+
+Inheritance diagram for config.\+Settings\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{classconfig_1_1Settings__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for config.\+Settings\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{classconfig_1_1Settings__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+str \textbf{ database\+\_\+url\+\_\+property} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+str \textbf{ database\+\_\+url} = "{}postgresql\+://user\+:password@db\+:5432/registration\+\_\+db"{}
+\item 
+str \textbf{ redis\+\_\+url} = "{}redis\+://redis\+:6379"{}
+\item 
+str \textbf{ secret\+\_\+key} = "{}dev\+\_\+secret\+\_\+key\+\_\+change\+\_\+in\+\_\+production"{}
+\item 
+int \textbf{ bcrypt\+\_\+rounds} = 12
+\item 
+str \textbf{ smtp\+\_\+api\+\_\+url} = "{}http\+://mailhog\+:8025/api/v1/send"{}
+\item 
+int \textbf{ activation\+\_\+code\+\_\+ttl\+\_\+seconds} = 60
+\item 
+\textbf{ model\+\_\+config} = Settings\+Config\+Dict(env\+\_\+file="{}.env"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \textbf{ 36} of file \textbf{ config.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classconfig_1_1Settings_acf14354dede999d4818e15d86a8a55ea} 
+\index{config.Settings@{config.Settings}!database\_url\_property@{database\_url\_property}}
+\index{database\_url\_property@{database\_url\_property}!config.Settings@{config.Settings}}
+\doxysubsubsection{database\_url\_property()}
+{\footnotesize\ttfamily  str config.\+Settings.\+database\+\_\+url\+\_\+property (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return database URL based on environment\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 54} of file \textbf{ config.\+py}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\label{classconfig_1_1Settings_a74f828bd229129c6e6f081e0731d89c5} 
+\index{config.Settings@{config.Settings}!activation\_code\_ttl\_seconds@{activation\_code\_ttl\_seconds}}
+\index{activation\_code\_ttl\_seconds@{activation\_code\_ttl\_seconds}!config.Settings@{config.Settings}}
+\doxysubsubsection{activation\_code\_ttl\_seconds}
+{\footnotesize\ttfamily int config.\+Settings.\+activation\+\_\+code\+\_\+ttl\+\_\+seconds = 60\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \textbf{ 51} of file \textbf{ config.\+py}.
+
+\label{classconfig_1_1Settings_a4ef679ea492762b8d842c56ca17fe7ad} 
+\index{config.Settings@{config.Settings}!bcrypt\_rounds@{bcrypt\_rounds}}
+\index{bcrypt\_rounds@{bcrypt\_rounds}!config.Settings@{config.Settings}}
+\doxysubsubsection{bcrypt\_rounds}
+{\footnotesize\ttfamily int config.\+Settings.\+bcrypt\+\_\+rounds = 12\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \textbf{ 45} of file \textbf{ config.\+py}.
+
+\label{classconfig_1_1Settings_ac14c9b1b0e81fffb6d1fa0c54b0106de} 
+\index{config.Settings@{config.Settings}!database\_url@{database\_url}}
+\index{database\_url@{database\_url}!config.Settings@{config.Settings}}
+\doxysubsubsection{database\_url}
+{\footnotesize\ttfamily str config.\+Settings.\+database\+\_\+url = "{}postgresql\+://user\+:password@db\+:5432/registration\+\_\+db"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \textbf{ 38} of file \textbf{ config.\+py}.
+
+\label{classconfig_1_1Settings_af6174003575009a1db872a3f47d8ef7d} 
+\index{config.Settings@{config.Settings}!model\_config@{model\_config}}
+\index{model\_config@{model\_config}!config.Settings@{config.Settings}}
+\doxysubsubsection{model\_config}
+{\footnotesize\ttfamily config.\+Settings.\+model\+\_\+config = Settings\+Config\+Dict(env\+\_\+file="{}.env"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \textbf{ 60} of file \textbf{ config.\+py}.
+
+\label{classconfig_1_1Settings_aee832a3b0c7f56feaac49bef0468f8a9} 
+\index{config.Settings@{config.Settings}!redis\_url@{redis\_url}}
+\index{redis\_url@{redis\_url}!config.Settings@{config.Settings}}
+\doxysubsubsection{redis\_url}
+{\footnotesize\ttfamily str config.\+Settings.\+redis\+\_\+url = "{}redis\+://redis\+:6379"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \textbf{ 41} of file \textbf{ config.\+py}.
+
+\label{classconfig_1_1Settings_a51137930eb23f2fc0612a8e35c34393f} 
+\index{config.Settings@{config.Settings}!secret\_key@{secret\_key}}
+\index{secret\_key@{secret\_key}!config.Settings@{config.Settings}}
+\doxysubsubsection{secret\_key}
+{\footnotesize\ttfamily str config.\+Settings.\+secret\+\_\+key = "{}dev\+\_\+secret\+\_\+key\+\_\+change\+\_\+in\+\_\+production"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \textbf{ 44} of file \textbf{ config.\+py}.
+
+\label{classconfig_1_1Settings_a1f8ece1e65ef5a5da5f198c433a394af} 
+\index{config.Settings@{config.Settings}!smtp\_api\_url@{smtp\_api\_url}}
+\index{smtp\_api\_url@{smtp\_api\_url}!config.Settings@{config.Settings}}
+\doxysubsubsection{smtp\_api\_url}
+{\footnotesize\ttfamily str config.\+Settings.\+smtp\+\_\+api\+\_\+url = "{}http\+://mailhog\+:8025/api/v1/send"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \textbf{ 48} of file \textbf{ config.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+app/core/config.\+py\end{DoxyCompactItemize}

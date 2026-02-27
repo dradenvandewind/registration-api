@@ -1,0 +1,77 @@
+.TH "test_security.TestWrapperFunctions" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_security.TestWrapperFunctions
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_verify_password_wrapper\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_get_password_hash_wrapper\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_wrappers_compatibility\fP (self)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for wrapper functions
+.fi
+.PP
+ 
+.PP
+Definition at line \fB122\fP of file \fBtest_security\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_security\&.TestWrapperFunctions\&.test_get_password_hash_wrapper ( self)"
+
+.PP
+.nf
+Test get_password_hash wrapper function
+Covers line 57-58 (wrapper function)
+
+Note: Two hashes of the same password will be different due to random salt,
+so we verify that the hash can be verified instead of comparing directly\&.
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB142\fP of file \fBtest_security\&.py\fP\&.
+.SS "test_security\&.TestWrapperFunctions\&.test_verify_password_wrapper ( self)"
+
+.PP
+.nf
+Test verify_password wrapper function
+Covers line 57-58 (wrapper function)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB125\fP of file \fBtest_security\&.py\fP\&.
+.SS "test_security\&.TestWrapperFunctions\&.test_wrappers_compatibility ( self)"
+
+.PP
+.nf
+Test that wrappers maintain compatibility
+Covers lines 57-58
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB172\fP of file \fBtest_security\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

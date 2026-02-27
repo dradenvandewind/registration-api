@@ -1,0 +1,47 @@
+\doxysection{registration.\+py}
+\label{registration_8py_source}\index{app/api/v1/endpoints/registration.py@{app/api/v1/endpoints/registration.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter,\ HTTPException,\ status,\ BackgroundTasks}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserCreate,\ UserResponse}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.services.user\_service\ \textcolor{keyword}{import}\ UserService}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ app.services.activation\_service\ \textcolor{keyword}{import}\ ActivationService}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.services.email\_service\ \textcolor{keyword}{import}\ email\_service}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserAlreadyExistsError}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/registration"{}},\ tags=[\textcolor{stringliteral}{"{}registration"{}}])}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{@router.post("{}"{},\ response\_model=UserResponse,\ status\_code=status.HTTP\_201\_CREATED)}}
+\DoxyCodeLine{00011\ \textcolor{keyword}{async\ def\ }register\_user(}
+\DoxyCodeLine{00012\ \ \ \ \ user\_data:\ UserCreate,}
+\DoxyCodeLine{00013\ \ \ \ \ background\_tasks:\ BackgroundTasks}
+\DoxyCodeLine{00014\ ):}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00016\ \textcolor{stringliteral}{\ \ \ \ Register\ a\ new\ user\ with\ email\ and\ password}}
+\DoxyCodeLine{00017\ \textcolor{stringliteral}{\ \ \ \ An\ activation\ code\ will\ be\ sent\ via\ email}}
+\DoxyCodeLine{00018\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ user}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ user\_service\ =\ UserService()}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ user\ =\ await\ user\_service.create\_user(user\_data)}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Generate\ activation\ code}}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ activation\_service\ =\ ActivationService()}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ code\ =\ await\ activation\_service.create\_activation\_code(user.id)}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Send\ email\ with\ code\ (background\ task)}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ background\_tasks.add\_task(}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ email\_service.send\_activation\_code,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ user.email,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ code}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{except}\ UserAlreadyExistsError\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_409\_CONFLICT,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ detail=str(e)}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ )}
+
+\end{DoxyCode}

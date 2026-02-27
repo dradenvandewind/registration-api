@@ -1,0 +1,82 @@
+\doxysection{test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Invalidate\+Old\+Codes Class Reference}
+\label{classtest__activation__repository_1_1TestActivationRepositoryInvalidateOldCodes}\index{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ test\+\_\+invalidate\+\_\+old\+\_\+codes\+\_\+success} (self, activation\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+invalidate\+\_\+old\+\_\+codes\+\_\+no\+\_\+codes} (self, activation\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+invalidate\+\_\+old\+\_\+codes\+\_\+different\+\_\+users} (self, activation\+\_\+repository)
+\item 
+\textbf{ test\+\_\+invalidate\+\_\+old\+\_\+codes\+\_\+multiple\+\_\+calls} (self, activation\+\_\+repository, sample\+\_\+user\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Tests for invalidate_old_codes method (lines 41-46)\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 257} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classtest__activation__repository_1_1TestActivationRepositoryInvalidateOldCodes_acf34707d14462b9fbd58d513359f4ea1} 
+\index{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}!test\_invalidate\_old\_codes\_different\_users@{test\_invalidate\_old\_codes\_different\_users}}
+\index{test\_invalidate\_old\_codes\_different\_users@{test\_invalidate\_old\_codes\_different\_users}!test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}}
+\doxysubsubsection{test\_invalidate\_old\_codes\_different\_users()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Invalidate\+Old\+Codes.\+test\+\_\+invalidate\+\_\+old\+\_\+codes\+\_\+different\+\_\+users (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test invalidating codes for different users
+Ensures user_id parameter is used correctly (lines 41-46)
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 303} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+\label{classtest__activation__repository_1_1TestActivationRepositoryInvalidateOldCodes_afdd69dcc9d464049734fb468119334ab} 
+\index{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}!test\_invalidate\_old\_codes\_multiple\_calls@{test\_invalidate\_old\_codes\_multiple\_calls}}
+\index{test\_invalidate\_old\_codes\_multiple\_calls@{test\_invalidate\_old\_codes\_multiple\_calls}!test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}}
+\doxysubsubsection{test\_invalidate\_old\_codes\_multiple\_calls()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Invalidate\+Old\+Codes.\+test\+\_\+invalidate\+\_\+old\+\_\+codes\+\_\+multiple\+\_\+calls (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test calling invalidate_old_codes multiple times for same user
+Covers lines 41-46 with repeated calls
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 336} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+\label{classtest__activation__repository_1_1TestActivationRepositoryInvalidateOldCodes_a3c121865c0c9adb9bfa8973a7a1ff665} 
+\index{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}!test\_invalidate\_old\_codes\_no\_codes@{test\_invalidate\_old\_codes\_no\_codes}}
+\index{test\_invalidate\_old\_codes\_no\_codes@{test\_invalidate\_old\_codes\_no\_codes}!test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}}
+\doxysubsubsection{test\_invalidate\_old\_codes\_no\_codes()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Invalidate\+Old\+Codes.\+test\+\_\+invalidate\+\_\+old\+\_\+codes\+\_\+no\+\_\+codes (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test invalidate_old_codes when user has no active codes
+Should still execute successfully (UPDATE 0 rows)
+Covers lines 41-46
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 285} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+\label{classtest__activation__repository_1_1TestActivationRepositoryInvalidateOldCodes_a78006fbb48ef410e46ece4addd27916f} 
+\index{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}!test\_invalidate\_old\_codes\_success@{test\_invalidate\_old\_codes\_success}}
+\index{test\_invalidate\_old\_codes\_success@{test\_invalidate\_old\_codes\_success}!test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes@{test\_activation\_repository.TestActivationRepositoryInvalidateOldCodes}}
+\doxysubsubsection{test\_invalidate\_old\_codes\_success()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Invalidate\+Old\+Codes.\+test\+\_\+invalidate\+\_\+old\+\_\+codes\+\_\+success (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test successfully invalidating old codes for a user
+Covers lines 41-46
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 261} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/test\+\_\+repositories/test\+\_\+activation\+\_\+repository.\+py\end{DoxyCompactItemize}

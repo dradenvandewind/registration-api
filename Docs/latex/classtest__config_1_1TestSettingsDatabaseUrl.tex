@@ -1,0 +1,160 @@
+\doxysection{test\+\_\+config.\+Test\+Settings\+Database\+Url Class Reference}
+\label{classtest__config_1_1TestSettingsDatabaseUrl}\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+default\+\_\+main\+\_\+env} (self)
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+with\+\_\+custom\+\_\+main\+\_\+env} (self)
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+test\+\_\+environment\+\_\+default} (self)
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+test\+\_\+environment\+\_\+custom} (self)
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+with\+\_\+both\+\_\+env\+\_\+vars\+\_\+main\+\_\+env} (self)
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+with\+\_\+both\+\_\+env\+\_\+vars\+\_\+test\+\_\+env} (self)
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+missing\+\_\+env\+\_\+vars} (self)
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+test\+\_\+env\+\_\+missing\+\_\+test\+\_\+url} (self)
+\item 
+\textbf{ test\+\_\+database\+\_\+url\+\_\+property\+\_\+with\+\_\+empty\+\_\+env\+\_\+vars} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Tests for database_url_property (lines 22-24)\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 7} of file \textbf{ test\+\_\+config.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classtest__config_1_1TestSettingsDatabaseUrl_a1c30c95e5884d1c6fbc070c3e45d3781} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_default\_main\_env@{test\_database\_url\_property\_default\_main\_env}}
+\index{test\_database\_url\_property\_default\_main\_env@{test\_database\_url\_property\_default\_main\_env}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_default\_main\_env()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+default\+\_\+main\+\_\+env (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property in main environment (not test)
+Covers lines 22-24 with default values
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 10} of file \textbf{ test\+\_\+config.\+py}.
+
+\label{classtest__config_1_1TestSettingsDatabaseUrl_a2ef0a6d016e4da0870937c6d57f27c3f} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_missing\_env\_vars@{test\_database\_url\_property\_missing\_env\_vars}}
+\index{test\_database\_url\_property\_missing\_env\_vars@{test\_database\_url\_property\_missing\_env\_vars}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_missing\_env\_vars()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+missing\+\_\+env\+\_\+vars (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property when no environment variables are set
+Should fall back to defaults
+Covers lines 22-24
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 103} of file \textbf{ test\+\_\+config.\+py}.
+
+\label{classtest__config_1_1TestSettingsDatabaseUrl_a14cdd16bfaf1e30fd27871f682969fdd} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_test\_env\_missing\_test\_url@{test\_database\_url\_property\_test\_env\_missing\_test\_url}}
+\index{test\_database\_url\_property\_test\_env\_missing\_test\_url@{test\_database\_url\_property\_test\_env\_missing\_test\_url}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_test\_env\_missing\_test\_url()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+test\+\_\+env\+\_\+missing\+\_\+test\+\_\+url (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property in test environment when TEST_DATABASE_URL is not set
+Should fall back to default test URL
+Covers lines 22-24
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 116} of file \textbf{ test\+\_\+config.\+py}.
+
+\label{classtest__config_1_1TestSettingsDatabaseUrl_aa161ec4fe94cbb1b417830a10a0e2bc9} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_test\_environment\_custom@{test\_database\_url\_property\_test\_environment\_custom}}
+\index{test\_database\_url\_property\_test\_environment\_custom@{test\_database\_url\_property\_test\_environment\_custom}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_test\_environment\_custom()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+test\+\_\+environment\+\_\+custom (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property in test environment with custom TEST_DATABASE_URL
+Covers lines 22-24 with custom test URL
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 53} of file \textbf{ test\+\_\+config.\+py}.
+
+\label{classtest__config_1_1TestSettingsDatabaseUrl_a480b493363c44d9240d438c321ae2a0c} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_test\_environment\_default@{test\_database\_url\_property\_test\_environment\_default}}
+\index{test\_database\_url\_property\_test\_environment\_default@{test\_database\_url\_property\_test\_environment\_default}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_test\_environment\_default()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+test\+\_\+environment\+\_\+default (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property in test environment with default TEST_DATABASE_URL
+Covers lines 22-24 with test environment
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 41} of file \textbf{ test\+\_\+config.\+py}.
+
+\label{classtest__config_1_1TestSettingsDatabaseUrl_a4474c4addef7e27ef667c34fe0837f5f} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_with\_both\_env\_vars\_main\_env@{test\_database\_url\_property\_with\_both\_env\_vars\_main\_env}}
+\index{test\_database\_url\_property\_with\_both\_env\_vars\_main\_env@{test\_database\_url\_property\_with\_both\_env\_vars\_main\_env}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_with\_both\_env\_vars\_main\_env()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+with\+\_\+both\+\_\+env\+\_\+vars\+\_\+main\+\_\+env (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property when both DATABASE_URL and TEST_DATABASE_URL are set but ENVIRONMENT is not test
+Should use DATABASE_URL
+Covers lines 22-24
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 70} of file \textbf{ test\+\_\+config.\+py}.
+
+\label{classtest__config_1_1TestSettingsDatabaseUrl_a8db59644b9476453f2d64ae688e60e7a} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_with\_both\_env\_vars\_test\_env@{test\_database\_url\_property\_with\_both\_env\_vars\_test\_env}}
+\index{test\_database\_url\_property\_with\_both\_env\_vars\_test\_env@{test\_database\_url\_property\_with\_both\_env\_vars\_test\_env}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_with\_both\_env\_vars\_test\_env()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+with\+\_\+both\+\_\+env\+\_\+vars\+\_\+test\+\_\+env (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property when both DATABASE_URL and TEST_DATABASE_URL are set and ENVIRONMENT is test
+Should use TEST_DATABASE_URL
+Covers lines 22-24
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 86} of file \textbf{ test\+\_\+config.\+py}.
+
+\label{classtest__config_1_1TestSettingsDatabaseUrl_a64bf3804fee5a186315e5db65abb5174} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_with\_custom\_main\_env@{test\_database\_url\_property\_with\_custom\_main\_env}}
+\index{test\_database\_url\_property\_with\_custom\_main\_env@{test\_database\_url\_property\_with\_custom\_main\_env}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_with\_custom\_main\_env()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+with\+\_\+custom\+\_\+main\+\_\+env (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property with custom DATABASE_URL in main environment
+Covers lines 22-24 with custom value
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 27} of file \textbf{ test\+\_\+config.\+py}.
+
+\label{classtest__config_1_1TestSettingsDatabaseUrl_a5744929232c2e3010632b63906d7a058} 
+\index{test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}!test\_database\_url\_property\_with\_empty\_env\_vars@{test\_database\_url\_property\_with\_empty\_env\_vars}}
+\index{test\_database\_url\_property\_with\_empty\_env\_vars@{test\_database\_url\_property\_with\_empty\_env\_vars}!test\_config.TestSettingsDatabaseUrl@{test\_config.TestSettingsDatabaseUrl}}
+\doxysubsubsection{test\_database\_url\_property\_with\_empty\_env\_vars()}
+{\footnotesize\ttfamily test\+\_\+config.\+Test\+Settings\+Database\+Url.\+test\+\_\+database\+\_\+url\+\_\+property\+\_\+with\+\_\+empty\+\_\+env\+\_\+vars (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database_url_property with empty string environment variables
+Covers lines 22-24
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 129} of file \textbf{ test\+\_\+config.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/test\+\_\+core/test\+\_\+config.\+py\end{DoxyCompactItemize}

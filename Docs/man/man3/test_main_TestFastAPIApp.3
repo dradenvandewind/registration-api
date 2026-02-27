@@ -1,0 +1,83 @@
+.TH "test_main.TestFastAPIApp" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_main.TestFastAPIApp
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_app_creation\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_router_included\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_exception_handlers_setup\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_health_check_endpoint\fP (self)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for the FastAPI app configuration
+.fi
+.PP
+ 
+.PP
+Definition at line \fB113\fP of file \fBtest_main\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_main\&.TestFastAPIApp\&.test_app_creation ( self)"
+
+.PP
+.nf
+Test that the FastAPI app is created with correct metadata
+.fi
+.PP
+ 
+.PP
+Definition at line \fB116\fP of file \fBtest_main\&.py\fP\&.
+.SS "test_main\&.TestFastAPIApp\&.test_exception_handlers_setup ( self)"
+
+.PP
+.nf
+Test that exception handlers are set up
+This indirectly tests line 18 (setup_exception_handlers)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB135\fP of file \fBtest_main\&.py\fP\&.
+.SS "test_main\&.TestFastAPIApp\&.test_health_check_endpoint ( self)"
+
+.PP
+.nf
+Test the health check endpoint using httpx\&.AsyncClient
+.fi
+.PP
+ 
+.PP
+Definition at line \fB160\fP of file \fBtest_main\&.py\fP\&.
+.SS "test_main\&.TestFastAPIApp\&.test_router_included ( self)"
+
+.PP
+.nf
+Test that the v1 router is included
+.fi
+.PP
+ 
+.PP
+Definition at line \fB123\fP of file \fBtest_main\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

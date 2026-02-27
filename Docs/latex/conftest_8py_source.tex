@@ -1,0 +1,88 @@
+\doxysection{conftest.\+py}
+\label{conftest_8py_source}\index{tests/conftest.py@{tests/conftest.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ asyncio}
+\DoxyCodeLine{00003\ \textcolor{keyword}{import}\ sys}
+\DoxyCodeLine{00004\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ AsyncGenerator,\ Generator}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ sys.path.insert(0,\ os.path.abspath(os.path.join(os.path.dirname(\_\_file\_\_),\ \textcolor{stringliteral}{"{}.."{}})))}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{from}\ app.db.connection\ \textcolor{keyword}{import}\ db}
+\DoxyCodeLine{00010\ \textcolor{keyword}{from}\ app.core.config\ \textcolor{keyword}{import}\ settings}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{@pytest.fixture(scope="{}session"{})}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{def\ }event\_loop()\ -\/>\ Generator:}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Crée\ une\ instance\ de\ la\ boucle\ d'événements\ pour\ toute\ la\ session\ de\ test."{}"{}"{}}}
+\DoxyCodeLine{00015\ \ \ \ \ policy\ =\ asyncio.get\_event\_loop\_policy()}
+\DoxyCodeLine{00016\ \ \ \ \ loop\ =\ policy.new\_event\_loop()}
+\DoxyCodeLine{00017\ \ \ \ \ asyncio.set\_event\_loop(loop)}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{yield}\ loop}
+\DoxyCodeLine{00019\ \ \ \ \ loop.close()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{@pytest.fixture(scope="{}session"{},\ autouse=True)}}
+\DoxyCodeLine{00022\ \textcolor{keyword}{async\ def\ }setup\_test\_db():}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Initialise\ la\ base\ de\ données\ pour\ les\ tests"{}"{}"{}}}
+\DoxyCodeLine{00024\ \ \ \ \ print(\textcolor{stringliteral}{"{}\(\backslash\)n"{}}\ +\ \textcolor{stringliteral}{"{}="{}}*50)}
+\DoxyCodeLine{00025\ \ \ \ \ print(\textcolor{stringliteral}{"{}🔄\ Initialisation\ de\ la\ base\ de\ données\ de\ test..."{}})}
+\DoxyCodeLine{00026\ \ \ \ \ print(\textcolor{stringliteral}{"{}="{}}*50)}
+\DoxyCodeLine{00027\ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Initialiser\ la\ connexion}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ await\ db.initialize()}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Vérifier\ que\ la\ connexion\ est\ établie}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ db.pool\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}❌\ Échec\ de\ l'initialisation\ de\ la\ base\ de\ données"{}})}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ Exception(\textcolor{stringliteral}{"{}Database\ pool\ is\ None\ after\ initialization"{}})}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}✅\ Base\ de\ données\ connectée\ avec\ succès"{}})}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}📊\ URL:\ \{settings.database\_url\}"{}})}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Nettoyer\ les\ tables}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ await\ db.execute(\textcolor{stringliteral}{"{}DELETE\ FROM\ activation\_codes"{}})}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ await\ db.execute(\textcolor{stringliteral}{"{}DELETE\ FROM\ users"{}})}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Tables\ nettoyées"{}})}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}⚠️\ Erreur\ lors\ du\ nettoyage\ initial:\ \{e\}"{}})}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}❌\ Erreur\ lors\ de\ l'initialisation:\ \{e\}"{}})}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}}
+\DoxyCodeLine{00051\ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{yield}}
+\DoxyCodeLine{00053\ \ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{\#\ Fermer\ la\ connexion\ à\ la\ fin\ des\ tests}}
+\DoxyCodeLine{00055\ \ \ \ \ print(\textcolor{stringliteral}{"{}\(\backslash\)n"{}}\ +\ \textcolor{stringliteral}{"{}="{}}*50)}
+\DoxyCodeLine{00056\ \ \ \ \ print(\textcolor{stringliteral}{"{}🔄\ Fermeture\ de\ la\ connexion\ à\ la\ base\ de\ données..."{}})}
+\DoxyCodeLine{00057\ \ \ \ \ print(\textcolor{stringliteral}{"{}="{}}*50)}
+\DoxyCodeLine{00058\ \ \ \ \ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{if}\ db.pool:}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ await\ db.close()}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Connexion\ fermée"{}})}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}⚠️\ Pas\ de\ connexion\ active\ à\ fermer"{}})}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{@pytest.fixture(scope="{}function"{},\ autouse=True)}}
+\DoxyCodeLine{00066\ \textcolor{keyword}{async\ def\ }clean\_db\_between\_tests():}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Nettoie\ la\ base\ de\ données\ entre\ chaque\ test"{}"{}"{}}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{comment}{\#\ Attendre\ que\ la\ base\ de\ données\ soit\ prête}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{if}\ db.pool\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}⚠️\ Base\ de\ données\ non\ initialisée,\ nettoyage\ ignoré"{}})}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{yield}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{yield}}
+\DoxyCodeLine{00075\ \ \ \ \ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Nettoyer\ après\ chaque\ test}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ await\ db.execute(\textcolor{stringliteral}{"{}DELETE\ FROM\ activation\_codes"{}})}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ await\ db.execute(\textcolor{stringliteral}{"{}DELETE\ FROM\ users"{}})}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Tables\ nettoyées\ après\ le\ test"{}})}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}⚠️\ Erreur\ lors\ du\ nettoyage\ entre\ tests:\ \{e\}"{}})}
+
+\end{DoxyCode}

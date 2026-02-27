@@ -1,0 +1,380 @@
+\doxysection{test\+\_\+user\+\_\+repository.\+py}
+\label{test__user__repository_8py_source}\index{tests/test\_repositories/test\_user\_repository.py@{tests/test\_repositories/test\_user\_repository.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_repositories/test\_user\_repository.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ patch,\ MagicMock}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID,\ uuid4}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ datetime\ \textcolor{keyword}{import}\ datetime}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.db.repositories.user\_repository\ \textcolor{keyword}{import}\ UserRepository}
+\DoxyCodeLine{00007\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserCreate,\ UserInDB}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{def\ }user\_repository():}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ to\ create\ a\ UserRepository\ instance"{}"{}"{}}}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordflow}{return}\ UserRepository()}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{def\ }sample\_user\_id():}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ for\ a\ sample\ user\ UUID"{}"{}"{}}}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordflow}{return}\ uuid4()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00020\ \textcolor{keyword}{def\ }sample\_user\_create():}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ for\ user\ creation\ data"{}"{}"{}}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{return}\ UserCreate(}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ email=\textcolor{stringliteral}{"{}test@example.com"{}},}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ password=\textcolor{stringliteral}{"{}secure123"{}}}
+\DoxyCodeLine{00025\ \ \ \ \ )}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{def\ }mock\_user\_dict():}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ to\ return\ a\ real\ dictionary\ for\ user\ data"{}"{}"{}}}
+\DoxyCodeLine{00030\ \ \ \ \ user\_id\ =\ uuid4()}
+\DoxyCodeLine{00031\ \ \ \ \ now\ =\ datetime.utcnow()}
+\DoxyCodeLine{00032\ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}id"{}}:\ user\_id,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}email"{}}:\ \textcolor{stringliteral}{"{}test@example.com"{}},}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}password\_hash"{}}:\ \textcolor{stringliteral}{"{}hashed\_password\_123"{}},}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}is\_active"{}}:\ \textcolor{keyword}{False},}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}created\_at"{}}:\ now,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}updated\_at"{}}:\ now}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00043\ \textcolor{keyword}{def\ }mock\_user\_row(mock\_user\_dict):}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ to\ mock\ a\ database\ row\ as\ a\ dict-\/like\ object"{}"{}"{}}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{class\ }MockRow:}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keyword}{def\ }\_\_init\_\_(self,\ data):}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ self.\_data\ =\ data}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keyword}{def\ }\_\_getitem\_\_(self,\ key):}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ self.\_data[key]}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{def\ }keys(self):}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ self.\_data.keys()}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keyword}{def\ }values(self):}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ self.\_data.values()}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keyword}{def\ }items(self):}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ self.\_data.items()}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keyword}{def\ }\_\_iter\_\_(self):}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ iter(self.\_data)}
+\DoxyCodeLine{00063\ \ \ \ \ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ MockRow(mock\_user\_dict)}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{class\ }TestUserRepositoryGetById:}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ get\_by\_id\ method\ (lines\ 24-\/26)"{}"{}"{}}}
+\DoxyCodeLine{00068\ \ \ \ \ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_get\_by\_id\_success(self,\ user\_repository,\ sample\_user\_id,\ mock\_user\_row,\ mock\_user\_dict):}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00072\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ successfully\ retrieving\ a\ user\ by\ ID}}
+\DoxyCodeLine{00073\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 24-\/26}}
+\DoxyCodeLine{00074\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.fetchrow'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_fetchrow:}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_fetchrow.return\_value\ =\ mock\_user\_row}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ await\ user\_repository.get\_by\_id(sample\_user\_id)}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keywordflow}{not}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(result,\ UserInDB)}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result.id\ ==\ mock\_user\_dict[\textcolor{stringliteral}{"{}id"{}}]}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result.email\ ==\ mock\_user\_dict[\textcolor{stringliteral}{"{}email"{}}]}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result.password\_hash\ ==\ mock\_user\_dict[\textcolor{stringliteral}{"{}password\_hash"{}}]}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result.is\_active\ ==\ mock\_user\_dict[\textcolor{stringliteral}{"{}is\_active"{}}]}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ query\ (line\ 24)}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ expected\_query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ users\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_fetchrow.assert\_called\_once\_with(expected\_query,\ sample\_user\_id)}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ get\_by\_id\ success\ path\ (lines\ 24-\/26)"{}})}
+\DoxyCodeLine{00094\ \ \ \ \ }
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_get\_by\_id\_not\_found(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00098\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ get\_by\_id\ when\ user\ does\ not\ exist}}
+\DoxyCodeLine{00099\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 26\ (return\ None\ path)}}
+\DoxyCodeLine{00100\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.fetchrow'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_fetchrow:}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_fetchrow.return\_value\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ await\ user\_repository.get\_by\_id(sample\_user\_id)}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ (line\ 26)}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_fetchrow.assert\_called\_once()}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ get\_by\_id\ returns\ None\ when\ user\ not\ found\ (line\ 26)"{}})}
+\DoxyCodeLine{00112\ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_get\_by\_id\_db\_error(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00116\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\ error\ during\ get\_by\_id}}
+\DoxyCodeLine{00117\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Ensures\ error\ propagation}}
+\DoxyCodeLine{00118\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.fetchrow'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_fetchrow:}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_fetchrow.side\_effect\ =\ Exception(\textcolor{stringliteral}{"{}Database\ connection\ error"{}})}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.get\_by\_id(sample\_user\_id)}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Database\ connection\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ get\_by\_id\ propagates\ database\ errors"{}})}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \textcolor{keyword}{class\ }TestUserRepositoryActivateUser:}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ activate\_user\ method\ (lines\ 29-\/30)"{}"{}"{}}}
+\DoxyCodeLine{00130\ \ \ \ \ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_activate\_user\_success(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00134\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ successfully\ activating\ a\ user}}
+\DoxyCodeLine{00135\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 29-\/30}}
+\DoxyCodeLine{00136\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.return\_value\ =\ \textcolor{stringliteral}{"{}UPDATE\ 1"{}}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.activate\_user(sample\_user\_id)}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ (lines\ 29-\/30)}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ expected\_query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ is\_active\ =\ TRUE,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.assert\_called\_once\_with(expected\_query,\ sample\_user\_id)}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ activate\_user\ success\ path\ (lines\ 29-\/30)"{}})}
+\DoxyCodeLine{00148\ \ \ \ \ }
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_activate\_user\_nonexistent\_user(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00152\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ activating\ a\ user\ that\ doesn't\ exist}}
+\DoxyCodeLine{00153\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Should\ still\ execute\ (UPDATE\ 0\ rows)}}
+\DoxyCodeLine{00154\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 29-\/30}}
+\DoxyCodeLine{00155\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.return\_value\ =\ \textcolor{stringliteral}{"{}UPDATE\ 0"{}}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.activate\_user(sample\_user\_id)}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ execute\ was\ still\ called}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.assert\_called\_once()}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ activate\_user\ handles\ nonexistent\ user\ (lines\ 29-\/30)"{}})}
+\DoxyCodeLine{00166\ \ \ \ \ }
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_activate\_user\_multiple\_calls(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00170\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ calling\ activate\_user\ multiple\ times}}
+\DoxyCodeLine{00171\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 29-\/30\ with\ repeated\ calls}}
+\DoxyCodeLine{00172\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Call\ activate\_user\ twice}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.activate\_user(sample\_user\_id)}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.activate\_user(sample\_user\_id)}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ both\ calls\ were\ made}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ mock\_execute.call\_count\ ==\ 2}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ expected\_query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ is\_active\ =\ TRUE,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ call\ \textcolor{keywordflow}{in}\ mock\_execute.call\_args\_list:}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ call[0][0]\ ==\ expected\_query}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ call[0][1]\ ==\ sample\_user\_id}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ activate\_user\ multiple\ calls\ (lines\ 29-\/30)"{}})}
+\DoxyCodeLine{00187\ \ \ \ \ }
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_activate\_user\_db\_error(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00191\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\ error\ during\ activate\_user}}
+\DoxyCodeLine{00192\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Ensures\ error\ propagation\ from\ line\ 30}}
+\DoxyCodeLine{00193\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.side\_effect\ =\ Exception(\textcolor{stringliteral}{"{}Database\ connection\ error"{}})}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.activate\_user(sample\_user\_id)}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Database\ connection\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ activate\_user\ propagates\ database\ errors"{}})}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \textcolor{keyword}{class\ }TestUserRepositoryUpdatePassword:}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ update\_password\ method\ (lines\ 33-\/35)"{}"{}"{}}}
+\DoxyCodeLine{00205\ \ \ \ \ }
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_update\_password\_success(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00209\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ successfully\ updating\ a\ user's\ password}}
+\DoxyCodeLine{00210\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 33-\/35}}
+\DoxyCodeLine{00211\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ new\_password\ =\ \textcolor{stringliteral}{"{}new\_secure\_password\_123"{}}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ hashed\_password\ =\ \textcolor{stringliteral}{"{}hashed\_new\_password"{}}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.get\_password\_hash'})\ \textcolor{keyword}{as}\ mock\_hash,\ \(\backslash\)}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_hash.return\_value\ =\ hashed\_password}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.return\_value\ =\ \textcolor{stringliteral}{"{}UPDATE\ 1"{}}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.update\_password(sample\_user\_id,\ new\_password)}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ hash\ function\ was\ called\ (line\ 33)}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_hash.assert\_called\_once\_with(new\_password)}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ execute\ was\ called\ (lines\ 34-\/35)}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ expected\_query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ password\_hash\ =\ \$1,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$2"{}}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.assert\_called\_once\_with(expected\_query,\ hashed\_password,\ sample\_user\_id)}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ update\_password\ success\ path\ (lines\ 33-\/35)"{}})}
+\DoxyCodeLine{00232\ \ \ \ \ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_update\_password\_nonexistent\_user(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00236\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ updating\ password\ for\ a\ user\ that\ doesn't\ exist}}
+\DoxyCodeLine{00237\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Should\ still\ execute\ (UPDATE\ 0\ rows)}}
+\DoxyCodeLine{00238\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 33-\/35}}
+\DoxyCodeLine{00239\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ new\_password\ =\ \textcolor{stringliteral}{"{}new\_password"{}}}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ hashed\_password\ =\ \textcolor{stringliteral}{"{}hashed\_password"{}}}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.get\_password\_hash'},\ return\_value=hashed\_password),\ \(\backslash\)}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.return\_value\ =\ \textcolor{stringliteral}{"{}UPDATE\ 0"{}}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.update\_password(sample\_user\_id,\ new\_password)}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ execute\ was\ still\ called}}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.assert\_called\_once()}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ update\_password\ handles\ nonexistent\ user\ (lines\ 33-\/35)"{}})}
+\DoxyCodeLine{00255\ \ \ \ \ }
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_update\_password\_different\_users(self,\ user\_repository):}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00259\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ updating\ passwords\ for\ different\ users}}
+\DoxyCodeLine{00260\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Ensures\ user\_id\ parameter\ is\ used\ correctly\ (lines\ 33-\/35)}}
+\DoxyCodeLine{00261\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ user1\_id\ =\ uuid4()}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ user2\_id\ =\ uuid4()}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ password1\ =\ \textcolor{stringliteral}{"{}password1"{}}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ password2\ =\ \textcolor{stringliteral}{"{}password2"{}}}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ hashed1\ =\ \textcolor{stringliteral}{"{}hashed1"{}}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ hashed2\ =\ \textcolor{stringliteral}{"{}hashed2"{}}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.get\_password\_hash'})\ \textcolor{keyword}{as}\ mock\_hash,\ \(\backslash\)}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Configure\ mock\ to\ return\ different\ hashes}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_hash.side\_effect\ =\ [hashed1,\ hashed2]}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Update\ first\ user}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.update\_password(user1\_id,\ password1)}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Update\ second\ user}}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.update\_password(user2\_id,\ password2)}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ calls}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ mock\_hash.call\_count\ ==\ 2}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ mock\_execute.call\_count\ ==\ 2}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ first\_call\_args\ =\ mock\_execute.call\_args\_list[0][0]}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ second\_call\_args\ =\ mock\_execute.call\_args\_list[1][0]}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ expected\_query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ password\_hash\ =\ \$1,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$2"{}}}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ First\ call}}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ first\_call\_args[0]\ ==\ expected\_query}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ first\_call\_args[1]\ ==\ hashed1}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ first\_call\_args[2]\ ==\ user1\_id}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Second\ call}}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ second\_call\_args[0]\ ==\ expected\_query}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ second\_call\_args[1]\ ==\ hashed2}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ second\_call\_args[2]\ ==\ user2\_id}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ update\_password\ correctly\ targets\ different\ users\ (lines\ 33-\/35)"{}})}
+\DoxyCodeLine{00301\ \ \ \ \ }
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_update\_password\_multiple\_calls\_same\_user(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00305\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ updating\ password\ multiple\ times\ for\ same\ user}}
+\DoxyCodeLine{00306\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 33-\/35\ with\ repeated\ calls}}
+\DoxyCodeLine{00307\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ password1\ =\ \textcolor{stringliteral}{"{}first\_password"{}}}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ password2\ =\ \textcolor{stringliteral}{"{}second\_password"{}}}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ hashed1\ =\ \textcolor{stringliteral}{"{}hashed\_first"{}}}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ hashed2\ =\ \textcolor{stringliteral}{"{}hashed\_second"{}}}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.get\_password\_hash'})\ \textcolor{keyword}{as}\ mock\_hash,\ \(\backslash\)}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_hash.side\_effect\ =\ [hashed1,\ hashed2]}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Update\ twice}}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.update\_password(sample\_user\_id,\ password1)}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.update\_password(sample\_user\_id,\ password2)}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ both\ calls\ were\ made}}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ mock\_hash.call\_count\ ==\ 2}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ mock\_execute.call\_count\ ==\ 2}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \ \ expected\_query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ password\_hash\ =\ \$1,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$2"{}}}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ i,\ call\ \textcolor{keywordflow}{in}\ enumerate(mock\_execute.call\_args\_list):}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ expected\_hash\ =\ hashed1\ \textcolor{keywordflow}{if}\ i\ ==\ 0\ \textcolor{keywordflow}{else}\ hashed2}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ call[0][0]\ ==\ expected\_query}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ call[0][1]\ ==\ expected\_hash}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ call[0][2]\ ==\ sample\_user\_id}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ update\_password\ multiple\ calls\ same\ user\ (lines\ 33-\/35)"{}})}
+\DoxyCodeLine{00335\ \ \ \ \ }
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_update\_password\_with\_special\_characters(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00339\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ password\ update\ with\ special\ characters}}
+\DoxyCodeLine{00340\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 33-\/35\ with\ edge\ case\ input}}
+\DoxyCodeLine{00341\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ special\_password\ =\ \textcolor{stringliteral}{"{}P@ssw0rd!\$\%\&*()"{}}}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ hashed\ =\ \textcolor{stringliteral}{"{}hashed\_special"{}}}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.get\_password\_hash'})\ \textcolor{keyword}{as}\ mock\_hash,\ \(\backslash\)}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_hash.return\_value\ =\ hashed}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.update\_password(sample\_user\_id,\ special\_password)}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ hash\ was\ called\ with\ special\ password}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_hash.assert\_called\_once\_with(special\_password)}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.assert\_called\_once()}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ update\_password\ handles\ special\ characters\ (lines\ 33-\/35)"{}})}
+\DoxyCodeLine{00357\ \ \ \ \ }
+\DoxyCodeLine{00358\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_update\_password\_db\_error(self,\ user\_repository,\ sample\_user\_id):}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00361\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\ error\ during\ update\_password}}
+\DoxyCodeLine{00362\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Ensures\ error\ propagation\ from\ line\ 35}}
+\DoxyCodeLine{00363\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.get\_password\_hash'})\ \textcolor{keyword}{as}\ mock\_hash,\ \(\backslash\)}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ patch(\textcolor{stringliteral}{'app.db.repositories.user\_repository.db.execute'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_execute:}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_hash.return\_value\ =\ \textcolor{stringliteral}{"{}hashed"{}}}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_execute.side\_effect\ =\ Exception(\textcolor{stringliteral}{"{}Database\ connection\ error"{}})}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ await\ user\_repository.update\_password(sample\_user\_id,\ \textcolor{stringliteral}{"{}newpassword"{}})}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Database\ connection\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ update\_password\ propagates\ database\ errors"{}})}
+
+\end{DoxyCode}

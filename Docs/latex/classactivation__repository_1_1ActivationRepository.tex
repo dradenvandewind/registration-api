@@ -1,0 +1,69 @@
+\doxysection{activation\+\_\+repository.\+Activation\+Repository Class Reference}
+\label{classactivation__repository_1_1ActivationRepository}\index{activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Activation\+Code\+In\+DB \textbf{ create} (self, Activation\+Code\+Create activation\+\_\+data)
+\item 
+Optional[Activation\+Code\+In\+DB] \textbf{ get\+\_\+valid\+\_\+code} (self, UUID user\+\_\+id, str code)
+\item 
+None \textbf{ mark\+\_\+as\+\_\+used} (self, UUID code\+\_\+id)
+\item 
+None \textbf{ invalidate\+\_\+old\+\_\+codes} (self, UUID user\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \textbf{ 7} of file \textbf{ activation\+\_\+repository.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classactivation__repository_1_1ActivationRepository_ad4a8be7e4d88843f54514dcca394eac2} 
+\index{activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}!create@{create}}
+\index{create@{create}!activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}}
+\doxysubsubsection{create()}
+{\footnotesize\ttfamily  Activation\+Code\+In\+DB activation\+\_\+repository.\+Activation\+Repository.\+create (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Activation\+Code\+Create}]{activation\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+Definition at line \textbf{ 8} of file \textbf{ activation\+\_\+repository.\+py}.
+
+\label{classactivation__repository_1_1ActivationRepository_a8131d8ecab2f98667863992258bf0d17} 
+\index{activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}!get\_valid\_code@{get\_valid\_code}}
+\index{get\_valid\_code@{get\_valid\_code}!activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}}
+\doxysubsubsection{get\_valid\_code()}
+{\footnotesize\ttfamily  Optional[Activation\+Code\+In\+DB] activation\+\_\+repository.\+Activation\+Repository.\+get\+\_\+valid\+\_\+code (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{UUID}]{user\+\_\+id,  }\item[{str}]{code }\end{DoxyParamCaption})}
+
+
+
+Definition at line \textbf{ 22} of file \textbf{ activation\+\_\+repository.\+py}.
+
+\label{classactivation__repository_1_1ActivationRepository_a922e21031474e9a87ea63c66c30f2d70} 
+\index{activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}!invalidate\_old\_codes@{invalidate\_old\_codes}}
+\index{invalidate\_old\_codes@{invalidate\_old\_codes}!activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}}
+\doxysubsubsection{invalidate\_old\_codes()}
+{\footnotesize\ttfamily  None activation\+\_\+repository.\+Activation\+Repository.\+invalidate\+\_\+old\+\_\+codes (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{UUID}]{user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Mark all previous codes as used\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 39} of file \textbf{ activation\+\_\+repository.\+py}.
+
+\label{classactivation__repository_1_1ActivationRepository_a133b30eec708ec15d365beb17d162a90} 
+\index{activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}!mark\_as\_used@{mark\_as\_used}}
+\index{mark\_as\_used@{mark\_as\_used}!activation\_repository.ActivationRepository@{activation\_repository.ActivationRepository}}
+\doxysubsubsection{mark\_as\_used()}
+{\footnotesize\ttfamily  None activation\+\_\+repository.\+Activation\+Repository.\+mark\+\_\+as\+\_\+used (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{UUID}]{code\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \textbf{ 35} of file \textbf{ activation\+\_\+repository.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+app/db/repositories/activation\+\_\+repository.\+py\end{DoxyCompactItemize}

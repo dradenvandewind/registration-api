@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,109,92,134"/>
+<area shape="rect" id="Node000001" href="$classexceptions_1_1InvalidActivationCodeError.html" title=" " alt="" coords="147,5,353,45"/>
+<area shape="poly" id="edge9_Node000000_Node000001" title=" " alt="" coords="74,97,104,75,139,55,168,43,170,48,141,60,107,80,77,102"/>
+<area shape="rect" id="Node000002" href="$classexceptions_1_1UserAlreadyActiveError.html" title=" " alt="" coords="141,69,359,109"/>
+<area shape="poly" id="edge10_Node000000_Node000002" title=" " alt="" coords="105,110,140,104,141,109,106,115"/>
+<area shape="rect" id="Node000003" href="$classexceptions_1_1UserAlreadyExistsError.html" title=" " alt="" coords="142,133,358,173"/>
+<area shape="poly" id="edge11_Node000000_Node000003" title=" " alt="" coords="106,128,142,133,141,139,105,133"/>
+<area shape="rect" id="Node000004" href="$classexceptions_1_1UserNotFoundError.html" title=" " alt="" coords="140,198,360,223"/>
+<area shape="poly" id="edge12_Node000000_Node000004" title=" " alt="" coords="76,141,106,163,141,183,177,195,175,200,139,188,103,167,73,145"/>
+</map>

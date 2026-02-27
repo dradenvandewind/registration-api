@@ -1,0 +1,68 @@
+\doxysection{config.\+py}
+\label{config_8py_source}\index{app/core/config.py@{app/core/config.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ from\ pydantic\_settings\ import\ SettingsConfigDict,\ BaseSettings}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\#\ from\ typing\ import\ Optional}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\#\ import\ os}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{comment}{\#\ class\ Settings(BaseSettings):}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\#\ \ \ \ \ \#\ Database}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\#\ \ \ \ \ database\_url:\ str\ =\ "{}postgresql://user:password@db:5432/registration\_db"{}}}
+\DoxyCodeLine{00008\ \ \ \ \ }
+\DoxyCodeLine{00009\ \textcolor{comment}{\#\ \ \ \ \ \#\ Redis}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\#\ \ \ \ \ redis\_url:\ str\ =\ "{}redis://redis:6379"{}}}
+\DoxyCodeLine{00011\ \ \ \ \ }
+\DoxyCodeLine{00012\ \textcolor{comment}{\#\ \ \ \ \ \#\ Security}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\#\ \ \ \ \ secret\_key:\ str\ =\ "{}dev\_secret\_key\_change\_in\_production"{}}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\#\ \ \ \ \ bcrypt\_rounds:\ int\ =\ 12}}
+\DoxyCodeLine{00015\ \ \ \ \ }
+\DoxyCodeLine{00016\ \textcolor{comment}{\#\ \ \ \ \ \#\ Email}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\#\ \ \ \ \ smtp\_api\_url:\ str\ =\ "{}http://mailhog:8025/api/v1/send"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{\#\ \ \ \ \ @property}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\#\ \ \ \ \ def\ database\_url(self)\ -\/>\ str:}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\#\ \ \ \ \ \ \ \ \ "{}"{}"{}Retourne\ l'URL\ de\ la\ base\ de\ données\ selon\ l'environnement"{}"{}"{}}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\#\ \ \ \ \ \ \ \ \ if\ os.getenv("{}ENVIRONMENT"{})\ ==\ "{}test"{}:}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\#\ \ \ \ \ \ \ \ \ \ \ \ \ return\ os.getenv("{}TEST\_DATABASE\_URL"{},\ "{}postgresql://user:pass@localhost:5432/test\_db"{})}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\#\ \ \ \ \ \ \ \ \ return\ os.getenv("{}DATABASE\_URL"{},\ "{}postgresql://user:pass@localhost:5432/main\_db"{})}}
+\DoxyCodeLine{00025\ \ \ \ \ }
+\DoxyCodeLine{00026\ \textcolor{comment}{\#\ \ \ \ \ \#\ Activation}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\#\ \ \ \ \ activation\_code\_ttl\_seconds:\ int\ =\ 60\ \ \#\ 1\ minute}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\#\ \ \ \ \ model\_config\ =\ SettingsConfigDict(env\_file="{}.env"{})}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{\#\ settings\ =\ Settings()}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\#\ app/core/config.py}}
+\DoxyCodeLine{00032\ \textcolor{keyword}{from}\ pydantic\_settings\ \textcolor{keyword}{import}\ BaseSettings,\ SettingsConfigDict}
+\DoxyCodeLine{00033\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{00034\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{class\ }Settings(BaseSettings):}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{\#\ Database}}
+\DoxyCodeLine{00038\ \ \ \ \ database\_url:\ str\ =\ \textcolor{stringliteral}{"{}postgresql://user:password@db:5432/registration\_db"{}}}
+\DoxyCodeLine{00039\ \ \ \ \ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{\#\ Redis}}
+\DoxyCodeLine{00041\ \ \ \ \ redis\_url:\ str\ =\ \textcolor{stringliteral}{"{}redis://redis:6379"{}}}
+\DoxyCodeLine{00042\ \ \ \ \ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{\#\ Security}}
+\DoxyCodeLine{00044\ \ \ \ \ secret\_key:\ str\ =\ \textcolor{stringliteral}{"{}dev\_secret\_key\_change\_in\_production"{}}}
+\DoxyCodeLine{00045\ \ \ \ \ bcrypt\_rounds:\ int\ =\ 12}
+\DoxyCodeLine{00046\ \ \ \ \ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{\#\ Email}}
+\DoxyCodeLine{00048\ \ \ \ \ smtp\_api\_url:\ str\ =\ \textcolor{stringliteral}{"{}http://mailhog:8025/api/v1/send"{}}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{\#\ Activation}}
+\DoxyCodeLine{00051\ \ \ \ \ activation\_code\_ttl\_seconds:\ int\ =\ 60\ \ \textcolor{comment}{\#\ 1\ minute}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{preprocessor}{@property}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{def\ }database\_url\_property(self)\ -\/>\ str:}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Return\ database\ URL\ based\ on\ environment"{}"{}"{}}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ os.getenv(\textcolor{stringliteral}{"{}ENVIRONMENT"{}})\ ==\ \textcolor{stringliteral}{"{}test"{}}:}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ os.getenv(\textcolor{stringliteral}{"{}TEST\_DATABASE\_URL"{}},\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/test\_db"{}})}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ os.getenv(\textcolor{stringliteral}{"{}DATABASE\_URL"{}},\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/main\_db"{}})}
+\DoxyCodeLine{00059\ \ \ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \ model\_config\ =\ SettingsConfigDict(env\_file=\textcolor{stringliteral}{"{}.env"{}})}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ settings\ =\ Settings()}
+
+\end{DoxyCode}

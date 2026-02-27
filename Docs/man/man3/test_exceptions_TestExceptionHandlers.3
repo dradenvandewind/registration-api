@@ -1,0 +1,117 @@
+.TH "test_exceptions.TestExceptionHandlers" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_exceptions.TestExceptionHandlers
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_setup_exception_handlers_registers_all_handlers\fP (self, mock_app)"
+.br
+.ti -1c
+.RI "\fBtest_user_already_exists_handler_raises_409\fP (self, mock_app, mock_request)"
+.br
+.ti -1c
+.RI "\fBtest_user_not_found_handler_raises_404\fP (self, mock_app, mock_request)"
+.br
+.ti -1c
+.RI "\fBtest_invalid_activation_code_handler_raises_400\fP (self, mock_app, mock_request)"
+.br
+.ti -1c
+.RI "\fBtest_user_already_active_handler_raises_400\fP (self, mock_app, mock_request)"
+.br
+.ti -1c
+.RI "\fBtest_exception_classes_are_defined\fP (self)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for exception handler setup and individual handlers
+.fi
+.PP
+ 
+.PP
+Definition at line \fB38\fP of file \fBtest_exceptions\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_exceptions\&.TestExceptionHandlers\&.test_exception_classes_are_defined ( self)"
+
+.PP
+.nf
+Test that all exception classes are properly defined
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB140\fP of file \fBtest_exceptions\&.py\fP\&.
+.SS "test_exceptions\&.TestExceptionHandlers\&.test_invalid_activation_code_handler_raises_400 ( self,  mock_app,  mock_request)"
+
+.PP
+.nf
+Test that InvalidActivationCodeError handler raises HTTP 400 Bad Request
+Covers line 40
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB101\fP of file \fBtest_exceptions\&.py\fP\&.
+.SS "test_exceptions\&.TestExceptionHandlers\&.test_setup_exception_handlers_registers_all_handlers ( self,  mock_app)"
+
+.PP
+.nf
+Test that setup_exception_handlers registers all exception handlers
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB41\fP of file \fBtest_exceptions\&.py\fP\&.
+.SS "test_exceptions\&.TestExceptionHandlers\&.test_user_already_active_handler_raises_400 ( self,  mock_app,  mock_request)"
+
+.PP
+.nf
+Test that UserAlreadyActiveError handler raises HTTP 400 Bad Request
+Covers line 47
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB121\fP of file \fBtest_exceptions\&.py\fP\&.
+.SS "test_exceptions\&.TestExceptionHandlers\&.test_user_already_exists_handler_raises_409 ( self,  mock_app,  mock_request)"
+
+.PP
+.nf
+Test that UserAlreadyExistsError handler raises HTTP 409 Conflict
+Covers line 26
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB60\fP of file \fBtest_exceptions\&.py\fP\&.
+.SS "test_exceptions\&.TestExceptionHandlers\&.test_user_not_found_handler_raises_404 ( self,  mock_app,  mock_request)"
+
+.PP
+.nf
+Test that UserNotFoundError handler raises HTTP 404 Not Found
+Covers line 33
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB81\fP of file \fBtest_exceptions\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

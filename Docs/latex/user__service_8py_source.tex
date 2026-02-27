@@ -1,0 +1,75 @@
+\doxysection{user\+\_\+service.\+py}
+\label{user__service_8py_source}\index{app/services/user\_service.py@{app/services/user\_service.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ app.db.repositories.user\_repository\ \textcolor{keyword}{import}\ UserRepository}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserCreate,\ UserResponse,\ UserInDB}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserAlreadyExistsError,\ UserNotFoundError}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{import}\ logging}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ logger\ =\ logging.getLogger(\_\_name\_\_)}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UserService:}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{def\ }\_\_init\_\_(self):}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ self.repository\ =\ UserRepository()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{async\ def\ }create\_user(self,\ user\_data:\ UserCreate)\ -\/>\ UserResponse:}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Vérifier\ si\ l'utilisateur\ existe\ déjà}}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ existing\_user\ =\ await\ self.repository.get\_by\_email(user\_data.email)}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ existing\_user:}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ UserAlreadyExistsError(\textcolor{stringliteral}{"{}User\ with\ this\ email\ already\ exists"{}})}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Créer\ l'utilisateur}}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ user\_in\_db\ =\ await\ self.repository.create(user\_data)}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ logger.info(f\textcolor{stringliteral}{"{}Utilisateur\ créé\ en\ base:\ \{user\_in\_db\}"{}})}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ SOLUTION:\ Créer\ manuellement\ le\ UserResponse}}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ user\_response\ =\ UserResponse(}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ id=user\_in\_db.id,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ email=user\_in\_db.email,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ is\_active=user\_in\_db.is\_active,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ created\_at=user\_in\_db.created\_at}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user\_response}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{async\ def\ }get\_user(self,\ user\_id:\ UUID)\ -\/>\ Optional[UserResponse]:}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ user\ =\ await\ self.repository.get\_by\_id(user\_id)}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ user:}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ UserNotFoundError(\textcolor{stringliteral}{"{}User\ not\ found"{}})}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ ✅\ Conversion\ manuelle\ (comme\ dans\ create\_user)}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ user\_response\ =\ UserResponse(}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ id=user.id,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ email=user.email,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ is\_active=user.is\_active,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ created\_at=user.created\_at}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user\_response}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{async\ def\ }get\_user\_by\_email(self,\ email:\ str)\ -\/>\ Optional[UserInDB]:}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ user\ =\ await\ self.repository.get\_by\_email(email)}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ user:}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ UserNotFoundError(\textcolor{stringliteral}{"{}User\ not\ found"{}})}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{async\ def\ }activate\_user(self,\ user\_id:\ UUID)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ await\ self.repository.activate\_user(user\_id)}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{async\ def\ }verify\_credentials(self,\ email:\ str,\ password:\ str)\ -\/>\ Optional[UserInDB]:}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keyword}{from}\ app.core.security\ \textcolor{keyword}{import}\ verify\_password}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ user\ =\ await\ self.repository.get\_by\_email(email)}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ user:}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ verify\_password(password,\ user.password\_hash):}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user}
+
+\end{DoxyCode}

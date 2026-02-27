@@ -1,0 +1,74 @@
+.TH "test_user_repository.TestUserRepositoryGetById" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_user_repository.TestUserRepositoryGetById
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_get_by_id_success\fP (self, user_repository, sample_user_id, mock_user_row, mock_user_dict)"
+.br
+.ti -1c
+.RI "\fBtest_get_by_id_not_found\fP (self, user_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_get_by_id_db_error\fP (self, user_repository, sample_user_id)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for get_by_id method (lines 24-26)
+.fi
+.PP
+ 
+.PP
+Definition at line \fB66\fP of file \fBtest_user_repository\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_user_repository\&.TestUserRepositoryGetById\&.test_get_by_id_db_error ( self,  user_repository,  sample_user_id)"
+
+.PP
+.nf
+Test database error during get_by_id
+Ensures error propagation
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB114\fP of file \fBtest_user_repository\&.py\fP\&.
+.SS "test_user_repository\&.TestUserRepositoryGetById\&.test_get_by_id_not_found ( self,  user_repository,  sample_user_id)"
+
+.PP
+.nf
+Test get_by_id when user does not exist
+Covers line 26 (return None path)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB96\fP of file \fBtest_user_repository\&.py\fP\&.
+.SS "test_user_repository\&.TestUserRepositoryGetById\&.test_get_by_id_success ( self,  user_repository,  sample_user_id,  mock_user_row,  mock_user_dict)"
+
+.PP
+.nf
+Test successfully retrieving a user by ID
+Covers lines 24-26
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB70\fP of file \fBtest_user_repository\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

@@ -1,0 +1,46 @@
+\doxysection{activation.\+py}
+\label{api_2v1_2endpoints_2activation_8py_source}\index{app/api/v1/endpoints/activation.py@{app/api/v1/endpoints/activation.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter,\ HTTPException,\ status,\ Depends}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.models.activation\ \textcolor{keyword}{import}\ ActivationRequest,\ ActivationResponse}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.services.activation\_service\ \textcolor{keyword}{import}\ ActivationService}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ app.dependencies.auth\ \textcolor{keyword}{import}\ get\_current\_user}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserInDB}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ (}
+\DoxyCodeLine{00007\ \ \ \ \ InvalidActivationCodeError,\ }
+\DoxyCodeLine{00008\ \ \ \ \ UserNotFoundError,}
+\DoxyCodeLine{00009\ \ \ \ \ UserAlreadyActiveError}
+\DoxyCodeLine{00010\ )}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/activation"{}},\ tags=[\textcolor{stringliteral}{"{}activation"{}}])}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{@router.post("{}"{},\ response\_model=ActivationResponse)}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{async\ def\ }activate\_account(}
+\DoxyCodeLine{00016\ \ \ \ \ activation\_data:\ ActivationRequest,}
+\DoxyCodeLine{00017\ \ \ \ \ current\_user:\ UserInDB\ =\ Depends(get\_current\_user)}
+\DoxyCodeLine{00018\ ):}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00020\ \textcolor{stringliteral}{\ \ \ \ Activate\ user\ account\ with\ 6-\/digit\ code}}
+\DoxyCodeLine{00021\ \textcolor{stringliteral}{\ \ \ \ Requires\ Basic\ Auth\ with\ email\ and\ password}}
+\DoxyCodeLine{00022\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ activation\_service\ =\ ActivationService()}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ current\_user.id,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ activation\_data.code}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ActivationResponse(}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ message=\textcolor{stringliteral}{"{}Account\ activated\ successfully"{}},}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ user\_id=current\_user.id}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{except}\ (UserNotFoundError,\ UserAlreadyActiveError,\ InvalidActivationCodeError)\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ detail=str(e)}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ )}
+
+\end{DoxyCode}

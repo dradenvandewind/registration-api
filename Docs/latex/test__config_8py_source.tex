@@ -1,0 +1,149 @@
+\doxysection{test\+\_\+config.\+py}
+\label{test__config_8py_source}\index{tests/test\_core/test\_config.py@{tests/test\_core/test\_config.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_core/test\_config.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{00003\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ patch}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.core.config\ \textcolor{keyword}{import}\ Settings}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }TestSettingsDatabaseUrl:}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ database\_url\_property\ (lines\ 22-\/24)"{}"{}"{}}}
+\DoxyCodeLine{00009\ \ \ \ \ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_default\_main\_env(self):}
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ in\ main\ environment\ (not\ test)}}
+\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24\ with\ default\ values}}
+\DoxyCodeLine{00014\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Clear\ environment\ variables\ that\ might\ affect\ the\ test}}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{\},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ settings\ instance}}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Access\ the\ property}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/main\_db"{}}}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ returns\ main\ DB\ URL\ in\ default\ environment"{}})}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_with\_custom\_main\_env(self):}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00029\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ with\ custom\ DATABASE\_URL\ in\ main\ environment}}
+\DoxyCodeLine{00030\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24\ with\ custom\ value}}
+\DoxyCodeLine{00031\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ custom\_url\ =\ \textcolor{stringliteral}{"{}postgresql://custom:custom@customhost:5432/custom\_db"{}}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{\textcolor{stringliteral}{"{}DATABASE\_URL"{}}:\ custom\_url\},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ custom\_url}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ returns\ custom\ DATABASE\_URL\ when\ provided"{}})}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_test\_environment\_default(self):}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00043\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ in\ test\ environment\ with\ default\ TEST\_DATABASE\_URL}}
+\DoxyCodeLine{00044\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24\ with\ test\ environment}}
+\DoxyCodeLine{00045\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{\textcolor{stringliteral}{"{}ENVIRONMENT"{}}:\ \textcolor{stringliteral}{"{}test"{}}\},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/test\_db"{}}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ returns\ test\ DB\ URL\ in\ test\ environment"{}})}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_test\_environment\_custom(self):}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00055\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ in\ test\ environment\ with\ custom\ TEST\_DATABASE\_URL}}
+\DoxyCodeLine{00056\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24\ with\ custom\ test\ URL}}
+\DoxyCodeLine{00057\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ custom\_test\_url\ =\ \textcolor{stringliteral}{"{}postgresql://test:test@testhost:5432/test\_custom\_db"{}}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}ENVIRONMENT"{}}:\ \textcolor{stringliteral}{"{}test"{}},}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}TEST\_DATABASE\_URL"{}}:\ custom\_test\_url}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ custom\_test\_url}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ returns\ custom\ TEST\_DATABASE\_URL\ in\ test\ environment"{}})}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_with\_both\_env\_vars\_main\_env(self):}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00072\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ when\ both\ DATABASE\_URL\ and\ TEST\_DATABASE\_URL\ are\ set\ but\ ENVIRONMENT\ is\ not\ test}}
+\DoxyCodeLine{00073\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Should\ use\ DATABASE\_URL}}
+\DoxyCodeLine{00074\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24}}
+\DoxyCodeLine{00075\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}DATABASE\_URL"{}}:\ \textcolor{stringliteral}{"{}postgresql://main:main@mainhost:5432/main\_db"{}},}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}TEST\_DATABASE\_URL"{}}:\ \textcolor{stringliteral}{"{}postgresql://test:test@testhost:5432/test\_db"{}}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ \textcolor{stringliteral}{"{}postgresql://main:main@mainhost:5432/main\_db"{}}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ uses\ DATABASE\_URL\ when\ ENVIRONMENT\ is\ not\ test"{}})}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_with\_both\_env\_vars\_test\_env(self):}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00088\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ when\ both\ DATABASE\_URL\ and\ TEST\_DATABASE\_URL\ are\ set\ and\ ENVIRONMENT\ is\ test}}
+\DoxyCodeLine{00089\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Should\ use\ TEST\_DATABASE\_URL}}
+\DoxyCodeLine{00090\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24}}
+\DoxyCodeLine{00091\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}ENVIRONMENT"{}}:\ \textcolor{stringliteral}{"{}test"{}},}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}DATABASE\_URL"{}}:\ \textcolor{stringliteral}{"{}postgresql://main:main@mainhost:5432/main\_db"{}},}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}TEST\_DATABASE\_URL"{}}:\ \textcolor{stringliteral}{"{}postgresql://test:test@testhost:5432/test\_db"{}}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ \textcolor{stringliteral}{"{}postgresql://test:test@testhost:5432/test\_db"{}}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ uses\ TEST\_DATABASE\_URL\ when\ ENVIRONMENT\ is\ test"{}})}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_missing\_env\_vars(self):}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00105\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ when\ no\ environment\ variables\ are\ set}}
+\DoxyCodeLine{00106\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Should\ fall\ back\ to\ defaults}}
+\DoxyCodeLine{00107\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24}}
+\DoxyCodeLine{00108\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{\},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/main\_db"{}}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ falls\ back\ to\ defaults\ when\ no\ env\ vars\ set"{}})}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_test\_env\_missing\_test\_url(self):}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00118\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ in\ test\ environment\ when\ TEST\_DATABASE\_URL\ is\ not\ set}}
+\DoxyCodeLine{00119\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Should\ fall\ back\ to\ default\ test\ URL}}
+\DoxyCodeLine{00120\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24}}
+\DoxyCodeLine{00121\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{\textcolor{stringliteral}{"{}ENVIRONMENT"{}}:\ \textcolor{stringliteral}{"{}test"{}}\},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/test\_db"{}}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ falls\ back\ to\ default\ test\ URL\ when\ TEST\_DATABASE\_URL\ not\ set"{}})}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keyword}{def\ }test\_database\_url\_property\_with\_empty\_env\_vars(self):}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00131\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ database\_url\_property\ with\ empty\ string\ environment\ variables}}
+\DoxyCodeLine{00132\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 22-\/24}}
+\DoxyCodeLine{00133\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch.dict(os.environ,\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}ENVIRONMENT"{}}:\ \textcolor{stringliteral}{"{}test"{}},}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}TEST\_DATABASE\_URL"{}}:\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \},\ clear=\textcolor{keyword}{True}):}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ settings\ =\ Settings()}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ url\ =\ settings.database\_url\_property}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Empty\ string\ is\ considered\ a\ value,\ so\ it\ will\ return\ empty\ string}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ url\ ==\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ database\_url\_property\ handles\ empty\ environment\ variables"{}})}
+
+\end{DoxyCode}

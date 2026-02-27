@@ -1,0 +1,82 @@
+\doxysection{security.\+py}
+\label{security_8py_source}\index{app/core/security.py@{app/core/security.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ app/core/security.py}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\#from\ passlib.context\ import\ CryptContext}}
+\DoxyCodeLine{00003\ \textcolor{keyword}{import}\ secrets}
+\DoxyCodeLine{00004\ \textcolor{keyword}{import}\ string}
+\DoxyCodeLine{00005\ \textcolor{keyword}{import}\ logging}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{00007\ \textcolor{keyword}{import}\ bcrypt}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ logger\ =\ logging.getLogger(\_\_name\_\_)}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }PasswordHandler:}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Password\ hash\ manager\ using\ bcrypt\ directly"{}"{}"{}}}
+\DoxyCodeLine{00014\ \ \ \ \ }
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{preprocessor}{@staticmethod}}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{def\ }hash\_password(password:\ str)\ -\/>\ str:}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Hash\ a\ password\ with\ bcrypt"{}"{}"{}}}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Convert\ to\ bytes\ and\ ensure\ 72\ bytes\ limit}}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ password\_bytes\ =\ password.encode(\textcolor{stringliteral}{'utf-\/8'})}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Explicit\ truncation\ if\ necessary\ (optional,\ depending\ on\ your\ policy)}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ len(password\_bytes)\ >\ 72:}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ logger.warning(\textcolor{stringliteral}{"{}Password\ too\ long,\ truncating\ to\ 72\ bytes"{}})}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ password\_bytes\ =\ password\_bytes[:72]}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Generate\ salt\ and\ hash}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ salt\ =\ bcrypt.gensalt(rounds=12)\ \ \textcolor{comment}{\#\ 12\ rounds\ is\ a\ good\ compromise}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ hashed\ =\ bcrypt.hashpw(password\_bytes,\ salt)}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Return\ hash\ as\ string}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hashed.decode(\textcolor{stringliteral}{'utf-\/8'})}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ logger.error(f\textcolor{stringliteral}{"{}Error\ hashing\ password:\ \{e\}"{}})}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}}
+\DoxyCodeLine{00037\ \ \ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{preprocessor}{@staticmethod}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{def\ }verify\_password(plain\_password:\ str,\ hashed\_password:\ str)\ -\/>\ bool:}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Check\ if\ password\ matches\ the\ hash"{}"{}"{}}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Prepare\ bytes}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ plain\_bytes\ =\ plain\_password.encode(\textcolor{stringliteral}{'utf-\/8'})}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ hashed\_bytes\ =\ hashed\_password.encode(\textcolor{stringliteral}{'utf-\/8'})}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ bcrypt.checkpw(plain\_bytes,\ hashed\_bytes)}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ logger.error(f\textcolor{stringliteral}{"{}Error\ verifying\ password:\ \{e\}"{}})}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{comment}{\#\ Singleton\ instance}}
+\DoxyCodeLine{00054\ password\_handler\ =\ PasswordHandler()}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{comment}{\#\ Functions\ to\ maintain\ compatibility\ with\ existing\ code}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{def\ }verify\_password(plain\_password:\ str,\ hashed\_password:\ str)\ -\/>\ bool:}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ password\_handler.verify\_password(plain\_password,\ hashed\_password)}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{def\ }get\_password\_hash(password:\ str)\ -\/>\ str:}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ password\_handler.hash\_password(password)}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{def\ }generate\_activation\_code(length:\ int\ =\ 6)\ -\/>\ str:}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00065\ \textcolor{stringliteral}{\ \ \ \ Generate\ a\ random\ activation\ code.}}
+\DoxyCodeLine{00066\ \textcolor{stringliteral}{\ \ \ \ }}
+\DoxyCodeLine{00067\ \textcolor{stringliteral}{\ \ \ \ Args:}}
+\DoxyCodeLine{00068\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ length:\ Code\ length\ (default:\ 6)}}
+\DoxyCodeLine{00069\ \textcolor{stringliteral}{\ \ \ \ }}
+\DoxyCodeLine{00070\ \textcolor{stringliteral}{\ \ \ \ Returns:}}
+\DoxyCodeLine{00071\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ A\ random\ alphanumeric\ code}}
+\DoxyCodeLine{00072\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00073\ \ \ \ \ alphabet\ =\ string.ascii\_uppercase\ +\ string.digits}
+\DoxyCodeLine{00074\ \ \ \ \ code\ =\ \textcolor{stringliteral}{''}.join(secrets.choice(alphabet)\ \textcolor{keywordflow}{for}\ \_\ \textcolor{keywordflow}{in}\ range(length))}
+\DoxyCodeLine{00075\ \ \ \ \ logger.info(f\textcolor{stringliteral}{"{}Activation\ code\ generated:\ \{code\}"{}})}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ code}
+
+\end{DoxyCode}

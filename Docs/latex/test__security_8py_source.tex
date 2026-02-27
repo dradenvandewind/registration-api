@@ -1,0 +1,277 @@
+\doxysection{test\+\_\+security.\+py}
+\label{test__security_8py_source}\index{tests/test\_core/test\_security.py@{tests/test\_core/test\_security.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_core/test\_security.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{import}\ logging}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ patch,\ MagicMock,\ ANY}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.core.security\ \textcolor{keyword}{import}\ (}
+\DoxyCodeLine{00006\ \ \ \ \ PasswordHandler,}
+\DoxyCodeLine{00007\ \ \ \ \ password\_handler,}
+\DoxyCodeLine{00008\ \ \ \ \ verify\_password,}
+\DoxyCodeLine{00009\ \ \ \ \ get\_password\_hash,}
+\DoxyCodeLine{00010\ \ \ \ \ generate\_activation\_code}
+\DoxyCodeLine{00011\ )}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }TestPasswordHandler:}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ PasswordHandler\ class"{}"{}"{}}}
+\DoxyCodeLine{00015\ \ \ \ \ }
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{def\ }test\_hash\_password\_success(self):}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ successful\ password\ hashing"{}"{}"{}}}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ password\ =\ \textcolor{stringliteral}{"{}secure\_password123"{}}}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ hashed\ =\ PasswordHandler.hash\_password(password)}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(hashed,\ str)}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ len(hashed)\ >\ 0}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ hashed.startswith(\textcolor{stringliteral}{"{}\$2b\$"{}})\ \ \textcolor{comment}{\#\ bcrypt\ hash\ identifier}}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ the\ hash\ can\ be\ verified}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ PasswordHandler.verify\_password(password,\ hashed)\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ hash\_password\ -\/\ success"{}})}
+\DoxyCodeLine{00032\ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{def\ }test\_hash\_password\_with\_long\_password(self):}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00035\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ hashing\ a\ password\ longer\ than\ 72\ bytes}}
+\DoxyCodeLine{00036\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 47-\/48\ (truncation\ warning\ and\ logic)}}
+\DoxyCodeLine{00037\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ a\ password\ longer\ than\ 72\ bytes}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ long\_password\ =\ \textcolor{stringliteral}{"{}a"{}}\ *\ 100\ \ \textcolor{comment}{\#\ 100\ characters\ >\ 72\ bytes}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.core.security.logger.warning'})\ \textcolor{keyword}{as}\ mock\_warning:}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ hashed\ =\ PasswordHandler.hash\_password(long\_password)}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ warning\ was\ logged\ (line\ 47-\/48)}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_warning.assert\_called\_once\_with(}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Password\ too\ long,\ truncating\ to\ 72\ bytes"{}}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ ✅\ CORRECTION:\ Use\ truncated\ password\ for\ verification}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ truncated\_password\ =\ long\_password[:72]\ \ \textcolor{comment}{\#\ bcrypt\ only\ uses\ first\ 72\ bytes}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ PasswordHandler.verify\_password(truncated\_password,\ hashed)\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Original\ long\ password\ will\ fail\ verification\ (expected)}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ PasswordHandler.verify\_password(long\_password,\ hashed)\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ hash\_password\ -\/\ long\ password\ truncation\ (lines\ 47-\/48)"{}})}
+\DoxyCodeLine{00058\ \ \ \ \ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{def\ }test\_hash\_password\_exception\_handling(self):}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ exception\ handling\ in\ hash\_password}}
+\DoxyCodeLine{00061\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 48\ (exception\ raising)}}
+\DoxyCodeLine{00062\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ bcrypt\ to\ raise\ an\ exception}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'bcrypt.gensalt'},\ side\_effect=Exception(\textcolor{stringliteral}{"{}BCrypt\ error"{}})):}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PasswordHandler.hash\_password(\textcolor{stringliteral}{"{}password"{}})}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}BCrypt\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ hash\_password\ -\/\ exception\ propagation"{}})}
+\DoxyCodeLine{00070\ \ \ \ \ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{def\ }test\_verify\_password\_success(self):}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ successful\ password\ verification"{}"{}"{}}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ password\ =\ \textcolor{stringliteral}{"{}test\_password"{}}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ hashed\ =\ PasswordHandler.hash\_password(password)}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ result\ =\ PasswordHandler.verify\_password(password,\ hashed)}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ verify\_password\ -\/\ success"{}})}
+\DoxyCodeLine{00082\ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{def\ }test\_verify\_password\_wrong\_password(self):}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ verification\ with\ wrong\ password"{}"{}"{}}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ password\ =\ \textcolor{stringliteral}{"{}correct\_password"{}}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ wrong\_password\ =\ \textcolor{stringliteral}{"{}wrong\_password"{}}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ hashed\ =\ PasswordHandler.hash\_password(password)}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ result\ =\ PasswordHandler.verify\_password(wrong\_password,\ hashed)}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ verify\_password\ -\/\ wrong\ password\ returns\ False"{}})}
+\DoxyCodeLine{00095\ \ \ \ \ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{def\ }test\_verify\_password\_exception\_handling(self):}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ exception\ handling\ in\ verify\_password}}
+\DoxyCodeLine{00098\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 59\ (return\ False\ on\ exception)}}
+\DoxyCodeLine{00099\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ bcrypt.checkpw\ to\ raise\ an\ exception}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'bcrypt.checkpw'},\ side\_effect=Exception(\textcolor{stringliteral}{"{}Verification\ error"{}})):}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ PasswordHandler.verify\_password(\textcolor{stringliteral}{"{}pass"{}},\ \textcolor{stringliteral}{"{}hash"{}})}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ returns\ False\ (line\ 59)}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ verify\_password\ -\/\ exception\ returns\ False\ (line\ 59)"{}})}
+\DoxyCodeLine{00109\ \ \ \ \ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{def\ }test\_verify\_password\_invalid\_hash(self):}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ verification\ with\ invalid\ hash\ format}}
+\DoxyCodeLine{00112\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 59\ (exception\ handling)}}
+\DoxyCodeLine{00113\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ with\ invalid\ hash}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ result\ =\ PasswordHandler.verify\_password(\textcolor{stringliteral}{"{}password"{}},\ \textcolor{stringliteral}{"{}invalid\_hash"{}})}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Should\ return\ False\ due\ to\ exception}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ verify\_password\ -\/\ invalid\ hash\ returns\ False"{}})}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{keyword}{class\ }TestWrapperFunctions:}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ wrapper\ functions"{}"{}"{}}}
+\DoxyCodeLine{00124\ \ \ \ \ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{def\ }test\_verify\_password\_wrapper(self):}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ verify\_password\ wrapper\ function}}
+\DoxyCodeLine{00127\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 57-\/58\ (wrapper\ function)}}
+\DoxyCodeLine{00128\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ password\ =\ \textcolor{stringliteral}{"{}test\_password"{}}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ hashed\ =\ get\_password\_hash(password)}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ wrapper}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ result\ =\ verify\_password(password,\ hashed)}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ ✅\ CORRECTION:\ Verify\ the\ wrapper\ calls\ the\ handler\ correctly}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ ==\ password\_handler.verify\_password(password,\ hashed)}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ verify\_password\ wrapper\ (lines\ 57-\/58)"{}})}
+\DoxyCodeLine{00141\ \ \ \ \ }
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{def\ }test\_get\_password\_hash\_wrapper(self):}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00144\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ get\_password\_hash\ wrapper\ function}}
+\DoxyCodeLine{00145\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 57-\/58\ (wrapper\ function)}}
+\DoxyCodeLine{00146\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{00147\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Note:\ Two\ hashes\ of\ the\ same\ password\ will\ be\ different\ due\ to\ random\ salt,}}
+\DoxyCodeLine{00148\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ so\ we\ verify\ that\ the\ hash\ can\ be\ verified\ instead\ of\ comparing\ directly.}}
+\DoxyCodeLine{00149\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ password\ =\ \textcolor{stringliteral}{"{}test\_password"{}}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ wrapper}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ hashed\_wrapper\ =\ get\_password\_hash(password)}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ ✅\ CORRECTION:\ Don't\ compare\ hashes\ directly}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(hashed\_wrapper,\ str)}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ len(hashed\_wrapper)\ >\ 0}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ hashed\_wrapper.startswith(\textcolor{stringliteral}{"{}\$2b\$"{}})}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ that\ the\ wrapper\ hash\ works\ with\ verification}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ verify\_password(password,\ hashed\_wrapper)\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ that\ the\ wrapper\ calls\ the\ handler\ correctly}}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ We\ can't\ test\ equality,\ but\ we\ can\ test\ that\ the\ handler\ produces\ a\ valid\ hash}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ hashed\_direct\ =\ password\_handler.hash\_password(password)}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(hashed\_direct,\ str)}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ hashed\_direct.startswith(\textcolor{stringliteral}{"{}\$2b\$"{}})}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ verify\_password(password,\ hashed\_direct)\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ get\_password\_hash\ wrapper\ (lines\ 57-\/58)"{}})}
+\DoxyCodeLine{00171\ \ \ \ \ }
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keyword}{def\ }test\_wrappers\_compatibility(self):}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ that\ wrappers\ maintain\ compatibility}}
+\DoxyCodeLine{00174\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 57-\/58}}
+\DoxyCodeLine{00175\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ password\ =\ \textcolor{stringliteral}{"{}compatibility\_test"{}}}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Hash\ with\ wrapper}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ hashed\_wrapper\ =\ get\_password\_hash(password)}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Both\ should\ verify\ correctly}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ verify\_password(password,\ hashed\_wrapper)\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ password\_handler.verify\_password(password,\ hashed\_wrapper)\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ wrappers\ maintain\ compatibility"{}})}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \textcolor{keyword}{class\ }TestGenerateActivationCode:}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ generate\_activation\_code\ function"{}"{}"{}}}
+\DoxyCodeLine{00189\ \ \ \ \ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{def\ }test\_generate\_activation\_code\_default\_length(self):}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ code\ generation\ with\ default\ length\ (6)}}
+\DoxyCodeLine{00192\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 72-\/74}}
+\DoxyCodeLine{00193\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ code\ =\ generate\_activation\_code()}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(code,\ str)}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ len(code)\ ==\ 6\ \ \textcolor{comment}{\#\ default\ length}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ all(c\ \textcolor{keywordflow}{in}\ \textcolor{stringliteral}{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"{}}\ \textcolor{keywordflow}{for}\ c\ \textcolor{keywordflow}{in}\ code)}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ generate\_activation\_code\ -\/\ default\ length\ 6\ (lines\ 72-\/74)"{}})}
+\DoxyCodeLine{00203\ \ \ \ \ }
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keyword}{def\ }test\_generate\_activation\_code\_custom\_length(self):}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ code\ generation\ with\ custom\ length}}
+\DoxyCodeLine{00206\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 72-\/74}}
+\DoxyCodeLine{00207\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ custom\_length\ =\ 4}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ code\ =\ generate\_activation\_code(length=custom\_length)}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ len(code)\ ==\ custom\_length}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ all(c\ \textcolor{keywordflow}{in}\ \textcolor{stringliteral}{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"{}}\ \textcolor{keywordflow}{for}\ c\ \textcolor{keywordflow}{in}\ code)}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}✅\ generate\_activation\_code\ -\/\ custom\ length\ \{custom\_length\}"{}})}
+\DoxyCodeLine{00218\ \ \ \ \ }
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{def\ }test\_generate\_activation\_code\_different\_lengths(self):}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ code\ generation\ with\ various\ lengths}}
+\DoxyCodeLine{00221\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 72-\/74\ for\ different\ inputs}}
+\DoxyCodeLine{00222\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ length\ \textcolor{keywordflow}{in}\ [4,\ 6,\ 8,\ 10]:}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ code\ =\ generate\_activation\_code(length=length)}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ len(code)\ ==\ length}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ all(c\ \textcolor{keywordflow}{in}\ \textcolor{stringliteral}{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"{}}\ \textcolor{keywordflow}{for}\ c\ \textcolor{keywordflow}{in}\ code)}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ generate\_activation\_code\ -\/\ multiple\ lengths"{}})}
+\DoxyCodeLine{00229\ \ \ \ \ }
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{def\ }test\_generate\_activation\_code\_uniqueness(self):}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ that\ generated\ codes\ are\ reasonably\ unique}}
+\DoxyCodeLine{00232\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 72-\/74}}
+\DoxyCodeLine{00233\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ codes\ =\ [generate\_activation\_code()\ \textcolor{keywordflow}{for}\ \_\ \textcolor{keywordflow}{in}\ range(100)]}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Check\ for\ duplicates\ (should\ be\ extremely\ rare)}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ unique\_codes\ =\ set(codes)}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ len(unique\_codes)\ >\ 95\ \ \textcolor{comment}{\#\ At\ least\ 95\%\ unique}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ generate\_activation\_code\ -\/\ codes\ are\ reasonably\ unique"{}})}
+\DoxyCodeLine{00241\ \ \ \ \ }
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keyword}{def\ }test\_generate\_activation\_code\_logging(self):}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ that\ code\ generation\ logs\ appropriately}}
+\DoxyCodeLine{00244\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 74\ (logging)}}
+\DoxyCodeLine{00245\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.core.security.logger.info'})\ \textcolor{keyword}{as}\ mock\_logger:}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ code\ =\ generate\_activation\_code()}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ logger\ was\ called\ (line\ 74)}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_logger.assert\_called\_once\_with(}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}Activation\ code\ generated:\ \{code\}"{}}}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ generate\_activation\_code\ -\/\ logging\ (line\ 74)"{}})}
+\DoxyCodeLine{00255\ \ \ \ \ }
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keyword}{def\ }test\_generate\_activation\_code\_with\_zero\_length(self):}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ edge\ case\ with\ zero\ length}}
+\DoxyCodeLine{00258\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 72-\/74\ with\ edge\ input}}
+\DoxyCodeLine{00259\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ code\ =\ generate\_activation\_code(length=0)}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ code\ ==\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ generate\_activation\_code\ -\/\ zero\ length"{}})}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \textcolor{keyword}{class\ }TestSingletonInstance:}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ the\ singleton\ instance"{}"{}"{}}}
+\DoxyCodeLine{00267\ \ \ \ \ }
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{def\ }test\_password\_handler\_singleton(self):}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ that\ password\_handler\ is\ a\ singleton\ instance"{}"{}"{}}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(password\_handler,\ PasswordHandler)}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ password\_handler\ singleton\ instance"{}})}
+
+\end{DoxyCode}

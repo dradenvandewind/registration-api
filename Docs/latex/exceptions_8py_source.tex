@@ -1,0 +1,56 @@
+\doxysection{exceptions.\+py}
+\label{exceptions_8py_source}\index{app/core/exceptions.py@{app/core/exceptions.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ app/core/exceptions.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ HTTPException,\ status}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{keyword}{class\ }UserAlreadyExistsError(Exception):}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ a\ user\ already\ exists"{}"{}"{}}}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }UserNotFoundError(Exception):}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ a\ user\ is\ not\ found"{}"{}"{}}}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }InvalidActivationCodeError(Exception):}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ the\ activation\ code\ is\ invalid\ or\ expired"{}"{}"{}}}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }UserAlreadyActiveError(Exception):}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ the\ user\ is\ already\ active"{}"{}"{}}}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{comment}{\#\ Function\ to\ set\ up\ FastAPI\ exception\ handlers}}
+\DoxyCodeLine{00021\ \textcolor{keyword}{def\ }setup\_exception\_handlers(app):}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Configure\ exception\ handlers\ for\ the\ FastAPI\ application"{}"{}"{}}}
+\DoxyCodeLine{00023\ \ \ \ \ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserAlreadyExistsError)}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_already\_exists\_handler(request,\ exc):}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_409\_CONFLICT,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ with\ this\ email\ already\ exists"{}}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00030\ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserNotFoundError)}}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_not\_found\_handler(request,\ exc):}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_404\_NOT\_FOUND,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ not\ found"{}}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00037\ \ \ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(InvalidActivationCodeError)}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{async\ def\ }invalid\_activation\_code\_handler(request,\ exc):}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}Invalid\ or\ expired\ activation\ code"{}}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00044\ \ \ \ \ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserAlreadyActiveError)}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_already\_active\_handler(request,\ exc):}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ is\ already\ active"{}}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ )}
+
+\end{DoxyCode}

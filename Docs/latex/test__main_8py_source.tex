@@ -1,0 +1,217 @@
+\doxysection{test\+\_\+main.\+py}
+\label{test__main_8py_source}\index{tests/test\_main.py@{tests/test\_main.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_main.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ patch,\ MagicMock}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ FastAPI}
+\DoxyCodeLine{00005\ \textcolor{keyword}{import}\ httpx}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.main\ \textcolor{keyword}{import}\ app,\ lifespan}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{\#\ Importer\ FastAPI\ pour\ les\ tests}}
+\DoxyCodeLine{00009\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ FastAPI}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }TestLifespan:}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ the\ lifespan\ context\ manager\ (lines\ 10-\/15)"{}"{}"{}}}
+\DoxyCodeLine{00013\ \ \ \ \ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_lifespan\_startup(self):}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00017\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ lifespan\ initializes\ database\ on\ startup}}
+\DoxyCodeLine{00018\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 12\ (db.initialize())}}
+\DoxyCodeLine{00019\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ db.initialize}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.main.db.initialize'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_initialize:}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ db.close\ to\ avoid\ side\ effects}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.main.db.close'},\ new\_callable=AsyncMock):}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ a\ mock\ app}}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mock\_app\ =\ MagicMock(spec=FastAPI)}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Use\ the\ lifespan\ context\ manager}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ lifespan(mock\_app)\ \textcolor{keyword}{as}\ manager:}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ During\ the\ context,\ verify\ initialize\ was\ called}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mock\_initialize.assert\_called\_once()}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ we\ can\ yield}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ manager\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Lifespan\ startup\ calls\ db.initialize()\ (line\ 12)"{}})}
+\DoxyCodeLine{00037\ \ \ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_lifespan\_shutdown(self):}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00041\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ lifespan\ closes\ database\ on\ shutdown}}
+\DoxyCodeLine{00042\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 14\ (db.close())}}
+\DoxyCodeLine{00043\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ db.initialize\ to\ avoid\ side\ effects}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.main.db.initialize'},\ new\_callable=AsyncMock):}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ db.close}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.main.db.close'},\ new\_callable=AsyncMock)\ \textcolor{keyword}{as}\ mock\_close:}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ a\ mock\ app}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mock\_app\ =\ MagicMock(spec=FastAPI)}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Use\ the\ lifespan\ context\ manager}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ lifespan(mock\_app):}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Inside\ the\ context,\ close\ should\ not\ be\ called\ yet}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mock\_close.assert\_not\_called()}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ After\ exiting\ the\ context,\ close\ should\ be\ called}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mock\_close.assert\_called\_once()}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Lifespan\ shutdown\ calls\ db.close()\ (line\ 14)"{}})}
+\DoxyCodeLine{00061\ \ \ \ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_lifespan\_full\_flow(self):}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00065\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ the\ complete\ lifespan\ flow}}
+\DoxyCodeLine{00066\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ lines\ 10-\/15}}
+\DoxyCodeLine{00067\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Track\ calls}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ calls\ =\ []}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ mock\ with\ side\ effects\ to\ track\ order}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ mock\_db\ =\ AsyncMock()}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ mock\_db.initialize\ =\ AsyncMock(side\_effect=\textcolor{keyword}{lambda}:\ calls.append(\textcolor{stringliteral}{"{}initialize"{}}))}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ mock\_db.close\ =\ AsyncMock(side\_effect=\textcolor{keyword}{lambda}:\ calls.append(\textcolor{stringliteral}{"{}close"{}}))}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ a\ mock\ app}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ mock\_app\ =\ MagicMock(spec=FastAPI)}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.main.db'},\ mock\_db):}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Use\ lifespan}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ lifespan(mock\_app):}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ During\ context}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ calls.append(\textcolor{stringliteral}{"{}inside"{}})}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ order:\ initialize\ -\/>\ inside\ -\/>\ close}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ calls\ ==\ [\textcolor{stringliteral}{"{}initialize"{}},\ \textcolor{stringliteral}{"{}inside"{}},\ \textcolor{stringliteral}{"{}close"{}}]}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Lifespan\ follows\ correct\ order:\ initialize\ -\/>\ yield\ -\/>\ close\ (lines\ 10-\/15)"{}})}
+\DoxyCodeLine{00089\ \ \ \ \ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_lifespan\_initialize\_error(self):}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00093\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ lifespan\ when\ initialize\ fails}}
+\DoxyCodeLine{00094\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Ensures\ error\ handling\ in\ line\ 12}}
+\DoxyCodeLine{00095\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ db.initialize\ to\ raise\ an\ exception}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.main.db.initialize'},\ new\_callable=AsyncMock,\ side\_effect=Exception(\textcolor{stringliteral}{"{}DB\ connection\ failed"{}})):}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ db.close\ to\ avoid\ side\ effects}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.main.db.close'},\ new\_callable=AsyncMock):}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ a\ mock\ app}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mock\_app\ =\ MagicMock(spec=FastAPI)}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ The\ context\ manager\ should\ raise\ the\ exception}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ lifespan(mock\_app):}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{pass}\ \ \textcolor{comment}{\#\ This\ should\ not\ be\ reached}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}DB\ connection\ failed"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Lifespan\ propagates\ initialize\ errors"{}})}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{class\ }TestFastAPIApp:}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ the\ FastAPI\ app\ configuration"{}"{}"{}}}
+\DoxyCodeLine{00115\ \ \ \ \ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{def\ }test\_app\_creation(self):}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ that\ the\ FastAPI\ app\ is\ created\ with\ correct\ metadata"{}"{}"{}}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ app.title\ ==\ \textcolor{stringliteral}{"{}Dailymotion\ Registration\ API"{}}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ app.description\ ==\ \textcolor{stringliteral}{"{}User\ registration\ and\ activation\ API"{}}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ app.version\ ==\ \textcolor{stringliteral}{"{}1.0.0"{}}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ App\ created\ with\ correct\ metadata"{}})}
+\DoxyCodeLine{00122\ \ \ \ \ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{def\ }test\_router\_included(self):}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ that\ the\ v1\ router\ is\ included"{}"{}"{}}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Check\ that\ routes\ from\ v1\ router\ are\ present}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ routes\ =\ [route.path\ \textcolor{keywordflow}{for}\ route\ \textcolor{keywordflow}{in}\ app.routes]}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ These\ should\ be\ included\ from\ v1\ router}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}/v1/registration"{}}\ \textcolor{keywordflow}{in}\ routes}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}/v1/activation"{}}\ \textcolor{keywordflow}{in}\ routes}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}/health"{}}\ \textcolor{keywordflow}{in}\ routes}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ v1\ router\ included\ correctly"{}})}
+\DoxyCodeLine{00134\ \ \ \ \ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{def\ }test\_exception\_handlers\_setup(self):}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00137\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ exception\ handlers\ are\ set\ up}}
+\DoxyCodeLine{00138\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ This\ indirectly\ tests\ line\ 18\ (setup\_exception\_handlers)}}
+\DoxyCodeLine{00139\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Check\ that\ exception\ handlers\ are\ registered}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ (}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ UserAlreadyExistsError,}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ UserNotFoundError,}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ InvalidActivationCodeError,}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ UserAlreadyActiveError}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Get\ all\ exception\ handlers\ from\ app}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ exception\_handlers\ =\ list(app.exception\_handlers.keys())}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Check\ that\ our\ custom\ exceptions\ are\ handled}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ UserAlreadyExistsError\ \textcolor{keywordflow}{in}\ exception\_handlers}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ UserNotFoundError\ \textcolor{keywordflow}{in}\ exception\_handlers}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ InvalidActivationCodeError\ \textcolor{keywordflow}{in}\ exception\_handlers}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ UserAlreadyActiveError\ \textcolor{keywordflow}{in}\ exception\_handlers}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Exception\ handlers\ set\ up\ correctly"{}})}
+\DoxyCodeLine{00158\ \ \ \ \ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_health\_check\_endpoint(self):}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ the\ health\ check\ endpoint\ using\ httpx.AsyncClient"{}"{}"{}}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ transport\ for\ the\ app}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ transport\ =\ httpx.ASGITransport(app=app)}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ httpx.AsyncClient(transport=transport,\ base\_url=\textcolor{stringliteral}{"{}http://test"{}})\ \textcolor{keyword}{as}\ client:}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ response\ =\ await\ client.get(\textcolor{stringliteral}{"{}/health"{}})}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.status\_code\ ==\ 200}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.json()\ ==\ \{\textcolor{stringliteral}{"{}status"{}}:\ \textcolor{stringliteral}{"{}healthy"{}}\}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Health\ check\ endpoint\ works"{}})}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{keyword}{class\ }TestIntegration:}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Integration\ tests\ for\ the\ whole\ app"{}"{}"{}}}
+\DoxyCodeLine{00175\ \ \ \ \ }
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_app\_lifespan\_integration(self):}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00179\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Integration\ test\ for\ app\ lifespan\ using\ httpx.AsyncClient}}
+\DoxyCodeLine{00180\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ transport\ for\ the\ app}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ transport\ =\ httpx.ASGITransport(app=app)}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ httpx.AsyncClient(transport=transport,\ base\_url=\textcolor{stringliteral}{"{}http://test"{}})\ \textcolor{keyword}{as}\ client:}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Make\ a\ request\ to\ trigger\ lifespan}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ response\ =\ await\ client.get(\textcolor{stringliteral}{"{}/health"{}})}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.status\_code\ ==\ 200}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.json()\ ==\ \{\textcolor{stringliteral}{"{}status"{}}:\ \textcolor{stringliteral}{"{}healthy"{}}\}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ App\ works\ with\ httpx.AsyncClient\ (lifespan\ managed\ automatically)"{}})}
+\DoxyCodeLine{00192\ \ \ \ \ }
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_app\_routes\_accessible(self):}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ that\ main\ routes\ are\ accessible\ using\ httpx.AsyncClient"{}"{}"{}}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ transport\ =\ httpx.ASGITransport(app=app)}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ httpx.AsyncClient(transport=transport,\ base\_url=\textcolor{stringliteral}{"{}http://test"{}})\ \textcolor{keyword}{as}\ client:}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Health\ check\ (no\ auth\ required)}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ response\ =\ await\ client.get(\textcolor{stringliteral}{"{}/health"{}})}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.status\_code\ ==\ 200}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Registration\ endpoint\ (should\ return\ 422\ with\ invalid\ data,\ but\ route\ exists)}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ response\ =\ await\ client.post(\textcolor{stringliteral}{"{}/v1/registration"{}},\ json=\{\})}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.status\_code\ ==\ 422\ \ \textcolor{comment}{\#\ Validation\ error\ means\ route\ exists}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Activation\ endpoint\ (should\ return\ 401\ without\ auth,\ but\ route\ exists)}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ response\ =\ await\ client.post(\textcolor{stringliteral}{"{}/v1/activation"{}},\ json=\{\})}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.status\_code\ ==\ 401\ \ \textcolor{comment}{\#\ Unauthorized\ means\ route\ exists}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ All\ main\ routes\ are\ accessible"{}})}
+
+\end{DoxyCode}

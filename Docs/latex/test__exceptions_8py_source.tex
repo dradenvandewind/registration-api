@@ -1,0 +1,161 @@
+\doxysection{test\+\_\+exceptions.\+py}
+\label{test__exceptions_8py_source}\index{tests/test\_core/test\_exceptions.py@{tests/test\_core/test\_exceptions.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_core/test\_exceptions.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ MagicMock}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ HTTPException,\ status,\ FastAPI}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ fastapi.testclient\ \textcolor{keyword}{import}\ TestClient}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ starlette.requests\ \textcolor{keyword}{import}\ Request}
+\DoxyCodeLine{00007\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ (}
+\DoxyCodeLine{00008\ \ \ \ \ UserAlreadyExistsError,}
+\DoxyCodeLine{00009\ \ \ \ \ UserNotFoundError,}
+\DoxyCodeLine{00010\ \ \ \ \ InvalidActivationCodeError,}
+\DoxyCodeLine{00011\ \ \ \ \ UserAlreadyActiveError,}
+\DoxyCodeLine{00012\ \ \ \ \ setup\_exception\_handlers}
+\DoxyCodeLine{00013\ )}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00016\ \textcolor{keyword}{def\ }mock\_app():}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ to\ create\ a\ mock\ FastAPI\ app"{}"{}"{}}}
+\DoxyCodeLine{00018\ \ \ \ \ app\ =\ MagicMock(spec=FastAPI)}
+\DoxyCodeLine{00019\ \ \ \ \ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{\#\ Stocker\ les\ handlers\ dans\ un\ dictionnaire}}
+\DoxyCodeLine{00021\ \ \ \ \ app.handlers\ =\ \{\}}
+\DoxyCodeLine{00022\ \ \ \ \ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{def\ }mock\_exception\_handler(exception\_class):}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keyword}{def\ }decorator(func):}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ app.handlers[exception\_class]\ =\ func}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ func}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ decorator}
+\DoxyCodeLine{00028\ \ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ app.exception\_handler.side\_effect\ =\ mock\_exception\_handler}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ app}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00033\ \textcolor{keyword}{def\ }mock\_request():}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ to\ create\ a\ mock\ request"{}"{}"{}}}
+\DoxyCodeLine{00035\ \ \ \ \ request\ =\ AsyncMock(spec=Request)}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{return}\ request}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{class\ }TestExceptionHandlers:}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Tests\ for\ exception\ handler\ setup\ and\ individual\ handlers"{}"{}"{}}}
+\DoxyCodeLine{00040\ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{def\ }test\_setup\_exception\_handlers\_registers\_all\_handlers(self,\ mock\_app):}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00043\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ setup\_exception\_handlers\ registers\ all\ exception\ handlers}}
+\DoxyCodeLine{00044\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ setup\_exception\_handlers(mock\_app)}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ that\ exception\_handler\ was\ called\ for\ each\ exception\ type}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ mock\_app.exception\_handler.call\_count\ ==\ 4}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ all\ handlers\ are\ stored}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ UserAlreadyExistsError\ \textcolor{keywordflow}{in}\ mock\_app.handlers}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ UserNotFoundError\ \textcolor{keywordflow}{in}\ mock\_app.handlers}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ InvalidActivationCodeError\ \textcolor{keywordflow}{in}\ mock\_app.handlers}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ UserAlreadyActiveError\ \textcolor{keywordflow}{in}\ mock\_app.handlers}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ All\ exception\ handlers\ registered\ correctly"{}})}
+\DoxyCodeLine{00058\ \ \ \ \ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_user\_already\_exists\_handler\_raises\_409(self,\ mock\_app,\ mock\_request):}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00062\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ UserAlreadyExistsError\ handler\ raises\ HTTP\ 409\ Conflict}}
+\DoxyCodeLine{00063\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 26}}
+\DoxyCodeLine{00064\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ setup\_exception\_handlers(mock\_app)}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ handler\ =\ mock\_app.handlers[UserAlreadyExistsError]}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Appeler\ le\ handler\ directement\ (c'est\ une\ coroutine)}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ await\ handler(mock\_request,\ UserAlreadyExistsError())}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ status\ code\ and\ detail\ (line\ 26)}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_409\_CONFLICT}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}User\ with\ this\ email\ already\ exists"{}}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ UserAlreadyExistsError\ handler\ raises\ 409\ Conflict\ (line\ 26)"{}})}
+\DoxyCodeLine{00079\ \ \ \ \ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_user\_not\_found\_handler\_raises\_404(self,\ mock\_app,\ mock\_request):}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00083\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ UserNotFoundError\ handler\ raises\ HTTP\ 404\ Not\ Found}}
+\DoxyCodeLine{00084\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 33}}
+\DoxyCodeLine{00085\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ setup\_exception\_handlers(mock\_app)}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ handler\ =\ mock\_app.handlers[UserNotFoundError]}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ await\ handler(mock\_request,\ UserNotFoundError())}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ status\ code\ and\ detail\ (line\ 33)}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_404\_NOT\_FOUND}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}User\ not\ found"{}}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ UserNotFoundError\ handler\ raises\ 404\ Not\ Found\ (line\ 33)"{}})}
+\DoxyCodeLine{00099\ \ \ \ \ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_invalid\_activation\_code\_handler\_raises\_400(self,\ mock\_app,\ mock\_request):}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00103\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ InvalidActivationCodeError\ handler\ raises\ HTTP\ 400\ Bad\ Request}}
+\DoxyCodeLine{00104\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 40}}
+\DoxyCodeLine{00105\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ setup\_exception\_handlers(mock\_app)}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ handler\ =\ mock\_app.handlers[InvalidActivationCodeError]}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ await\ handler(mock\_request,\ InvalidActivationCodeError())}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ status\ code\ and\ detail\ (line\ 40)}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_400\_BAD\_REQUEST}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}Invalid\ or\ expired\ activation\ code"{}}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ InvalidActivationCodeError\ handler\ raises\ 400\ Bad\ Request\ (line\ 40)"{}})}
+\DoxyCodeLine{00119\ \ \ \ \ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{async\ def\ }test\_user\_already\_active\_handler\_raises\_400(self,\ mock\_app,\ mock\_request):}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00123\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ UserAlreadyActiveError\ handler\ raises\ HTTP\ 400\ Bad\ Request}}
+\DoxyCodeLine{00124\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Covers\ line\ 47}}
+\DoxyCodeLine{00125\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ setup\_exception\_handlers(mock\_app)}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ handler\ =\ mock\_app.handlers[UserAlreadyActiveError]}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ await\ handler(mock\_request,\ UserAlreadyActiveError())}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ status\ code\ and\ detail\ (line\ 47)}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_400\_BAD\_REQUEST}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}User\ is\ already\ active"{}}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ UserAlreadyActiveError\ handler\ raises\ 400\ Bad\ Request\ (line\ 47)"{}})}
+\DoxyCodeLine{00139\ \ \ \ \ }
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{def\ }test\_exception\_classes\_are\_defined(self):}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00142\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Test\ that\ all\ exception\ classes\ are\ properly\ defined}}
+\DoxyCodeLine{00143\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ issubclass(UserAlreadyExistsError,\ Exception)}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ issubclass(UserNotFoundError,\ Exception)}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ issubclass(InvalidActivationCodeError,\ Exception)}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ issubclass(UserAlreadyActiveError,\ Exception)}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Test\ instantiation}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(UserAlreadyExistsError(),\ Exception)}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(UserNotFoundError(),\ Exception)}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(InvalidActivationCodeError(),\ Exception)}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(UserAlreadyActiveError(),\ Exception)}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ All\ exception\ classes\ are\ properly\ defined"{}})}
+
+\end{DoxyCode}

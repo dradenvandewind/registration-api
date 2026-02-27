@@ -1,0 +1,89 @@
+.TH "test_main.TestLifespan" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_main.TestLifespan
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_lifespan_startup\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_lifespan_shutdown\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_lifespan_full_flow\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_lifespan_initialize_error\fP (self)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for the lifespan context manager (lines 10-15)
+.fi
+.PP
+ 
+.PP
+Definition at line \fB11\fP of file \fBtest_main\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_main\&.TestLifespan\&.test_lifespan_full_flow ( self)"
+
+.PP
+.nf
+Test the complete lifespan flow
+Covers lines 10-15
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB63\fP of file \fBtest_main\&.py\fP\&.
+.SS "test_main\&.TestLifespan\&.test_lifespan_initialize_error ( self)"
+
+.PP
+.nf
+Test lifespan when initialize fails
+Ensures error handling in line 12
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB91\fP of file \fBtest_main\&.py\fP\&.
+.SS "test_main\&.TestLifespan\&.test_lifespan_shutdown ( self)"
+
+.PP
+.nf
+Test that lifespan closes database on shutdown
+Covers line 14 (db\&.close())
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB39\fP of file \fBtest_main\&.py\fP\&.
+.SS "test_main\&.TestLifespan\&.test_lifespan_startup ( self)"
+
+.PP
+.nf
+Test that lifespan initializes database on startup
+Covers line 12 (db\&.initialize())
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB15\fP of file \fBtest_main\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

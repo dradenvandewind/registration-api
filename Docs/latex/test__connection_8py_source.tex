@@ -1,0 +1,311 @@
+\doxysection{test\+\_\+connection.\+py}
+\label{test__connection_8py_source}\index{tests/test\_db/test\_connection.py@{tests/test\_db/test\_connection.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_db/test\_connection.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{import}\ asyncpg}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ patch,\ MagicMock}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.db.connection\ \textcolor{keyword}{import}\ DatabasePool,\ db}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.core.config\ \textcolor{keyword}{import}\ settings}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00009\ \textcolor{keyword}{def\ }db\_pool():}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ to\ create\ a\ fresh\ DatabasePool\ instance\ for\ each\ test"{}"{}"{}}}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordflow}{return}\ DatabasePool()}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{def\ }create\_mock\_connection():}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Helper\ to\ create\ a\ mock\ connection\ with\ common\ setup"{}"{}"{}}}
+\DoxyCodeLine{00015\ \ \ \ \ mock\_connection\ =\ AsyncMock()}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordflow}{return}\ mock\_connection}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{def\ }create\_mock\_acquire(mock\_connection):}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Helper\ to\ create\ a\ proper\ async\ context\ manager\ mock\ for\ pool.acquire()"{}"{}"{}}}
+\DoxyCodeLine{00020\ \ \ \ \ mock\_acquire\ =\ AsyncMock()}
+\DoxyCodeLine{00021\ \ \ \ \ mock\_acquire.\_\_aenter\_\_\ =\ AsyncMock(return\_value=mock\_connection)}
+\DoxyCodeLine{00022\ \ \ \ \ mock\_acquire.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{return}\ mock\_acquire}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{async\ def\ }test\_initialize\_success(db\_pool):}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ successful\ database\ pool\ initialization"{}"{}"{}}}
+\DoxyCodeLine{00028\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00029\ \ \ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'asyncpg.create\_pool'},\ new\_callable=AsyncMock,\ return\_value=mock\_pool)\ \textcolor{keyword}{as}\ mock\_create\_pool:}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ await\ db\_pool.initialize()}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.pool\ ==\ mock\_pool}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.\_initialized\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ mock\_create\_pool.assert\_called\_once\_with(}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ settings.database\_url,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ min\_size=5,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ max\_size=20,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ command\_timeout=60}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Database\ pool\ initialized\ successfully"{}})}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00044\ \textcolor{keyword}{async\ def\ }test\_initialize\_already\_initialized(db\_pool):}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ initialize\ when\ pool\ is\ already\ initialized"{}"{}"{}}}
+\DoxyCodeLine{00046\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00047\ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'asyncpg.create\_pool'},\ new\_callable=AsyncMock,\ return\_value=mock\_pool)\ \textcolor{keyword}{as}\ mock\_create\_pool:}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ await\ db\_pool.initialize()}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ mock\_create\_pool.call\_count\ ==\ 1}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ await\ db\_pool.initialize()}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ mock\_create\_pool.call\_count\ ==\ 1}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.\_initialized\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Initialize\ returns\ early\ when\ already\ initialized"{}})}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00059\ \textcolor{keyword}{async\ def\ }test\_initialize\_failure(db\_pool):}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ initialize\ when\ pool\ creation\ fails"{}"{}"{}}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'asyncpg.create\_pool'},\ new\_callable=AsyncMock,\ side\_effect=Exception(\textcolor{stringliteral}{"{}Connection\ failed"{}}))\ \textcolor{keyword}{as}\ mock\_create\_pool:}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ await\ db\_pool.initialize()}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Connection\ failed"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.pool\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.\_initialized\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ mock\_create\_pool.assert\_called\_once()}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Initialize\ properly\ handles\ connection\ failures"{}})}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00073\ \textcolor{keyword}{async\ def\ }test\_close\_with\_pool(db\_pool):}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ closing\ the\ pool\ when\ it\ exists"{}"{}"{}}}
+\DoxyCodeLine{00075\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00076\ \ \ \ \ db\_pool.pool\ =\ mock\_pool}
+\DoxyCodeLine{00077\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00078\ \ \ \ \ }
+\DoxyCodeLine{00079\ \ \ \ \ await\ db\_pool.close()}
+\DoxyCodeLine{00080\ \ \ \ \ }
+\DoxyCodeLine{00081\ \ \ \ \ mock\_pool.close.assert\_called\_once()}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.pool\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.\_initialized\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00084\ \ \ \ \ }
+\DoxyCodeLine{00085\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Pool\ closed\ successfully"{}})}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00088\ \textcolor{keyword}{async\ def\ }test\_close\_without\_pool(db\_pool):}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ closing\ when\ pool\ is\ None"{}"{}"{}}}
+\DoxyCodeLine{00090\ \ \ \ \ db\_pool.pool\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00091\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00092\ \ \ \ \ }
+\DoxyCodeLine{00093\ \ \ \ \ await\ db\_pool.close()}
+\DoxyCodeLine{00094\ \ \ \ \ }
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.pool\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{assert}\ db\_pool.\_initialized\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00097\ \ \ \ \ }
+\DoxyCodeLine{00098\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Close\ handles\ None\ pool\ gracefully"{}})}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00101\ \textcolor{keyword}{async\ def\ }test\_close\_multiple\_calls(db\_pool):}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ calling\ close\ multiple\ times"{}"{}"{}}}
+\DoxyCodeLine{00103\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00104\ \ \ \ \ db\_pool.pool\ =\ mock\_pool}
+\DoxyCodeLine{00105\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00106\ \ \ \ \ }
+\DoxyCodeLine{00107\ \ \ \ \ await\ db\_pool.close()}
+\DoxyCodeLine{00108\ \ \ \ \ mock\_pool.close.assert\_called\_once()}
+\DoxyCodeLine{00109\ \ \ \ \ }
+\DoxyCodeLine{00110\ \ \ \ \ await\ db\_pool.close()}
+\DoxyCodeLine{00111\ \ \ \ \ mock\_pool.close.assert\_called\_once()}
+\DoxyCodeLine{00112\ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Multiple\ close\ calls\ handled\ correctly"{}})}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00116\ \textcolor{keyword}{async\ def\ }test\_execute\_success(db\_pool):}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ successful\ execute\ operation"{}"{}"{}}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00119\ \ \ \ \ mock\_connection\ =\ create\_mock\_connection()}
+\DoxyCodeLine{00120\ \ \ \ \ mock\_connection.execute\ =\ AsyncMock(return\_value=\textcolor{stringliteral}{"{}EXECUTE\ 1"{}})}
+\DoxyCodeLine{00121\ \ \ \ \ }
+\DoxyCodeLine{00122\ \ \ \ \ mock\_acquire\ =\ create\_mock\_acquire(mock\_connection)}
+\DoxyCodeLine{00123\ \ \ \ \ }
+\DoxyCodeLine{00124\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00125\ \ \ \ \ mock\_pool.acquire\ =\ MagicMock(return\_value=mock\_acquire)\ \ \textcolor{comment}{\#\ Pas\ AsyncMock,\ MagicMock!}}
+\DoxyCodeLine{00126\ \ \ \ \ db\_pool.pool\ =\ mock\_pool}
+\DoxyCodeLine{00127\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00128\ \ \ \ \ }
+\DoxyCodeLine{00129\ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}INSERT\ INTO\ test\ VALUES\ (\$1)"{}}}
+\DoxyCodeLine{00130\ \ \ \ \ args\ =\ (\textcolor{stringliteral}{"{}value"{}},)}
+\DoxyCodeLine{00131\ \ \ \ \ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00133\ \ \ \ \ result\ =\ await\ db\_pool.execute(query,\ *args)}
+\DoxyCodeLine{00134\ \ \ \ \ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{assert}\ result\ ==\ \textcolor{stringliteral}{"{}EXECUTE\ 1"{}}}
+\DoxyCodeLine{00137\ \ \ \ \ mock\_pool.acquire.assert\_called\_once()}
+\DoxyCodeLine{00138\ \ \ \ \ mock\_acquire.\_\_aenter\_\_.assert\_called\_once()}
+\DoxyCodeLine{00139\ \ \ \ \ mock\_connection.execute.assert\_called\_once\_with(query,\ *args)}
+\DoxyCodeLine{00140\ \ \ \ \ }
+\DoxyCodeLine{00141\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ execute\ operation\ successful"{}})}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00144\ \textcolor{keyword}{async\ def\ }test\_execute\_without\_initialization(db\_pool):}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ execute\ when\ pool\ is\ not\ initialized"{}"{}"{}}}
+\DoxyCodeLine{00146\ \ \ \ \ db\_pool.pool\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00147\ \ \ \ \ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(RuntimeError)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ await\ db\_pool.execute(\textcolor{stringliteral}{"{}SELECT\ 1"{}})}
+\DoxyCodeLine{00150\ \ \ \ \ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00152\ \ \ \ \ }
+\DoxyCodeLine{00153\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ execute\ raises\ RuntimeError\ when\ not\ initialized"{}})}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00156\ \textcolor{keyword}{async\ def\ }test\_fetch\_success(db\_pool):}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ successful\ fetch\ operation"{}"{}"{}}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00159\ \ \ \ \ mock\_rows\ =\ [\{\textcolor{stringliteral}{"{}id"{}}:\ 1,\ \textcolor{stringliteral}{"{}name"{}}:\ \textcolor{stringliteral}{"{}test"{}}\}]}
+\DoxyCodeLine{00160\ \ \ \ \ mock\_connection\ =\ create\_mock\_connection()}
+\DoxyCodeLine{00161\ \ \ \ \ mock\_connection.fetch\ =\ AsyncMock(return\_value=mock\_rows)}
+\DoxyCodeLine{00162\ \ \ \ \ }
+\DoxyCodeLine{00163\ \ \ \ \ mock\_acquire\ =\ create\_mock\_acquire(mock\_connection)}
+\DoxyCodeLine{00164\ \ \ \ \ }
+\DoxyCodeLine{00165\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00166\ \ \ \ \ mock\_pool.acquire\ =\ MagicMock(return\_value=mock\_acquire)\ \ \textcolor{comment}{\#\ Pas\ AsyncMock!}}
+\DoxyCodeLine{00167\ \ \ \ \ db\_pool.pool\ =\ mock\_pool}
+\DoxyCodeLine{00168\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00169\ \ \ \ \ }
+\DoxyCodeLine{00170\ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ test\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{00171\ \ \ \ \ args\ =\ (1,)}
+\DoxyCodeLine{00172\ \ \ \ \ }
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00174\ \ \ \ \ result\ =\ await\ db\_pool.fetch(query,\ *args)}
+\DoxyCodeLine{00175\ \ \ \ \ }
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{assert}\ result\ ==\ mock\_rows}
+\DoxyCodeLine{00178\ \ \ \ \ mock\_pool.acquire.assert\_called\_once()}
+\DoxyCodeLine{00179\ \ \ \ \ mock\_acquire.\_\_aenter\_\_.assert\_called\_once()}
+\DoxyCodeLine{00180\ \ \ \ \ mock\_connection.fetch.assert\_called\_once\_with(query,\ *args)}
+\DoxyCodeLine{00181\ \ \ \ \ }
+\DoxyCodeLine{00182\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ fetch\ operation\ successful"{}})}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00185\ \textcolor{keyword}{async\ def\ }test\_fetch\_without\_initialization(db\_pool):}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ fetch\ when\ pool\ is\ not\ initialized"{}"{}"{}}}
+\DoxyCodeLine{00187\ \ \ \ \ db\_pool.pool\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00188\ \ \ \ \ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(RuntimeError)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ await\ db\_pool.fetch(\textcolor{stringliteral}{"{}SELECT\ 1"{}})}
+\DoxyCodeLine{00191\ \ \ \ \ }
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00193\ \ \ \ \ }
+\DoxyCodeLine{00194\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ fetch\ raises\ RuntimeError\ when\ not\ initialized"{}})}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00197\ \textcolor{keyword}{async\ def\ }test\_fetchrow\_success(db\_pool):}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ successful\ fetchrow\ operation"{}"{}"{}}}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00200\ \ \ \ \ mock\_row\ =\ \{\textcolor{stringliteral}{"{}id"{}}:\ 1,\ \textcolor{stringliteral}{"{}name"{}}:\ \textcolor{stringliteral}{"{}test"{}}\}}
+\DoxyCodeLine{00201\ \ \ \ \ mock\_connection\ =\ create\_mock\_connection()}
+\DoxyCodeLine{00202\ \ \ \ \ mock\_connection.fetchrow\ =\ AsyncMock(return\_value=mock\_row)}
+\DoxyCodeLine{00203\ \ \ \ \ }
+\DoxyCodeLine{00204\ \ \ \ \ mock\_acquire\ =\ create\_mock\_acquire(mock\_connection)}
+\DoxyCodeLine{00205\ \ \ \ \ }
+\DoxyCodeLine{00206\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00207\ \ \ \ \ mock\_pool.acquire\ =\ MagicMock(return\_value=mock\_acquire)\ \ \textcolor{comment}{\#\ Pas\ AsyncMock!}}
+\DoxyCodeLine{00208\ \ \ \ \ db\_pool.pool\ =\ mock\_pool}
+\DoxyCodeLine{00209\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00210\ \ \ \ \ }
+\DoxyCodeLine{00211\ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ test\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{00212\ \ \ \ \ args\ =\ (1,)}
+\DoxyCodeLine{00213\ \ \ \ \ }
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00215\ \ \ \ \ result\ =\ await\ db\_pool.fetchrow(query,\ *args)}
+\DoxyCodeLine{00216\ \ \ \ \ }
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{assert}\ result\ ==\ mock\_row}
+\DoxyCodeLine{00219\ \ \ \ \ mock\_pool.acquire.assert\_called\_once()}
+\DoxyCodeLine{00220\ \ \ \ \ mock\_acquire.\_\_aenter\_\_.assert\_called\_once()}
+\DoxyCodeLine{00221\ \ \ \ \ mock\_connection.fetchrow.assert\_called\_once\_with(query,\ *args)}
+\DoxyCodeLine{00222\ \ \ \ \ }
+\DoxyCodeLine{00223\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ fetchrow\ operation\ successful"{}})}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00226\ \textcolor{keyword}{async\ def\ }test\_fetchrow\_without\_initialization(db\_pool):}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ fetchrow\ when\ pool\ is\ not\ initialized"{}"{}"{}}}
+\DoxyCodeLine{00228\ \ \ \ \ db\_pool.pool\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00229\ \ \ \ \ }
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(RuntimeError)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ await\ db\_pool.fetchrow(\textcolor{stringliteral}{"{}SELECT\ 1"{}})}
+\DoxyCodeLine{00232\ \ \ \ \ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00234\ \ \ \ \ }
+\DoxyCodeLine{00235\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ fetchrow\ raises\ RuntimeError\ when\ not\ initialized"{}})}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00238\ \textcolor{keyword}{async\ def\ }test\_execute\_with\_connection\_error(db\_pool):}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ execute\ when\ connection\ acquisition\ fails"{}"{}"{}}}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00241\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00242\ \ \ \ \ }
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{\#\ Créer\ un\ mock\ pour\ l'exception}}
+\DoxyCodeLine{00244\ \ \ \ \ mock\_acquire\ =\ AsyncMock()}
+\DoxyCodeLine{00245\ \ \ \ \ mock\_acquire.\_\_aenter\_\_\ =\ AsyncMock(side\_effect=Exception(\textcolor{stringliteral}{"{}Connection\ error"{}}))}
+\DoxyCodeLine{00246\ \ \ \ \ mock\_acquire.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00247\ \ \ \ \ }
+\DoxyCodeLine{00248\ \ \ \ \ mock\_pool.acquire\ =\ MagicMock(return\_value=mock\_acquire)}
+\DoxyCodeLine{00249\ \ \ \ \ db\_pool.pool\ =\ mock\_pool}
+\DoxyCodeLine{00250\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00251\ \ \ \ \ }
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ await\ db\_pool.execute(\textcolor{stringliteral}{"{}SELECT\ 1"{}})}
+\DoxyCodeLine{00255\ \ \ \ \ }
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Connection\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00257\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ execute\ propagates\ connection\ errors"{}})}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00260\ \textcolor{keyword}{async\ def\ }test\_fetch\_with\_connection\_error(db\_pool):}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ fetch\ when\ connection\ acquisition\ fails"{}"{}"{}}}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00263\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00264\ \ \ \ \ }
+\DoxyCodeLine{00265\ \ \ \ \ mock\_acquire\ =\ AsyncMock()}
+\DoxyCodeLine{00266\ \ \ \ \ mock\_acquire.\_\_aenter\_\_\ =\ AsyncMock(side\_effect=Exception(\textcolor{stringliteral}{"{}Connection\ error"{}}))}
+\DoxyCodeLine{00267\ \ \ \ \ mock\_acquire.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00268\ \ \ \ \ }
+\DoxyCodeLine{00269\ \ \ \ \ mock\_pool.acquire\ =\ MagicMock(return\_value=mock\_acquire)}
+\DoxyCodeLine{00270\ \ \ \ \ db\_pool.pool\ =\ mock\_pool}
+\DoxyCodeLine{00271\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00272\ \ \ \ \ }
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ await\ db\_pool.fetch(\textcolor{stringliteral}{"{}SELECT\ 1"{}})}
+\DoxyCodeLine{00276\ \ \ \ \ }
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Connection\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00278\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ fetch\ propagates\ connection\ errors"{}})}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00281\ \textcolor{keyword}{async\ def\ }test\_fetchrow\_with\_connection\_error(db\_pool):}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ fetchrow\ when\ connection\ acquisition\ fails"{}"{}"{}}}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00284\ \ \ \ \ mock\_pool\ =\ AsyncMock(spec=asyncpg.Pool)}
+\DoxyCodeLine{00285\ \ \ \ \ }
+\DoxyCodeLine{00286\ \ \ \ \ mock\_acquire\ =\ AsyncMock()}
+\DoxyCodeLine{00287\ \ \ \ \ mock\_acquire.\_\_aenter\_\_\ =\ AsyncMock(side\_effect=Exception(\textcolor{stringliteral}{"{}Connection\ error"{}}))}
+\DoxyCodeLine{00288\ \ \ \ \ mock\_acquire.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00289\ \ \ \ \ }
+\DoxyCodeLine{00290\ \ \ \ \ mock\_pool.acquire\ =\ MagicMock(return\_value=mock\_acquire)}
+\DoxyCodeLine{00291\ \ \ \ \ db\_pool.pool\ =\ mock\_pool}
+\DoxyCodeLine{00292\ \ \ \ \ db\_pool.\_initialized\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00293\ \ \ \ \ }
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ await\ db\_pool.fetchrow(\textcolor{stringliteral}{"{}SELECT\ 1"{}})}
+\DoxyCodeLine{00297\ \ \ \ \ }
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Connection\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00299\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ fetchrow\ propagates\ connection\ errors"{}})}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \textcolor{keyword}{def\ }test\_singleton\_instance():}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ that\ the\ db\ singleton\ instance\ exists"{}"{}"{}}}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keyword}{assert}\ db\ \textcolor{keywordflow}{is}\ \textcolor{keywordflow}{not}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(db,\ DatabasePool)}
+\DoxyCodeLine{00305\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Database\ singleton\ instance\ exists"{}})}
+
+\end{DoxyCode}

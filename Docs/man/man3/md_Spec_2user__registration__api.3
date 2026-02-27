@@ -1,0 +1,76 @@
+.TH "md_Spec_2user__registration__api" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+md_Spec_2user__registration__api \- Building a user registration API 
+.PP
+ 
+.SH "Context"
+.PP
+xxxxx handles user registrations\&. To do so, user creates an account and we send a code by email to verify the account\&.
+.PP
+As a core API developer, you are responsible for building this feature and expose it through API\&.
+.SH "Specifications"
+.PP
+You have to manage a user registration and his activation\&.
+.PP
+The API must support the following use cases:
+.IP "\(bu" 2
+Create a user with an email and a password\&.
+.IP "\(bu" 2
+Send an email to the user with a 4 digits code\&.
+.IP "\(bu" 2
+Activate this account with the 4 digits code received\&. For this step, we consider a \fCBASIC AUTH\fP is enough to check if he is the right user\&.
+.IP "\(bu" 2
+The user has only one minute to use this code\&. After that, an error should be raised\&.
+.PP
+.PP
+Design and build this API\&. You are completely free to propose the architecture you want\&.
+.SH "What do we expect?"
+.PP
+.IP "\(bu" 2
+Python language is required\&.
+.IP "\(bu" 2
+We expect to have a level of code quality which could go to production\&.
+.PP
+.SS "Framework & Architecture"
+.IP "\(bu" 2
+\fBFastAPI framework is mandatory\fP\&. This is our production stack and we need to evaluate your mastery of:
+.IP "  \(bu" 4
+Async/await patterns
+.IP "  \(bu" 4
+Dependency Injection (FastAPI Depends)
+.IP "  \(bu" 4
+Pydantic validation (request/response models)
+.IP "  \(bu" 4
+Exception handlers
+.IP "  \(bu" 4
+Lifespan events (startup/shutdown)
+.PP
+
+.PP
+.SS "Libraries constraints"
+.IP "\(bu" 2
+You can use libraries for specific utilities: db connection pooling (asyncpg, psycopg), testing (pytest), validation (pydantic), etc\&.
+.IP "\(bu" 2
+\fBNo ORMs allowed\fP (including SQLAlchemy, Tortoise ORM, etc\&.)\&. We want to see \fByour\fP implementation of business logic and data access layers\&.
+.PP
+.SS "Other requirements"
+.IP "\(bu" 2
+Use the DBMS you want (except SQLite)\&.
+.IP "\(bu" 2
+Consider the SMTP server as a third party service offering an HTTP API\&. You can mock the call, use a local SMTP server running in a container, or simply print the 4 digits in console\&. But do not forget in your implementation that \fBit is a third party service\fP\&.
+.IP "\(bu" 2
+Your code should be tested\&.
+.IP "\(bu" 2
+Your application has to run within docker containers\&.
+.IP "\(bu" 2
+You can use AI to help you, but in a smart way\&. However, please make iterative commits as we analyze them to understand your development reasoning (not all the code in 1 or 2 commits)\&.
+.IP "\(bu" 2
+You should provide us the link to GitHub\&.
+.IP "\(bu" 2
+You should provide us the instructions to run your code and your tests\&. We should not install anything except docker/docker-compose to run your project\&.
+.IP "\(bu" 2
+You should provide us an architecture schema\&. 
+.PP
+

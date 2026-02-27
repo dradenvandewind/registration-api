@@ -1,0 +1,30 @@
+\doxysection{activation.\+py}
+\label{models_2activation_8py_source}\index{app/models/activation.py@{app/models/activation.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ pydantic\ \textcolor{keyword}{import}\ BaseModel}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ datetime\ \textcolor{keyword}{import}\ datetime}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }ActivationCodeCreate(BaseModel):}
+\DoxyCodeLine{00007\ \ \ \ \ user\_id:\ UUID}
+\DoxyCodeLine{00008\ \ \ \ \ code:\ str}
+\DoxyCodeLine{00009\ \ \ \ \ expires\_at:\ datetime}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }ActivationCodeInDB(BaseModel):}
+\DoxyCodeLine{00012\ \ \ \ \ id:\ UUID}
+\DoxyCodeLine{00013\ \ \ \ \ user\_id:\ UUID}
+\DoxyCodeLine{00014\ \ \ \ \ code:\ str}
+\DoxyCodeLine{00015\ \ \ \ \ expires\_at:\ datetime}
+\DoxyCodeLine{00016\ \ \ \ \ used\_at:\ Optional[datetime]\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00017\ \ \ \ \ created\_at:\ datetime}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }ActivationRequest(BaseModel):}
+\DoxyCodeLine{00020\ \ \ \ \ code:\ str\ \ \textcolor{comment}{\#\ Validation\ faite\ dans\ le\ endpoint}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }ActivationResponse(BaseModel):}
+\DoxyCodeLine{00023\ \ \ \ \ message:\ str}
+\DoxyCodeLine{00024\ \ \ \ \ user\_id:\ UUID}
+
+\end{DoxyCode}

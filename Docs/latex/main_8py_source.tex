@@ -1,0 +1,40 @@
+\doxysection{main.\+py}
+\label{main_8py_source}\index{app/main.py@{app/main.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ FastAPI}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ contextlib\ \textcolor{keyword}{import}\ asynccontextmanager}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.db.connection\ \textcolor{keyword}{import}\ db}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ app.api.v1.router\ \textcolor{keyword}{import}\ router\ \textcolor{keyword}{as}\ v1\_router}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ setup\_exception\_handlers}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{@asynccontextmanager}}
+\DoxyCodeLine{00008\ \textcolor{keyword}{async\ def\ }lifespan(app:\ FastAPI):}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{comment}{\#\ Startup}}
+\DoxyCodeLine{00010\ \ \ \ \ await\ db.initialize()}
+\DoxyCodeLine{00011\ \ \ \ \ print(\textcolor{stringliteral}{"{}Database\ connected"{}})}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordflow}{yield}}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{comment}{\#\ Shutdown}}
+\DoxyCodeLine{00014\ \ \ \ \ await\ db.close()}
+\DoxyCodeLine{00015\ \ \ \ \ print(\textcolor{stringliteral}{"{}Database\ disconnected"{}})}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{\#\ Create\ FastAPI\ app}}
+\DoxyCodeLine{00018\ app\ =\ FastAPI(}
+\DoxyCodeLine{00019\ \ \ \ \ title=\textcolor{stringliteral}{"{}Dailymotion\ Registration\ API"{}},}
+\DoxyCodeLine{00020\ \ \ \ \ description=\textcolor{stringliteral}{"{}User\ registration\ and\ activation\ API"{}},}
+\DoxyCodeLine{00021\ \ \ \ \ version=\textcolor{stringliteral}{"{}1.0.0"{}},}
+\DoxyCodeLine{00022\ \ \ \ \ lifespan=lifespan}
+\DoxyCodeLine{00023\ )}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{comment}{\#\ Include\ routers}}
+\DoxyCodeLine{00026\ app.include\_router(v1\_router)}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{\#\ Setup\ exception\ handlers}}
+\DoxyCodeLine{00029\ setup\_exception\_handlers(app)}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{@app.get("{}/health"{})}}
+\DoxyCodeLine{00032\ \textcolor{keyword}{async\ def\ }health\_check():}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Health\ check\ endpoint"{}"{}"{}}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{stringliteral}{"{}status"{}}:\ \textcolor{stringliteral}{"{}healthy"{}}\}}
+
+\end{DoxyCode}

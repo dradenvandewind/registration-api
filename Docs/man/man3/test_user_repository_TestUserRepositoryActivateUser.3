@@ -1,0 +1,90 @@
+.TH "test_user_repository.TestUserRepositoryActivateUser" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_user_repository.TestUserRepositoryActivateUser
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_activate_user_success\fP (self, user_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_nonexistent_user\fP (self, user_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_multiple_calls\fP (self, user_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_db_error\fP (self, user_repository, sample_user_id)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for activate_user method (lines 29-30)
+.fi
+.PP
+ 
+.PP
+Definition at line \fB128\fP of file \fBtest_user_repository\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_user_repository\&.TestUserRepositoryActivateUser\&.test_activate_user_db_error ( self,  user_repository,  sample_user_id)"
+
+.PP
+.nf
+Test database error during activate_user
+Ensures error propagation from line 30
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB189\fP of file \fBtest_user_repository\&.py\fP\&.
+.SS "test_user_repository\&.TestUserRepositoryActivateUser\&.test_activate_user_multiple_calls ( self,  user_repository,  sample_user_id)"
+
+.PP
+.nf
+Test calling activate_user multiple times
+Covers lines 29-30 with repeated calls
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB168\fP of file \fBtest_user_repository\&.py\fP\&.
+.SS "test_user_repository\&.TestUserRepositoryActivateUser\&.test_activate_user_nonexistent_user ( self,  user_repository,  sample_user_id)"
+
+.PP
+.nf
+Test activating a user that doesn't exist
+Should still execute (UPDATE 0 rows)
+Covers lines 29-30
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB150\fP of file \fBtest_user_repository\&.py\fP\&.
+.SS "test_user_repository\&.TestUserRepositoryActivateUser\&.test_activate_user_success ( self,  user_repository,  sample_user_id)"
+
+.PP
+.nf
+Test successfully activating a user
+Covers lines 29-30
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB132\fP of file \fBtest_user_repository\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

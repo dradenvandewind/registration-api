@@ -1,0 +1,81 @@
+\doxysection{test\+\_\+main.\+Test\+Lifespan Class Reference}
+\label{classtest__main_1_1TestLifespan}\index{test\_main.TestLifespan@{test\_main.TestLifespan}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ test\+\_\+lifespan\+\_\+startup} (self)
+\item 
+\textbf{ test\+\_\+lifespan\+\_\+shutdown} (self)
+\item 
+\textbf{ test\+\_\+lifespan\+\_\+full\+\_\+flow} (self)
+\item 
+\textbf{ test\+\_\+lifespan\+\_\+initialize\+\_\+error} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Tests for the lifespan context manager (lines 10-15)\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 11} of file \textbf{ test\+\_\+main.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classtest__main_1_1TestLifespan_ada4320a51ef3ab9472ea3c5f2d8d319b} 
+\index{test\_main.TestLifespan@{test\_main.TestLifespan}!test\_lifespan\_full\_flow@{test\_lifespan\_full\_flow}}
+\index{test\_lifespan\_full\_flow@{test\_lifespan\_full\_flow}!test\_main.TestLifespan@{test\_main.TestLifespan}}
+\doxysubsubsection{test\_lifespan\_full\_flow()}
+{\footnotesize\ttfamily test\+\_\+main.\+Test\+Lifespan.\+test\+\_\+lifespan\+\_\+full\+\_\+flow (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test the complete lifespan flow
+Covers lines 10-15
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 63} of file \textbf{ test\+\_\+main.\+py}.
+
+\label{classtest__main_1_1TestLifespan_af198f1e0ff10a2285691d2974d74a68e} 
+\index{test\_main.TestLifespan@{test\_main.TestLifespan}!test\_lifespan\_initialize\_error@{test\_lifespan\_initialize\_error}}
+\index{test\_lifespan\_initialize\_error@{test\_lifespan\_initialize\_error}!test\_main.TestLifespan@{test\_main.TestLifespan}}
+\doxysubsubsection{test\_lifespan\_initialize\_error()}
+{\footnotesize\ttfamily test\+\_\+main.\+Test\+Lifespan.\+test\+\_\+lifespan\+\_\+initialize\+\_\+error (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test lifespan when initialize fails
+Ensures error handling in line 12
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 91} of file \textbf{ test\+\_\+main.\+py}.
+
+\label{classtest__main_1_1TestLifespan_ac00be9b1f58e188ca0a3475c48e48c7c} 
+\index{test\_main.TestLifespan@{test\_main.TestLifespan}!test\_lifespan\_shutdown@{test\_lifespan\_shutdown}}
+\index{test\_lifespan\_shutdown@{test\_lifespan\_shutdown}!test\_main.TestLifespan@{test\_main.TestLifespan}}
+\doxysubsubsection{test\_lifespan\_shutdown()}
+{\footnotesize\ttfamily test\+\_\+main.\+Test\+Lifespan.\+test\+\_\+lifespan\+\_\+shutdown (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that lifespan closes database on shutdown
+Covers line 14 (db.close())
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 39} of file \textbf{ test\+\_\+main.\+py}.
+
+\label{classtest__main_1_1TestLifespan_ae1d43d6e3d84a81a3851ef942d7c870d} 
+\index{test\_main.TestLifespan@{test\_main.TestLifespan}!test\_lifespan\_startup@{test\_lifespan\_startup}}
+\index{test\_lifespan\_startup@{test\_lifespan\_startup}!test\_main.TestLifespan@{test\_main.TestLifespan}}
+\doxysubsubsection{test\_lifespan\_startup()}
+{\footnotesize\ttfamily test\+\_\+main.\+Test\+Lifespan.\+test\+\_\+lifespan\+\_\+startup (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that lifespan initializes database on startup
+Covers line 12 (db.initialize())
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 15} of file \textbf{ test\+\_\+main.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/test\+\_\+main.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,109 @@
+\doxysection{test\+\_\+exceptions.\+Test\+Exception\+Handlers Class Reference}
+\label{classtest__exceptions_1_1TestExceptionHandlers}\index{test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ test\+\_\+setup\+\_\+exception\+\_\+handlers\+\_\+registers\+\_\+all\+\_\+handlers} (self, mock\+\_\+app)
+\item 
+\textbf{ test\+\_\+user\+\_\+already\+\_\+exists\+\_\+handler\+\_\+raises\+\_\+409} (self, mock\+\_\+app, mock\+\_\+request)
+\item 
+\textbf{ test\+\_\+user\+\_\+not\+\_\+found\+\_\+handler\+\_\+raises\+\_\+404} (self, mock\+\_\+app, mock\+\_\+request)
+\item 
+\textbf{ test\+\_\+invalid\+\_\+activation\+\_\+code\+\_\+handler\+\_\+raises\+\_\+400} (self, mock\+\_\+app, mock\+\_\+request)
+\item 
+\textbf{ test\+\_\+user\+\_\+already\+\_\+active\+\_\+handler\+\_\+raises\+\_\+400} (self, mock\+\_\+app, mock\+\_\+request)
+\item 
+\textbf{ test\+\_\+exception\+\_\+classes\+\_\+are\+\_\+defined} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Tests for exception handler setup and individual handlers\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 38} of file \textbf{ test\+\_\+exceptions.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classtest__exceptions_1_1TestExceptionHandlers_a05b75b238f1b87258d905d21743dcdae} 
+\index{test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}!test\_exception\_classes\_are\_defined@{test\_exception\_classes\_are\_defined}}
+\index{test\_exception\_classes\_are\_defined@{test\_exception\_classes\_are\_defined}!test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}}
+\doxysubsubsection{test\_exception\_classes\_are\_defined()}
+{\footnotesize\ttfamily test\+\_\+exceptions.\+Test\+Exception\+Handlers.\+test\+\_\+exception\+\_\+classes\+\_\+are\+\_\+defined (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that all exception classes are properly defined
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 140} of file \textbf{ test\+\_\+exceptions.\+py}.
+
+\label{classtest__exceptions_1_1TestExceptionHandlers_a2150ff434400cd1ff2164147ec5e4324} 
+\index{test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}!test\_invalid\_activation\_code\_handler\_raises\_400@{test\_invalid\_activation\_code\_handler\_raises\_400}}
+\index{test\_invalid\_activation\_code\_handler\_raises\_400@{test\_invalid\_activation\_code\_handler\_raises\_400}!test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}}
+\doxysubsubsection{test\_invalid\_activation\_code\_handler\_raises\_400()}
+{\footnotesize\ttfamily test\+\_\+exceptions.\+Test\+Exception\+Handlers.\+test\+\_\+invalid\+\_\+activation\+\_\+code\+\_\+handler\+\_\+raises\+\_\+400 (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{mock\+\_\+app,  }\item[{}]{mock\+\_\+request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that InvalidActivationCodeError handler raises HTTP 400 Bad Request
+Covers line 40
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 101} of file \textbf{ test\+\_\+exceptions.\+py}.
+
+\label{classtest__exceptions_1_1TestExceptionHandlers_a6710076ee0eb8b77119a3f3d76f97db8} 
+\index{test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}!test\_setup\_exception\_handlers\_registers\_all\_handlers@{test\_setup\_exception\_handlers\_registers\_all\_handlers}}
+\index{test\_setup\_exception\_handlers\_registers\_all\_handlers@{test\_setup\_exception\_handlers\_registers\_all\_handlers}!test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}}
+\doxysubsubsection{test\_setup\_exception\_handlers\_registers\_all\_handlers()}
+{\footnotesize\ttfamily test\+\_\+exceptions.\+Test\+Exception\+Handlers.\+test\+\_\+setup\+\_\+exception\+\_\+handlers\+\_\+registers\+\_\+all\+\_\+handlers (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{mock\+\_\+app }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that setup_exception_handlers registers all exception handlers
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 41} of file \textbf{ test\+\_\+exceptions.\+py}.
+
+\label{classtest__exceptions_1_1TestExceptionHandlers_af29cc80e5df43623f7c7feee59ef393a} 
+\index{test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}!test\_user\_already\_active\_handler\_raises\_400@{test\_user\_already\_active\_handler\_raises\_400}}
+\index{test\_user\_already\_active\_handler\_raises\_400@{test\_user\_already\_active\_handler\_raises\_400}!test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}}
+\doxysubsubsection{test\_user\_already\_active\_handler\_raises\_400()}
+{\footnotesize\ttfamily test\+\_\+exceptions.\+Test\+Exception\+Handlers.\+test\+\_\+user\+\_\+already\+\_\+active\+\_\+handler\+\_\+raises\+\_\+400 (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{mock\+\_\+app,  }\item[{}]{mock\+\_\+request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that UserAlreadyActiveError handler raises HTTP 400 Bad Request
+Covers line 47
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 121} of file \textbf{ test\+\_\+exceptions.\+py}.
+
+\label{classtest__exceptions_1_1TestExceptionHandlers_afa805e5ac5409cdb0540ab8116d8bd5f} 
+\index{test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}!test\_user\_already\_exists\_handler\_raises\_409@{test\_user\_already\_exists\_handler\_raises\_409}}
+\index{test\_user\_already\_exists\_handler\_raises\_409@{test\_user\_already\_exists\_handler\_raises\_409}!test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}}
+\doxysubsubsection{test\_user\_already\_exists\_handler\_raises\_409()}
+{\footnotesize\ttfamily test\+\_\+exceptions.\+Test\+Exception\+Handlers.\+test\+\_\+user\+\_\+already\+\_\+exists\+\_\+handler\+\_\+raises\+\_\+409 (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{mock\+\_\+app,  }\item[{}]{mock\+\_\+request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that UserAlreadyExistsError handler raises HTTP 409 Conflict
+Covers line 26
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 60} of file \textbf{ test\+\_\+exceptions.\+py}.
+
+\label{classtest__exceptions_1_1TestExceptionHandlers_a549b98d26d3717c2b95ff1d00b23ce99} 
+\index{test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}!test\_user\_not\_found\_handler\_raises\_404@{test\_user\_not\_found\_handler\_raises\_404}}
+\index{test\_user\_not\_found\_handler\_raises\_404@{test\_user\_not\_found\_handler\_raises\_404}!test\_exceptions.TestExceptionHandlers@{test\_exceptions.TestExceptionHandlers}}
+\doxysubsubsection{test\_user\_not\_found\_handler\_raises\_404()}
+{\footnotesize\ttfamily test\+\_\+exceptions.\+Test\+Exception\+Handlers.\+test\+\_\+user\+\_\+not\+\_\+found\+\_\+handler\+\_\+raises\+\_\+404 (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{mock\+\_\+app,  }\item[{}]{mock\+\_\+request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that UserNotFoundError handler raises HTTP 404 Not Found
+Covers line 33
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 81} of file \textbf{ test\+\_\+exceptions.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/test\+\_\+core/test\+\_\+exceptions.\+py\end{DoxyCompactItemize}

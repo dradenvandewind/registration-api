@@ -1,0 +1,140 @@
+\doxysection{test\+\_\+auth.\+py}
+\label{test__auth_8py_source}\index{tests/test\_dependencies/test\_auth.py@{tests/test\_dependencies/test\_auth.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_dependencies/test\_auth.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ patch,\ MagicMock}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ HTTPException,\ status}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ fastapi.security\ \textcolor{keyword}{import}\ HTTPBasicCredentials}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.dependencies.auth\ \textcolor{keyword}{import}\ get\_current\_user}
+\DoxyCodeLine{00007\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserNotFoundError}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{async\ def\ }test\_get\_current\_user\_user\_not\_found\_error():}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ Test\ get\_current\_user\ when\ UserNotFoundError\ is\ raised}}
+\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ Covers\ line\ 29\ (except\ UserNotFoundError\ block)}}
+\DoxyCodeLine{00014\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00016\ \ \ \ \ credentials\ =\ HTTPBasicCredentials(}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ username=\textcolor{stringliteral}{"{}nonexistent@example.com"{}},}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ password=\textcolor{stringliteral}{"{}somepassword"{}}}
+\DoxyCodeLine{00019\ \ \ \ \ )}
+\DoxyCodeLine{00020\ \ \ \ \ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{comment}{\#\ Mock\ UserService}}
+\DoxyCodeLine{00022\ \ \ \ \ mock\_user\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00023\ \ \ \ \ mock\_user\_service.verify\_credentials\ =\ AsyncMock(side\_effect=UserNotFoundError(\textcolor{stringliteral}{"{}User\ not\ found"{}}))}
+\DoxyCodeLine{00024\ \ \ \ \ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{\#\ Patch\ the\ UserService\ instantiation}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.dependencies.auth.UserService'},\ return\_value=mock\_user\_service):}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ await\ get\_current\_user(credentials)}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ the\ HTTP\ exception}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_401\_UNAUTHORIZED}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}Invalid\ credentials"{}}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.headers\ ==\ \{\textcolor{stringliteral}{"{}WWW-\/Authenticate"{}}:\ \textcolor{stringliteral}{"{}Basic"{}}\}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ the\ service\ was\ called\ correctly}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ mock\_user\_service.verify\_credentials.assert\_called\_once\_with(}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}nonexistent@example.com"{}},}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}somepassword"{}}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ HTTPException\ raised\ with\ 401\ status\ when\ UserNotFoundError\ occurs"{}})}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{async\ def\ }test\_get\_current\_user\_invalid\_credentials():}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00047\ \textcolor{stringliteral}{\ \ \ \ Test\ get\_current\_user\ when\ verify\_credentials\ returns\ None}}
+\DoxyCodeLine{00048\ \textcolor{stringliteral}{\ \ \ \ Covers\ the\ 'if\ not\ user'\ block\ (lines\ 19-\/24)}}
+\DoxyCodeLine{00049\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00051\ \ \ \ \ credentials\ =\ HTTPBasicCredentials(}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ username=\textcolor{stringliteral}{"{}user@example.com"{}},}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ password=\textcolor{stringliteral}{"{}wrongpassword"{}}}
+\DoxyCodeLine{00054\ \ \ \ \ )}
+\DoxyCodeLine{00055\ \ \ \ \ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{\#\ Mock\ UserService\ to\ return\ None\ (invalid\ credentials)}}
+\DoxyCodeLine{00057\ \ \ \ \ mock\_user\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00058\ \ \ \ \ mock\_user\_service.verify\_credentials\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00059\ \ \ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.dependencies.auth.UserService'},\ return\_value=mock\_user\_service):}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ await\ get\_current\_user(credentials)}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_401\_UNAUTHORIZED}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}Invalid\ credentials"{}}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.headers\ ==\ \{\textcolor{stringliteral}{"{}WWW-\/Authenticate"{}}:\ \textcolor{stringliteral}{"{}Basic"{}}\}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ mock\_user\_service.verify\_credentials.assert\_called\_once\_with(}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}user@example.com"{}},}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}wrongpassword"{}}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ HTTPException\ raised\ with\ 401\ status\ for\ invalid\ credentials"{}})}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00077\ \textcolor{keyword}{async\ def\ }test\_get\_current\_user\_success():}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00079\ \textcolor{stringliteral}{\ \ \ \ Test\ get\_current\_user\ with\ valid\ credentials}}
+\DoxyCodeLine{00080\ \textcolor{stringliteral}{\ \ \ \ Covers\ the\ success\ path}}
+\DoxyCodeLine{00081\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00083\ \ \ \ \ credentials\ =\ HTTPBasicCredentials(}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ username=\textcolor{stringliteral}{"{}valid@example.com"{}},}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ password=\textcolor{stringliteral}{"{}correctpassword"{}}}
+\DoxyCodeLine{00086\ \ \ \ \ )}
+\DoxyCodeLine{00087\ \ \ \ \ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{\#\ Mock\ user\ object}}
+\DoxyCodeLine{00089\ \ \ \ \ mock\_user\ =\ MagicMock()}
+\DoxyCodeLine{00090\ \ \ \ \ mock\_user.email\ =\ \textcolor{stringliteral}{"{}valid@example.com"{}}}
+\DoxyCodeLine{00091\ \ \ \ \ mock\_user.is\_active\ =\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00092\ \ \ \ \ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{comment}{\#\ Mock\ UserService\ to\ return\ a\ user}}
+\DoxyCodeLine{00094\ \ \ \ \ mock\_user\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00095\ \ \ \ \ mock\_user\_service.verify\_credentials\ =\ AsyncMock(return\_value=mock\_user)}
+\DoxyCodeLine{00096\ \ \ \ \ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.dependencies.auth.UserService'},\ return\_value=mock\_user\_service):}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ result\ =\ await\ get\_current\_user(credentials)}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ ==\ mock\_user}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ mock\_user\_service.verify\_credentials.assert\_called\_once\_with(}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}valid@example.com"{}},}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}correctpassword"{}}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ User\ returned\ successfully\ for\ valid\ credentials"{}})}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00111\ \textcolor{keyword}{async\ def\ }test\_get\_current\_user\_unexpected\_exception():}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00113\ \textcolor{stringliteral}{\ \ \ \ Test\ get\_current\_user\ when\ an\ unexpected\ exception\ occurs}}
+\DoxyCodeLine{00114\ \textcolor{stringliteral}{\ \ \ \ This\ ensures\ we\ don't\ mask\ other\ exceptions}}
+\DoxyCodeLine{00115\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00117\ \ \ \ \ credentials\ =\ HTTPBasicCredentials(}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ username=\textcolor{stringliteral}{"{}test@example.com"{}},}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ password=\textcolor{stringliteral}{"{}password"{}}}
+\DoxyCodeLine{00120\ \ \ \ \ )}
+\DoxyCodeLine{00121\ \ \ \ \ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{\#\ Mock\ UserService\ to\ raise\ an\ unexpected\ exception}}
+\DoxyCodeLine{00123\ \ \ \ \ mock\_user\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00124\ \ \ \ \ mock\_user\_service.verify\_credentials\ =\ AsyncMock(side\_effect=Exception(\textcolor{stringliteral}{"{}Database\ connection\ error"{}}))}
+\DoxyCodeLine{00125\ \ \ \ \ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.dependencies.auth.UserService'},\ return\_value=mock\_user\_service):}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify\ -\/\ exception\ should\ propagate}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ await\ get\_current\_user(credentials)}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Database\ connection\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ mock\_user\_service.verify\_credentials.assert\_called\_once()}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Unexpected\ exceptions\ propagate\ correctly"{}})}
+
+\end{DoxyCode}

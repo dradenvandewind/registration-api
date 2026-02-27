@@ -1,0 +1,9 @@
+<map id="activation.ActivationCodeCreate" name="activation.ActivationCodeCreate">
+<area shape="rect" id="Node000001" title=" " alt="" coords="57,93,248,133"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,100,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,38,134,91,131,95,73,42"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="125,5,181,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="155,44,155,93,150,93,150,44"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="205,5,287,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="234,44,212,71,183,95,180,91,208,67,230,40"/>
+</map>

@@ -1,0 +1,181 @@
+.TH "test_activation_service.TestActivationServiceActivateUser" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_activation_service.TestActivationServiceActivateUser
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_activate_user_success\fP (self, activation_service, sample_user_id, inactive_user, valid_activation_code)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_not_found\fP (self, activation_service, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_already_active\fP (self, activation_service, sample_user_id, active_user)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_invalid_code\fP (self, activation_service, sample_user_id, inactive_user)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_with_expired_code\fP (self, activation_service, sample_user_id, inactive_user)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_with_used_code\fP (self, activation_service, sample_user_id, inactive_user)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_mark_as_used_error\fP (self, activation_service, sample_user_id, inactive_user, valid_activation_code)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_activate_error\fP (self, activation_service, sample_user_id, inactive_user, valid_activation_code)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_get_valid_code_error\fP (self, activation_service, sample_user_id, inactive_user)"
+.br
+.ti -1c
+.RI "\fBtest_activate_user_get_by_id_error\fP (self, activation_service, sample_user_id)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for activate_user method
+.fi
+.PP
+ 
+.PP
+Definition at line \fB72\fP of file \fBtest_activation_service\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_activate_error ( self,  activation_service,  sample_user_id,  inactive_user,  valid_activation_code)"
+
+.PP
+.nf
+Test when activate_user repository call fails
+Ensures error propagation from line 68
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB276\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_already_active ( self,  activation_service,  sample_user_id,  active_user)"
+
+.PP
+.nf
+Test activation when user is already active
+Covers lines 56-58 (UserAlreadyActiveError)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB137\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_get_by_id_error ( self,  activation_service,  sample_user_id)"
+
+.PP
+.nf
+Test when get_by_id repository call fails
+Ensures error propagation from line 52
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB333\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_get_valid_code_error ( self,  activation_service,  sample_user_id,  inactive_user)"
+
+.PP
+.nf
+Test when get_valid_code repository call fails
+Ensures error propagation from line 59
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB304\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_invalid_code ( self,  activation_service,  sample_user_id,  inactive_user)"
+
+.PP
+.nf
+Test activation with invalid/expired code
+Covers lines 59-63 (InvalidActivationCodeError)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB166\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_mark_as_used_error ( self,  activation_service,  sample_user_id,  inactive_user,  valid_activation_code)"
+
+.PP
+.nf
+Test when mark_as_used fails
+Ensures error propagation from line 65
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB247\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_not_found ( self,  activation_service,  sample_user_id)"
+
+.PP
+.nf
+Test activation when user doesn't exist
+Covers lines 52-54 (UserNotFoundError)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB110\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_success ( self,  activation_service,  sample_user_id,  inactive_user,  valid_activation_code)"
+
+.PP
+.nf
+Test successful user activation with valid code
+Covers lines 52-78 (full success path)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB76\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_with_expired_code ( self,  activation_service,  sample_user_id,  inactive_user)"
+
+.PP
+.nf
+Test activation with an expired code
+Should raise InvalidActivationCodeError
+Covers lines 59-63
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB198\fP of file \fBtest_activation_service\&.py\fP\&.
+.SS "test_activation_service\&.TestActivationServiceActivateUser\&.test_activate_user_with_used_code ( self,  activation_service,  sample_user_id,  inactive_user)"
+
+.PP
+.nf
+Test activation with a code that has already been used
+Should raise InvalidActivationCodeError
+Covers lines 59-63
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB224\fP of file \fBtest_activation_service\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

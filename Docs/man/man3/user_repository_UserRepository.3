@@ -1,0 +1,56 @@
+.TH "user_repository.UserRepository" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+user_repository.UserRepository
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "UserInDB \fBcreate\fP (self, UserCreate user_data)"
+.br
+.ti -1c
+.RI "Optional[UserInDB] \fBget_by_email\fP (self, str email)"
+.br
+.ti -1c
+.RI "Optional[UserInDB] \fBget_by_id\fP (self, UUID user_id)"
+.br
+.ti -1c
+.RI "None \fBactivate_user\fP (self, UUID user_id)"
+.br
+.ti -1c
+.RI "None \fBupdate_password\fP (self, UUID user_id, str new_password)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line \fB7\fP of file \fBuser_repository\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS " None user_repository\&.UserRepository\&.activate_user ( self, UUID user_id)"
+
+.PP
+Definition at line \fB28\fP of file \fBuser_repository\&.py\fP\&.
+.SS " UserInDB user_repository\&.UserRepository\&.create ( self, UserCreate user_data)"
+
+.PP
+Definition at line \fB8\fP of file \fBuser_repository\&.py\fP\&.
+.SS " Optional[UserInDB] user_repository\&.UserRepository\&.get_by_email ( self, str email)"
+
+.PP
+Definition at line \fB18\fP of file \fBuser_repository\&.py\fP\&.
+.SS " Optional[UserInDB] user_repository\&.UserRepository\&.get_by_id ( self, UUID user_id)"
+
+.PP
+Definition at line \fB23\fP of file \fBuser_repository\&.py\fP\&.
+.SS " None user_repository\&.UserRepository\&.update_password ( self, UUID user_id, str new_password)"
+
+.PP
+Definition at line \fB32\fP of file \fBuser_repository\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

@@ -1,0 +1,90 @@
+.TH "test_activation_repository.TestActivationRepositoryInvalidateOldCodes" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_activation_repository.TestActivationRepositoryInvalidateOldCodes
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_invalidate_old_codes_success\fP (self, activation_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_invalidate_old_codes_no_codes\fP (self, activation_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_invalidate_old_codes_different_users\fP (self, activation_repository)"
+.br
+.ti -1c
+.RI "\fBtest_invalidate_old_codes_multiple_calls\fP (self, activation_repository, sample_user_id)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for invalidate_old_codes method (lines 41-46)
+.fi
+.PP
+ 
+.PP
+Definition at line \fB257\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_activation_repository\&.TestActivationRepositoryInvalidateOldCodes\&.test_invalidate_old_codes_different_users ( self,  activation_repository)"
+
+.PP
+.nf
+Test invalidating codes for different users
+Ensures user_id parameter is used correctly (lines 41-46)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB303\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryInvalidateOldCodes\&.test_invalidate_old_codes_multiple_calls ( self,  activation_repository,  sample_user_id)"
+
+.PP
+.nf
+Test calling invalidate_old_codes multiple times for same user
+Covers lines 41-46 with repeated calls
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB336\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryInvalidateOldCodes\&.test_invalidate_old_codes_no_codes ( self,  activation_repository,  sample_user_id)"
+
+.PP
+.nf
+Test invalidate_old_codes when user has no active codes
+Should still execute successfully (UPDATE 0 rows)
+Covers lines 41-46
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB285\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryInvalidateOldCodes\&.test_invalidate_old_codes_success ( self,  activation_repository,  sample_user_id)"
+
+.PP
+.nf
+Test successfully invalidating old codes for a user
+Covers lines 41-46
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB261\fP of file \fBtest_activation_repository\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

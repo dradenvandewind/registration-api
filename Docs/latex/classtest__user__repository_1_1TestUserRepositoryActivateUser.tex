@@ -1,0 +1,82 @@
+\doxysection{test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Activate\+User Class Reference}
+\label{classtest__user__repository_1_1TestUserRepositoryActivateUser}\index{test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+success} (self, user\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+nonexistent\+\_\+user} (self, user\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+multiple\+\_\+calls} (self, user\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+db\+\_\+error} (self, user\+\_\+repository, sample\+\_\+user\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Tests for activate_user method (lines 29-30)\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 128} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classtest__user__repository_1_1TestUserRepositoryActivateUser_a8dba3362d4a60793d57826b0356cdb68} 
+\index{test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}!test\_activate\_user\_db\_error@{test\_activate\_user\_db\_error}}
+\index{test\_activate\_user\_db\_error@{test\_activate\_user\_db\_error}!test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}}
+\doxysubsubsection{test\_activate\_user\_db\_error()}
+{\footnotesize\ttfamily test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+db\+\_\+error (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{user\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database error during activate_user
+Ensures error propagation from line 30
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 189} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+\label{classtest__user__repository_1_1TestUserRepositoryActivateUser_adc684290586ada1cf586d5ecccf823df} 
+\index{test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}!test\_activate\_user\_multiple\_calls@{test\_activate\_user\_multiple\_calls}}
+\index{test\_activate\_user\_multiple\_calls@{test\_activate\_user\_multiple\_calls}!test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}}
+\doxysubsubsection{test\_activate\_user\_multiple\_calls()}
+{\footnotesize\ttfamily test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+multiple\+\_\+calls (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{user\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test calling activate_user multiple times
+Covers lines 29-30 with repeated calls
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 168} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+\label{classtest__user__repository_1_1TestUserRepositoryActivateUser_a0b5a1407ac3fbbb48daae868c57b5c5a} 
+\index{test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}!test\_activate\_user\_nonexistent\_user@{test\_activate\_user\_nonexistent\_user}}
+\index{test\_activate\_user\_nonexistent\_user@{test\_activate\_user\_nonexistent\_user}!test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}}
+\doxysubsubsection{test\_activate\_user\_nonexistent\_user()}
+{\footnotesize\ttfamily test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+nonexistent\+\_\+user (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{user\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test activating a user that doesn't exist
+Should still execute (UPDATE 0 rows)
+Covers lines 29-30
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 150} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+\label{classtest__user__repository_1_1TestUserRepositoryActivateUser_a1bcaca51ec835ee51f783a33db2a798d} 
+\index{test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}!test\_activate\_user\_success@{test\_activate\_user\_success}}
+\index{test\_activate\_user\_success@{test\_activate\_user\_success}!test\_user\_repository.TestUserRepositoryActivateUser@{test\_user\_repository.TestUserRepositoryActivateUser}}
+\doxysubsubsection{test\_activate\_user\_success()}
+{\footnotesize\ttfamily test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+success (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{user\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test successfully activating a user
+Covers lines 29-30
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 132} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/test\+\_\+repositories/test\+\_\+user\+\_\+repository.\+py\end{DoxyCompactItemize}

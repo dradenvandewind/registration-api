@@ -1,0 +1,119 @@
+.TH "test_security.TestGenerateActivationCode" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_security.TestGenerateActivationCode
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_generate_activation_code_default_length\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_generate_activation_code_custom_length\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_generate_activation_code_different_lengths\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_generate_activation_code_uniqueness\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_generate_activation_code_logging\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_generate_activation_code_with_zero_length\fP (self)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for generate_activation_code function
+.fi
+.PP
+ 
+.PP
+Definition at line \fB187\fP of file \fBtest_security\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_security\&.TestGenerateActivationCode\&.test_generate_activation_code_custom_length ( self)"
+
+.PP
+.nf
+Test code generation with custom length
+Covers lines 72-74
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB204\fP of file \fBtest_security\&.py\fP\&.
+.SS "test_security\&.TestGenerateActivationCode\&.test_generate_activation_code_default_length ( self)"
+
+.PP
+.nf
+Test code generation with default length (6)
+Covers lines 72-74
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB190\fP of file \fBtest_security\&.py\fP\&.
+.SS "test_security\&.TestGenerateActivationCode\&.test_generate_activation_code_different_lengths ( self)"
+
+.PP
+.nf
+Test code generation with various lengths
+Covers lines 72-74 for different inputs
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB219\fP of file \fBtest_security\&.py\fP\&.
+.SS "test_security\&.TestGenerateActivationCode\&.test_generate_activation_code_logging ( self)"
+
+.PP
+.nf
+Test that code generation logs appropriately
+Covers line 74 (logging)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB242\fP of file \fBtest_security\&.py\fP\&.
+.SS "test_security\&.TestGenerateActivationCode\&.test_generate_activation_code_uniqueness ( self)"
+
+.PP
+.nf
+Test that generated codes are reasonably unique
+Covers lines 72-74
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB230\fP of file \fBtest_security\&.py\fP\&.
+.SS "test_security\&.TestGenerateActivationCode\&.test_generate_activation_code_with_zero_length ( self)"
+
+.PP
+.nf
+Test edge case with zero length
+Covers lines 72-74 with edge input
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB256\fP of file \fBtest_security\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

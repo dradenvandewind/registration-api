@@ -1,0 +1,17 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,169,100,194"/>
+<area shape="rect" id="Node000001" href="$classactivation_1_1ActivationCodeCreate.html" title=" " alt="" coords="163,5,354,45"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="64,155,97,105,120,78,146,55,168,43,171,48,150,60,123,82,101,108,69,158"/>
+<area shape="rect" id="Node000002" href="$classactivation_1_1ActivationCodeInDB.html" title=" " alt="" coords="148,70,369,95"/>
+<area shape="poly" id="edge2_Node000000_Node000002" title=" " alt="" coords="74,157,107,129,147,104,178,93,180,98,149,109,110,134,78,161"/>
+<area shape="rect" id="Node000003" href="$classactivation_1_1ActivationRequest.html" title=" " alt="" coords="153,119,364,145"/>
+<area shape="poly" id="edge3_Node000000_Node000003" title=" " alt="" coords="112,163,147,153,196,142,198,147,149,159,113,168"/>
+<area shape="rect" id="Node000004" href="$classactivation_1_1ActivationResponse.html" title=" " alt="" coords="149,169,369,194"/>
+<area shape="poly" id="edge4_Node000000_Node000004" title=" " alt="" coords="114,179,148,179,148,184,114,184"/>
+<area shape="rect" id="Node000005" href="$classuser_1_1UserCreate.html" title=" " alt="" coords="195,218,322,243"/>
+<area shape="poly" id="edge5_Node000000_Node000005" title=" " alt="" coords="114,194,149,203,202,215,200,220,147,208,113,199"/>
+<area shape="rect" id="Node000006" href="$classuser_1_1UserInDB.html" title=" " alt="" coords="201,267,316,293"/>
+<area shape="poly" id="edge6_Node000000_Node000006" title=" " alt="" coords="78,202,111,228,149,252,202,269,200,274,147,257,107,233,75,206"/>
+<area shape="rect" id="Node000007" href="$classuser_1_1UserResponse.html" title=" " alt="" coords="185,317,332,342"/>
+<area shape="poly" id="edge7_Node000000_Node000007" title=" " alt="" coords="68,205,101,255,123,280,149,302,186,318,184,322,147,306,119,284,96,258,64,207"/>
+</map>

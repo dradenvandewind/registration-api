@@ -1,0 +1,358 @@
+\doxysection{test\+\_\+activation\+\_\+service.\+py}
+\label{test__activation__service_8py_source}\index{tests/test\_services/test\_activation\_service.py@{tests/test\_services/test\_activation\_service.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_services/test\_activation\_service.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ patch,\ MagicMock}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID,\ uuid4}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ datetime\ \textcolor{keyword}{import}\ datetime,\ timedelta}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.services.activation\_service\ \textcolor{keyword}{import}\ ActivationService}
+\DoxyCodeLine{00007\ \textcolor{keyword}{from}\ app.models.activation\ \textcolor{keyword}{import}\ ActivationCodeCreate,\ ActivationCodeInDB}
+\DoxyCodeLine{00008\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserInDB}
+\DoxyCodeLine{00009\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ (}
+\DoxyCodeLine{00010\ \ \ \ \ InvalidActivationCodeError,}
+\DoxyCodeLine{00011\ \ \ \ \ UserNotFoundError,}
+\DoxyCodeLine{00012\ \ \ \ \ UserAlreadyActiveError}
+\DoxyCodeLine{00013\ )}
+\DoxyCodeLine{00014\ \textcolor{keyword}{from}\ app.db.repositories.activation\_repository\ \textcolor{keyword}{import}\ ActivationRepository}
+\DoxyCodeLine{00015\ \textcolor{keyword}{from}\ app.db.repositories.user\_repository\ \textcolor{keyword}{import}\ UserRepository}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{def\ }activation\_service():}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ to\ create\ an\ ActivationService\ instance\ with\ mocked\ repositories"{}"{}"{}}}
+\DoxyCodeLine{00020\ \ \ \ \ service\ =\ ActivationService()}
+\DoxyCodeLine{00021\ \ \ \ \ service.activation\_repo\ =\ AsyncMock(spec=ActivationRepository)}
+\DoxyCodeLine{00022\ \ \ \ \ service.user\_repo\ =\ AsyncMock(spec=UserRepository)}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{return}\ service}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{def\ }sample\_user\_id():}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ for\ a\ sample\ user\ UUID"{}"{}"{}}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{return}\ uuid4()}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00031\ \textcolor{keyword}{def\ }sample\_code\_id():}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ for\ a\ sample\ activation\ code\ UUID"{}"{}"{}}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ uuid4()}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{def\ }inactive\_user(sample\_user\_id):}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ for\ an\ inactive\ user"{}"{}"{}}}
+\DoxyCodeLine{00038\ \textcolor{stringliteral}{\ \ \ \ return\ UserInDB(}}
+\DoxyCodeLine{00039\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ id=sample\_user\_id,}}
+\DoxyCodeLine{00040\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ email="{}test@example.com"{},}}
+\DoxyCodeLine{00041\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ password\_hash="{}hashed\_password"{},}}
+\DoxyCodeLine{00042\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ is\_active=False,}}
+\DoxyCodeLine{00043\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ created\_at=datetime.utcnow(),}}
+\DoxyCodeLine{00044\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ updated\_at=datetime.utcnow()}}
+\DoxyCodeLine{00045\ \textcolor{stringliteral}{\ \ \ \ )}}
+\DoxyCodeLine{00046\ \textcolor{stringliteral}{}}
+\DoxyCodeLine{00047\ \textcolor{stringliteral}{@pytest.fixture}}
+\DoxyCodeLine{00048\ \textcolor{stringliteral}{def\ active\_user(sample\_user\_id):}}
+\DoxyCodeLine{00049\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}Fixture\ for\ an\ active\ use\textcolor{stringliteral}{r"{}"{}"{}}}
+\DoxyCodeLine{00050\ \textcolor{stringliteral}{\ \ \ \ return\ UserInDB(}}
+\DoxyCodeLine{00051\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ id=sample\_user\_id,}}
+\DoxyCodeLine{00052\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ email="{}test@example.com"{},}}
+\DoxyCodeLine{00053\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ password\_hash="{}hashed\_password"{},}}
+\DoxyCodeLine{00054\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ is\_active=True,}}
+\DoxyCodeLine{00055\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ created\_at=datetime.utcnow(),}}
+\DoxyCodeLine{00056\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ updated\_at=datetime.utcnow()}}
+\DoxyCodeLine{00057\ \textcolor{stringliteral}{\ \ \ \ )}}
+\DoxyCodeLine{00058\ \textcolor{stringliteral}{}}
+\DoxyCodeLine{00059\ \textcolor{stringliteral}{@pytest.fixture}}
+\DoxyCodeLine{00060\ \textcolor{stringliteral}{def\ valid\_activation\_code(sample\_user\_id,\ sample\_code\_id):}}
+\DoxyCodeLine{00061\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}Fixture\ for\ a\ valid\ activation\ code"{}"{}"{}}
+\DoxyCodeLine{00062\ \ \ \ \ now\ =\ datetime.utcnow()}
+\DoxyCodeLine{00063\ \ \ \ \ return\ ActivationCodeInDB(}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ id=sample\_code\_id,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ user\_id=sample\_user\_id,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ code="{}ABC123"{},}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ expires\_at=now\ +\ timedelta(hours=1),}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ used\_at=None,}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ created\_at=now}
+\DoxyCodeLine{00070\ \ \ \ \ )}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ class\ TestActivationServiceActivateUser:}
+\DoxyCodeLine{00073\ \ \ \ \ "{}"{}"{}Tests\ for\ activate\_user\ method"{}"{}"{}}
+\DoxyCodeLine{00074\ \ \ \ \ }
+\DoxyCodeLine{00075\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00076\ \ \ \ \ async\ def\ test\_activate\_user\_success(self,\ activation\_service,\ sample\_user\_id,\ inactive\_user,\ valid\_activation\_code):}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ Test\ successful\ user\ activation\ with\ valid\ code}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ Covers\ lines\ 52-\/78\ (full\ success\ path)}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ code\ =\ "{}ABC123"{}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \#\ Mock\ repository\ responses}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ inactive\_user}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.return\_value\ =\ valid\_activation\_code}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used\ =\ AsyncMock()}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user\ =\ AsyncMock()}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \#\ Execute}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ result\ =\ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \#\ Verify}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ assert\ result\ is\ True}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \#\ Verify\ user\ existence\ check\ (lines\ 52-\/54)}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.assert\_called\_once\_with(sample\_user\_id)}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \#\ Verify\ code\ validation\ (lines\ 59-\/62)}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.assert\_called\_once\_with(sample\_user\_id,\ code)}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \#\ Verify\ mark\ as\ used\ (line\ 65)}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used.assert\_called\_once\_with(valid\_activation\_code.id)}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \#\ Verify\ user\ activation\ (line\ 68)}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user.assert\_called\_once\_with(sample\_user\_id)}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ success\ path\ (lines\ 52-\/78)"{})}
+\DoxyCodeLine{00108\ \ \ \ \ }
+\DoxyCodeLine{00109\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00110\ \ \ \ \ async\ def\ test\_activate\_user\_not\_found(self,\ activation\_service,\ sample\_user\_id):}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ Test\ activation\ when\ user\ doesn't\ exist}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ Covers\ lines\ 52-\/54\ (UserNotFoundError)}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ code\ =\ "{}ABC123"{}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \#\ Mock\ user\ not\ found}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ None}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ with\ pytest.raises(UserNotFoundError)\ as\ exc\_info:}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ assert\ "{}User\ not\ found"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \#\ Verify\ user\ existence\ check\ was\ called\ (lines\ 52-\/54)}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.assert\_called\_once\_with(sample\_user\_id)}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \#\ Verify\ no\ further\ calls\ were\ made}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.assert\_not\_called()}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used.assert\_not\_called()}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user.assert\_not\_called()}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ raises\ UserNotFoundError\ when\ user\ doesn't\ exist\ (lines\ 52-\/54)"{})}
+\DoxyCodeLine{00135\ \ \ \ \ }
+\DoxyCodeLine{00136\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00137\ \ \ \ \ async\ def\ test\_activate\_user\_already\_active(self,\ activation\_service,\ sample\_user\_id,\ active\_user):}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ Test\ activation\ when\ user\ is\ already\ active}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ Covers\ lines\ 56-\/58\ (UserAlreadyActiveError)}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ code\ =\ "{}ABC123"{}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \#\ Mock\ user\ already\ active}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ active\_user}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ with\ pytest.raises(UserAlreadyActiveError)\ as\ exc\_info:}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ assert\ "{}User\ is\ already\ active"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \#\ Verify\ user\ existence\ check\ (lines\ 52-\/54)}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.assert\_called\_once\_with(sample\_user\_id)}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \#\ Verify\ is\_active\ check\ (line\ 57)\ triggered\ the\ exception}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \#\ Verify\ no\ further\ calls\ were\ made}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.assert\_not\_called()}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used.assert\_not\_called()}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user.assert\_not\_called()}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ raises\ UserAlreadyActiveError\ when\ user\ is\ active\ (lines\ 56-\/58)"{})}
+\DoxyCodeLine{00164\ \ \ \ \ }
+\DoxyCodeLine{00165\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00166\ \ \ \ \ async\ def\ test\_activate\_user\_invalid\_code(self,\ activation\_service,\ sample\_user\_id,\ inactive\_user):}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ Test\ activation\ with\ invalid/expired\ code}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ Covers\ lines\ 59-\/63\ (InvalidActivationCodeError)}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ code\ =\ "{}WRONG123"{}}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \#\ Mock\ user\ exists\ but\ is\ inactive}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ inactive\_user}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \#\ Mock\ no\ valid\ code\ found}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.return\_value\ =\ None}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ with\ pytest.raises(InvalidActivationCodeError)\ as\ exc\_info:}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ assert\ "{}Invalid\ or\ expired\ activation\ code"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \#\ Verify\ user\ existence\ check\ (lines\ 52-\/54)}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.assert\_called\_once\_with(sample\_user\_id)}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \#\ Verify\ code\ validation\ (lines\ 59-\/62)}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.assert\_called\_once\_with(sample\_user\_id,\ code)}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \#\ Verify\ no\ further\ calls\ were\ made}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used.assert\_not\_called()}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user.assert\_not\_called()}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ raises\ InvalidActivationCodeError\ for\ invalid\ code\ (lines\ 59-\/63)"{})}
+\DoxyCodeLine{00196\ \ \ \ \ }
+\DoxyCodeLine{00197\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00198\ \ \ \ \ async\ def\ test\_activate\_user\_with\_expired\_code(self,\ activation\_service,\ sample\_user\_id,\ inactive\_user):}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ Test\ activation\ with\ an\ expired\ code}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ Should\ raise\ InvalidActivationCodeError}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ Covers\ lines\ 59-\/63}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ code\ =\ "{}EXPIRED"{}}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \#\ Mock\ user\ exists\ but\ is\ inactive}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ inactive\_user}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \#\ Mock\ get\_valid\_code\ returning\ None\ (expired\ codes\ not\ returned)}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.return\_value\ =\ None}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ with\ pytest.raises(InvalidActivationCodeError)\ as\ exc\_info:}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ assert\ "{}Invalid\ or\ expired\ activation\ code"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \#\ Verify\ code\ validation\ was\ called\ (lines\ 59-\/62)}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.assert\_called\_once\_with(sample\_user\_id,\ code)}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ handles\ expired\ codes\ correctly\ (lines\ 59-\/63)"{})}
+\DoxyCodeLine{00222\ \ \ \ \ }
+\DoxyCodeLine{00223\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00224\ \ \ \ \ async\ def\ test\_activate\_user\_with\_used\_code(self,\ activation\_service,\ sample\_user\_id,\ inactive\_user):}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ Test\ activation\ with\ a\ code\ that\ has\ already\ been\ used}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ Should\ raise\ InvalidActivationCodeError}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ Covers\ lines\ 59-\/63}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ code\ =\ "{}USED123"{}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \#\ Mock\ user\ exists\ but\ is\ inactive}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ inactive\_user}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \#\ Mock\ get\_valid\_code\ returning\ None\ (used\ codes\ not\ returned\ due\ to\ used\_at\ IS\ NULL)}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.return\_value\ =\ None}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ with\ pytest.raises(InvalidActivationCodeError)\ as\ exc\_info:}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ assert\ "{}Invalid\ or\ expired\ activation\ code"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ handles\ used\ codes\ correctly\ (lines\ 59-\/63)"{})}
+\DoxyCodeLine{00245\ \ \ \ \ }
+\DoxyCodeLine{00246\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00247\ \ \ \ \ async\ def\ test\_activate\_user\_mark\_as\_used\_error(self,\ activation\_service,\ sample\_user\_id,\ inactive\_user,\ valid\_activation\_code):}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ Test\ when\ mark\_as\_used\ fails}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ Ensures\ error\ propagation\ from\ line\ 65}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ code\ =\ "{}ABC123"{}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \#\ Mock\ repository\ responses}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ inactive\_user}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.return\_value\ =\ valid\_activation\_code}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \#\ Mock\ mark\_as\_used\ to\ fail}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used\ =\ AsyncMock(side\_effect=Exception("{}Database\ error"{}))}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ with\ pytest.raises(Exception)\ as\ exc\_info:}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ assert\ "{}Database\ error"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \#\ Verify\ mark\_as\_used\ was\ called\ (line\ 65)}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used.assert\_called\_once\_with(valid\_activation\_code.id)}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \#\ Verify\ activate\_user\ was\ NOT\ called\ (should\ fail\ before\ line\ 68)}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user.assert\_not\_called()}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ propagates\ errors\ from\ mark\_as\_used\ (line\ 65)"{})}
+\DoxyCodeLine{00274\ \ \ \ \ }
+\DoxyCodeLine{00275\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00276\ \ \ \ \ async\ def\ test\_activate\_user\_activate\_error(self,\ activation\_service,\ sample\_user\_id,\ inactive\_user,\ valid\_activation\_code):}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ Test\ when\ activate\_user\ repository\ call\ fails}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ Ensures\ error\ propagation\ from\ line\ 68}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ code\ =\ "{}ABC123"{}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \#\ Mock\ repository\ responses}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ inactive\_user}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.return\_value\ =\ valid\_activation\_code}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used\ =\ AsyncMock()}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \#\ Mock\ activate\_user\ to\ fail}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user\ =\ AsyncMock(side\_effect=Exception("{}Database\ error"{}))}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ with\ pytest.raises(Exception)\ as\ exc\_info:}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ assert\ "{}Database\ error"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \#\ Verify\ both\ previous\ calls\ were\ made}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used.assert\_called\_once\_with(valid\_activation\_code.id)}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user.assert\_called\_once\_with(sample\_user\_id)}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ propagates\ errors\ from\ activate\_user\ repository\ call\ (line\ 68)"{})}
+\DoxyCodeLine{00302\ \ \ \ \ }
+\DoxyCodeLine{00303\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00304\ \ \ \ \ async\ def\ test\_activate\_user\_get\_valid\_code\_error(self,\ activation\_service,\ sample\_user\_id,\ inactive\_user):}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ Test\ when\ get\_valid\_code\ repository\ call\ fails}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ Ensures\ error\ propagation\ from\ line\ 59}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ code\ =\ "{}ABC123"{}}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \#\ Mock\ user\ exists}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.return\_value\ =\ inactive\_user}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \#\ Mock\ get\_valid\_code\ to\ fail}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code\ =\ AsyncMock(side\_effect=Exception("{}Database\ error"{}))}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ with\ pytest.raises(Exception)\ as\ exc\_info:}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ assert\ "{}Database\ error"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \#\ Verify\ get\_valid\_code\ was\ called\ (line\ 59)}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.get\_valid\_code.assert\_called\_once\_with(sample\_user\_id,\ code)}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \#\ Verify\ no\ further\ calls}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ activation\_service.activation\_repo.mark\_as\_used.assert\_not\_called()}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.activate\_user.assert\_not\_called()}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ propagates\ errors\ from\ get\_valid\_code\ (line\ 59)"{})}
+\DoxyCodeLine{00331\ \ \ \ \ }
+\DoxyCodeLine{00332\ \ \ \ \ @pytest.mark.asyncio}
+\DoxyCodeLine{00333\ \ \ \ \ async\ def\ test\_activate\_user\_get\_by\_id\_error(self,\ activation\_service,\ sample\_user\_id):}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ Test\ when\ get\_by\_id\ repository\ call\ fails}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ Ensures\ error\ propagation\ from\ line\ 52}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ "{}"{}"{}}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ code\ =\ "{}ABC123"{}}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \#\ Mock\ get\_by\_id\ to\ fail}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id\ =\ AsyncMock(side\_effect=Exception("{}Database\ error"{}))}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \#\ Execute\ \&\ Verify}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ with\ pytest.raises(Exception)\ as\ exc\_info:}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(sample\_user\_id,\ code)}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ assert\ "{}Database\ error"{}\ in\ str(exc\_info.value)}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \#\ Verify\ get\_by\_id\ was\ called\ (line\ 52)}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ activation\_service.user\_repo.get\_by\_id.assert\_called\_once\_with(sample\_user\_id)}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ print("{}✅\ activate\_user\ propagates\ errors\ from\ get\_by\_id\ (line\ 52)"{})}
+
+\end{DoxyCode}

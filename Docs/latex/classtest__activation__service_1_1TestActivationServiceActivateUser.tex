@@ -1,0 +1,173 @@
+\doxysection{test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User Class Reference}
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser}\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+success} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id, inactive\+\_\+user, valid\+\_\+activation\+\_\+code)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+not\+\_\+found} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+already\+\_\+active} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id, active\+\_\+user)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+invalid\+\_\+code} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id, inactive\+\_\+user)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+with\+\_\+expired\+\_\+code} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id, inactive\+\_\+user)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+with\+\_\+used\+\_\+code} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id, inactive\+\_\+user)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+mark\+\_\+as\+\_\+used\+\_\+error} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id, inactive\+\_\+user, valid\+\_\+activation\+\_\+code)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+activate\+\_\+error} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id, inactive\+\_\+user, valid\+\_\+activation\+\_\+code)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+get\+\_\+valid\+\_\+code\+\_\+error} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id, inactive\+\_\+user)
+\item 
+\textbf{ test\+\_\+activate\+\_\+user\+\_\+get\+\_\+by\+\_\+id\+\_\+error} (self, activation\+\_\+service, sample\+\_\+user\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Tests for activate_user method\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 72} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_a227f8e608e1815bdcc286a4fcc66bdf4} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_activate\_error@{test\_activate\_user\_activate\_error}}
+\index{test\_activate\_user\_activate\_error@{test\_activate\_user\_activate\_error}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_activate\_error()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+activate\+\_\+error (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{inactive\+\_\+user,  }\item[{}]{valid\+\_\+activation\+\_\+code }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test when activate_user repository call fails
+Ensures error propagation from line 68
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 276} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_adfb90e6841eed5f17cfe763b16377f20} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_already\_active@{test\_activate\_user\_already\_active}}
+\index{test\_activate\_user\_already\_active@{test\_activate\_user\_already\_active}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_already\_active()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+already\+\_\+active (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{active\+\_\+user }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test activation when user is already active
+Covers lines 56-58 (UserAlreadyActiveError)
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 137} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_a9e006a86dca9cb96c1e4a7c88b080fd5} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_get\_by\_id\_error@{test\_activate\_user\_get\_by\_id\_error}}
+\index{test\_activate\_user\_get\_by\_id\_error@{test\_activate\_user\_get\_by\_id\_error}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_get\_by\_id\_error()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+get\+\_\+by\+\_\+id\+\_\+error (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test when get_by_id repository call fails
+Ensures error propagation from line 52
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 333} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_a3cc2bc8d3b8a15cc9670b1dc55214e96} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_get\_valid\_code\_error@{test\_activate\_user\_get\_valid\_code\_error}}
+\index{test\_activate\_user\_get\_valid\_code\_error@{test\_activate\_user\_get\_valid\_code\_error}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_get\_valid\_code\_error()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+get\+\_\+valid\+\_\+code\+\_\+error (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{inactive\+\_\+user }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test when get_valid_code repository call fails
+Ensures error propagation from line 59
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 304} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_a62ccb841c586b7ab8c10220091920b2f} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_invalid\_code@{test\_activate\_user\_invalid\_code}}
+\index{test\_activate\_user\_invalid\_code@{test\_activate\_user\_invalid\_code}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_invalid\_code()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+invalid\+\_\+code (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{inactive\+\_\+user }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test activation with invalid/expired code
+Covers lines 59-63 (InvalidActivationCodeError)
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 166} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_a28d900ff03140504a178e766fed2bd5d} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_mark\_as\_used\_error@{test\_activate\_user\_mark\_as\_used\_error}}
+\index{test\_activate\_user\_mark\_as\_used\_error@{test\_activate\_user\_mark\_as\_used\_error}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_mark\_as\_used\_error()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+mark\+\_\+as\+\_\+used\+\_\+error (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{inactive\+\_\+user,  }\item[{}]{valid\+\_\+activation\+\_\+code }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test when mark_as_used fails
+Ensures error propagation from line 65
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 247} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_accdc24d87d50b10c41dd13b7c179479d} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_not\_found@{test\_activate\_user\_not\_found}}
+\index{test\_activate\_user\_not\_found@{test\_activate\_user\_not\_found}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_not\_found()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+not\+\_\+found (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test activation when user doesn't exist
+Covers lines 52-54 (UserNotFoundError)
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 110} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_afa164248e48224eb91f3f436e6cecd57} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_success@{test\_activate\_user\_success}}
+\index{test\_activate\_user\_success@{test\_activate\_user\_success}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_success()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+success (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{inactive\+\_\+user,  }\item[{}]{valid\+\_\+activation\+\_\+code }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test successful user activation with valid code
+Covers lines 52-78 (full success path)
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 76} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_a6246d0fde0265ca135c65545e805fbbb} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_with\_expired\_code@{test\_activate\_user\_with\_expired\_code}}
+\index{test\_activate\_user\_with\_expired\_code@{test\_activate\_user\_with\_expired\_code}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_with\_expired\_code()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+with\+\_\+expired\+\_\+code (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{inactive\+\_\+user }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test activation with an expired code
+Should raise InvalidActivationCodeError
+Covers lines 59-63
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 198} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+\label{classtest__activation__service_1_1TestActivationServiceActivateUser_a11702ce7d45256dbc189f09fd1675982} 
+\index{test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}!test\_activate\_user\_with\_used\_code@{test\_activate\_user\_with\_used\_code}}
+\index{test\_activate\_user\_with\_used\_code@{test\_activate\_user\_with\_used\_code}!test\_activation\_service.TestActivationServiceActivateUser@{test\_activation\_service.TestActivationServiceActivateUser}}
+\doxysubsubsection{test\_activate\_user\_with\_used\_code()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+service.\+Test\+Activation\+Service\+Activate\+User.\+test\+\_\+activate\+\_\+user\+\_\+with\+\_\+used\+\_\+code (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+service,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{inactive\+\_\+user }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test activation with a code that has already been used
+Should raise InvalidActivationCodeError
+Covers lines 59-63
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 224} of file \textbf{ test\+\_\+activation\+\_\+service.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/test\+\_\+services/test\+\_\+activation\+\_\+service.\+py\end{DoxyCompactItemize}

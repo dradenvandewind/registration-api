@@ -1,0 +1,75 @@
+.TH "test_activation_repository.TestActivationRepositoryMarkAsUsed" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_activation_repository.TestActivationRepositoryMarkAsUsed
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_mark_as_used_success\fP (self, activation_repository, sample_code_id)"
+.br
+.ti -1c
+.RI "\fBtest_mark_as_used_with_nonexistent_id\fP (self, activation_repository)"
+.br
+.ti -1c
+.RI "\fBtest_mark_as_used_multiple_calls\fP (self, activation_repository, sample_code_id)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for mark_as_used method (lines 36-37)
+.fi
+.PP
+ 
+.PP
+Definition at line \fB195\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_activation_repository\&.TestActivationRepositoryMarkAsUsed\&.test_mark_as_used_multiple_calls ( self,  activation_repository,  sample_code_id)"
+
+.PP
+.nf
+Test calling mark_as_used multiple times
+Covers lines 36-37 with repeated calls
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB237\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryMarkAsUsed\&.test_mark_as_used_success ( self,  activation_repository,  sample_code_id)"
+
+.PP
+.nf
+Test successfully marking a code as used
+Covers lines 36-37
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB199\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryMarkAsUsed\&.test_mark_as_used_with_nonexistent_id ( self,  activation_repository)"
+
+.PP
+.nf
+Test mark_as_used with an ID that doesn't exist
+Should still execute (UPDATE 0 rows)
+Covers lines 36-37
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB217\fP of file \fBtest_activation_repository\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

@@ -1,0 +1,68 @@
+.TH "test_activation_repository.TestErrorHandling" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_activation_repository.TestErrorHandling
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_get_valid_code_db_error\fP (self, activation_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_mark_as_used_db_error\fP (self, activation_repository, sample_code_id)"
+.br
+.ti -1c
+.RI "\fBtest_invalidate_old_codes_db_error\fP (self, activation_repository, sample_user_id)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for error handling in repository methods
+.fi
+.PP
+ 
+.PP
+Definition at line \fB358\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_activation_repository\&.TestErrorHandling\&.test_get_valid_code_db_error ( self,  activation_repository,  sample_user_id)"
+
+.PP
+.nf
+Test database error during get_valid_code
+.fi
+.PP
+ 
+.PP
+Definition at line \fB362\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestErrorHandling\&.test_invalidate_old_codes_db_error ( self,  activation_repository,  sample_user_id)"
+
+.PP
+.nf
+Test database error during invalidate_old_codes
+.fi
+.PP
+ 
+.PP
+Definition at line \fB386\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestErrorHandling\&.test_mark_as_used_db_error ( self,  activation_repository,  sample_code_id)"
+
+.PP
+.nf
+Test database error during mark_as_used
+.fi
+.PP
+ 
+.PP
+Definition at line \fB374\fP of file \fBtest_activation_repository\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

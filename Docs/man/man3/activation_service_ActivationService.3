@@ -1,0 +1,83 @@
+.TH "activation_service.ActivationService" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+activation_service.ActivationService
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB__init__\fP (self)"
+.br
+.ti -1c
+.RI "ActivationCodeCreate \fBcreate_activation_code\fP (self, int user_id)"
+.br
+.ti -1c
+.RI "bool \fBactivate_user\fP (self, UUID user_id, str code)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBactivation_repo\fP"
+.br
+.ti -1c
+.RI "\fBuser_repo\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line \fB18\fP of file \fBactivation_service\&.py\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "activation_service\&.ActivationService\&.__init__ ( self)"
+
+.PP
+Definition at line \fB19\fP of file \fBactivation_service\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS " bool activation_service\&.ActivationService\&.activate_user ( self, UUID user_id, str code)"
+
+.PP
+.nf
+Activate user with code
+.fi
+.PP
+ 
+.PP
+Definition at line \fB56\fP of file \fBactivation_service\&.py\fP\&.
+.SS " ActivationCodeCreate activation_service\&.ActivationService\&.create_activation_code ( self, int user_id)"
+
+.PP
+.nf
+Creates an activation code for a user
+
+Args:
+    user_id: User ID
+    
+Returns:
+    ActivationCode: The created activation code
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB23\fP of file \fBactivation_service\&.py\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "activation_service\&.ActivationService\&.activation_repo"
+
+.PP
+Definition at line \fB20\fP of file \fBactivation_service\&.py\fP\&.
+.SS "activation_service\&.ActivationService\&.user_repo"
+
+.PP
+Definition at line \fB21\fP of file \fBactivation_service\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

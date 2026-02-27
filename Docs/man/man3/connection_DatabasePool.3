@@ -1,0 +1,119 @@
+.TH "connection.DatabasePool" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+connection.DatabasePool
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB__init__\fP (self)"
+.br
+.ti -1c
+.RI "\fBinitialize\fP (self)"
+.br
+.ti -1c
+.RI "\fBclose\fP (self)"
+.br
+.ti -1c
+.RI "\fBexecute\fP (self, str query, *args)"
+.br
+.ti -1c
+.RI "\fBfetch\fP (self, str query, *args)"
+.br
+.ti -1c
+.RI "\fBfetchrow\fP (self, str query, *args)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBpool\fP"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fB_initialized\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line \fB5\fP of file \fBconnection\&.py\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "connection\&.DatabasePool\&.__init__ ( self)"
+
+.PP
+Definition at line \fB6\fP of file \fBconnection\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "connection\&.DatabasePool\&.close ( self)"
+
+.PP
+.nf
+Ferme le pool de connexions
+.fi
+.PP
+ 
+.PP
+Definition at line \fB28\fP of file \fBconnection\&.py\fP\&.
+.SS "connection\&.DatabasePool\&.execute ( self, str query, * args)"
+
+.PP
+.nf
+Exécute une requête sans retour de résultat
+.fi
+.PP
+ 
+.PP
+Definition at line \fB36\fP of file \fBconnection\&.py\fP\&.
+.SS "connection\&.DatabasePool\&.fetch ( self, str query, * args)"
+
+.PP
+.nf
+Récupère plusieurs lignes
+.fi
+.PP
+ 
+.PP
+Definition at line \fB43\fP of file \fBconnection\&.py\fP\&.
+.SS "connection\&.DatabasePool\&.fetchrow ( self, str query, * args)"
+
+.PP
+.nf
+Récupère une seule ligne
+.fi
+.PP
+ 
+.PP
+Definition at line \fB50\fP of file \fBconnection\&.py\fP\&.
+.SS "connection\&.DatabasePool\&.initialize ( self)"
+
+.PP
+.nf
+Initialise le pool de connexions
+.fi
+.PP
+ 
+.PP
+Definition at line \fB10\fP of file \fBconnection\&.py\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "connection\&.DatabasePool\&._initialized\fC [protected]\fP"
+
+.PP
+Definition at line \fB8\fP of file \fBconnection\&.py\fP\&.
+.SS "connection\&.DatabasePool\&.pool"
+
+.PP
+Definition at line \fB16\fP of file \fBconnection\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

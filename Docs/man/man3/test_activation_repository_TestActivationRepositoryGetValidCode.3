@@ -1,0 +1,104 @@
+.TH "test_activation_repository.TestActivationRepositoryGetValidCode" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_activation_repository.TestActivationRepositoryGetValidCode
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_get_valid_code_success\fP (self, activation_repository, sample_user_id, mock_activation_row, mock_activation_dict)"
+.br
+.ti -1c
+.RI "\fBtest_get_valid_code_not_found\fP (self, activation_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_get_valid_code_with_expired_code\fP (self, activation_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_get_valid_code_with_used_code\fP (self, activation_repository, sample_user_id)"
+.br
+.ti -1c
+.RI "\fBtest_get_valid_code_orders_by_created_at_desc\fP (self, activation_repository, sample_user_id, mock_activation_row)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for get_valid_code method (lines 23-33)
+.fi
+.PP
+ 
+.PP
+Definition at line \fB73\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_activation_repository\&.TestActivationRepositoryGetValidCode\&.test_get_valid_code_not_found ( self,  activation_repository,  sample_user_id)"
+
+.PP
+.nf
+Test get_valid_code when no valid code exists
+Covers line 33 (return None path)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB125\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryGetValidCode\&.test_get_valid_code_orders_by_created_at_desc ( self,  activation_repository,  sample_user_id,  mock_activation_row)"
+
+.PP
+.nf
+Test that get_valid_code returns the most recent code
+The ORDER BY created_at DESC LIMIT 1 should ensure this
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB177\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryGetValidCode\&.test_get_valid_code_success ( self,  activation_repository,  sample_user_id,  mock_activation_row,  mock_activation_dict)"
+
+.PP
+.nf
+Test successfully retrieving a valid code
+Covers lines 23-33 (full method)
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB77\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryGetValidCode\&.test_get_valid_code_with_expired_code ( self,  activation_repository,  sample_user_id)"
+
+.PP
+.nf
+Test get_valid_code with an expired code
+The query should not return it due to expires_at > CURRENT_TIMESTAMP condition
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB145\fP of file \fBtest_activation_repository\&.py\fP\&.
+.SS "test_activation_repository\&.TestActivationRepositoryGetValidCode\&.test_get_valid_code_with_used_code ( self,  activation_repository,  sample_user_id)"
+
+.PP
+.nf
+Test get_valid_code with a used code
+The query should not return it due to used_at IS NULL condition
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB161\fP of file \fBtest_activation_repository\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

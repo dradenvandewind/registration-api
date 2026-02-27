@@ -1,0 +1,28 @@
+\chapter{Architecture Overview}
+\label{md_1-architecture}\index{Architecture Overview@{Architecture Overview}}
+\label{md_1-architecture_autotoc_md0}%
+ \`{}\`{}\`{}mermaid graph TB Client[Client Application] API[Fast\+API Application] DB[(Postgre\+SQL)] Redis[(Redis)] Email[Email Service API]
+
+subgraph "{}\+Docker Containers"{} API DB Redis Email end
+
+Client -\/-\/$>$$\vert$\+HTTP Requests$\vert$ API
+
+subgraph "{}\+API Layer"{} direction TB Router[API Router] Auth[Auth Dependency] Registration[Registration Endpoint] Activation[Activation Endpoint] end
+
+subgraph "{}\+Service Layer"{} direction TB User\+Service[User Service] Activation\+Service[Activation Service] Email\+Service[Email Service] end
+
+subgraph "{}\+Data Layer"{} direction TB User\+Repo[User Repository] Activation\+Repo[Activation Repository] end
+
+Router -\/-\/$>$ Registration Router -\/-\/$>$ Activation Activation -\/-\/$>$ Auth
+
+Registration -\/-\/$>$ User\+Service Registration -\/-\/$>$ Activation\+Service Registration -\/-\/$>$ Email\+Service
+
+Activation -\/-\/$>$ Activation\+Service Activation\+Service -\/-\/$>$ User\+Service
+
+User\+Service -\/-\/$>$ User\+Repo Activation\+Service -\/-\/$>$ Activation\+Repo
+
+User\+Repo -\/-\/$>$ DB Activation\+Repo -\/-\/$>$ DB
+
+Email\+Service -\/-\/$>$$\vert$\+HTTP$\vert$ Email
+
+style API fill\+:\#f9f,stroke\+:\#333,stroke-\/width\+:2px style DB fill\+:\#dfd,stroke\+:\#333,stroke-\/width\+:2px style Redis fill\+:\#ffd,stroke\+:\#333,stroke-\/width\+:2px 

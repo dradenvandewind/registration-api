@@ -1,0 +1,193 @@
+\doxysection{test\+\_\+user\+\_\+service.\+py}
+\label{test__user__service_8py_source}\index{tests/test\_services/test\_user\_service.py@{tests/test\_services/test\_user\_service.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_services/test\_user\_service.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ patch}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID,\ uuid4}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.services.user\_service\ \textcolor{keyword}{import}\ UserService}
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserCreate,\ UserInDB,\ UserResponse}
+\DoxyCodeLine{00007\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserNotFoundError}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{def\ }user\_service():}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ pour\ créer\ une\ instance\ du\ service\ avec\ repository\ mocké"{}"{}"{}}}
+\DoxyCodeLine{00012\ \ \ \ \ service\ =\ UserService()}
+\DoxyCodeLine{00013\ \ \ \ \ service.repository\ =\ AsyncMock()\ \ \textcolor{comment}{\#\ Mock\ du\ repository}}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordflow}{return}\ service}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{def\ }sample\_user\_in\_db():}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ pour\ un\ utilisateur\ tel\ qu'en\ base"{}"{}"{}}}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ id=uuid4(),}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ email=\textcolor{stringliteral}{"{}test@example.com"{}},}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ password\_hash=\textcolor{stringliteral}{"{}hashed\_password"{}},}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ is\_active=\textcolor{keyword}{False},}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ created\_at=\textcolor{stringliteral}{"{}2024-\/01-\/01T00:00:00"{}},}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ updated\_at=\textcolor{stringliteral}{"{}2024-\/01-\/01T00:00:00"{}}}
+\DoxyCodeLine{00026\ \ \ \ \ )}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00029\ \textcolor{keyword}{async\ def\ }test\_get\_user\_success(user\_service,\ sample\_user\_in\_db):}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00031\ \textcolor{stringliteral}{\ \ \ \ Test\ de\ get\_user\ quand\ l'utilisateur\ existe}}
+\DoxyCodeLine{00032\ \textcolor{stringliteral}{\ \ \ \ Couvre\ les\ lignes\ 36-\/39}}
+\DoxyCodeLine{00033\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{\#\ Configuration}}
+\DoxyCodeLine{00035\ \ \ \ \ user\_service.repository.get\_by\_id.return\_value\ =\ sample\_user\_in\_db}
+\DoxyCodeLine{00036\ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{\#\ Exécution}}
+\DoxyCodeLine{00038\ \ \ \ \ result\ =\ await\ user\_service.get\_user(sample\_user\_in\_db.id)}
+\DoxyCodeLine{00039\ \ \ \ \ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{\#\ Vérification}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(result,\ UserResponse)}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{assert}\ result.id\ ==\ sample\_user\_in\_db.id}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{assert}\ result.email\ ==\ sample\_user\_in\_db.email}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{assert}\ result.is\_active\ ==\ sample\_user\_in\_db.is\_active}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{assert}\ result.created\_at\ ==\ sample\_user\_in\_db.created\_at}
+\DoxyCodeLine{00046\ \ \ \ \ }
+\DoxyCodeLine{00047\ \ \ \ \ user\_service.repository.get\_by\_id.assert\_called\_once\_with(sample\_user\_in\_db.id)}
+\DoxyCodeLine{00048\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ get\_user\ -\/\ utilisateur\ trouvé\ retourne\ UserResponse"{}})}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00051\ \textcolor{keyword}{async\ def\ }test\_get\_user\_not\_found(user\_service):}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00053\ \textcolor{stringliteral}{\ \ \ \ Test\ de\ get\_user\ quand\ l'utilisateur\ n'existe\ pas}}
+\DoxyCodeLine{00054\ \textcolor{stringliteral}{\ \ \ \ Couvre\ les\ lignes\ 37-\/39}}
+\DoxyCodeLine{00055\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{\#\ Configuration}}
+\DoxyCodeLine{00057\ \ \ \ \ user\_id\ =\ uuid4()}
+\DoxyCodeLine{00058\ \ \ \ \ user\_service.repository.get\_by\_id.return\_value\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00059\ \ \ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{\#\ Exécution\ et\ vérification}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(UserNotFoundError)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ await\ user\_service.get\_user(user\_id)}
+\DoxyCodeLine{00063\ \ \ \ \ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}User\ not\ found"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00065\ \ \ \ \ user\_service.repository.get\_by\_id.assert\_called\_once\_with(user\_id)}
+\DoxyCodeLine{00066\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ get\_user\ -\/\ utilisateur\ inexistant\ lève\ UserNotFoundError"{}})}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00069\ \textcolor{keyword}{async\ def\ }test\_get\_user\_by\_email\_success(user\_service,\ sample\_user\_in\_db):}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00071\ \textcolor{stringliteral}{\ \ \ \ Test\ de\ get\_user\_by\_email\ quand\ l'utilisateur\ existe}}
+\DoxyCodeLine{00072\ \textcolor{stringliteral}{\ \ \ \ Couvre\ les\ lignes\ 42-\/45}}
+\DoxyCodeLine{00073\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{\#\ Configuration}}
+\DoxyCodeLine{00075\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00076\ \ \ \ \ user\_service.repository.get\_by\_email.return\_value\ =\ sample\_user\_in\_db}
+\DoxyCodeLine{00077\ \ \ \ \ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{comment}{\#\ Exécution}}
+\DoxyCodeLine{00079\ \ \ \ \ result\ =\ await\ user\_service.get\_user\_by\_email(email)}
+\DoxyCodeLine{00080\ \ \ \ \ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{comment}{\#\ Vérification}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(result,\ UserInDB)}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{assert}\ result.email\ ==\ email}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{assert}\ result.password\_hash\ ==\ \textcolor{stringliteral}{"{}hashed\_password"{}}}
+\DoxyCodeLine{00085\ \ \ \ \ }
+\DoxyCodeLine{00086\ \ \ \ \ user\_service.repository.get\_by\_email.assert\_called\_once\_with(email)}
+\DoxyCodeLine{00087\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ get\_user\_by\_email\ -\/\ utilisateur\ trouvé\ retourne\ UserInDB"{}})}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00090\ \textcolor{keyword}{async\ def\ }test\_get\_user\_by\_email\_not\_found(user\_service):}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00092\ \textcolor{stringliteral}{\ \ \ \ Test\ de\ get\_user\_by\_email\ quand\ l'utilisateur\ n'existe\ pas}}
+\DoxyCodeLine{00093\ \textcolor{stringliteral}{\ \ \ \ Couvre\ les\ lignes\ 43-\/45}}
+\DoxyCodeLine{00094\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{comment}{\#\ Configuration}}
+\DoxyCodeLine{00096\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}nonexistent@example.com"{}}}
+\DoxyCodeLine{00097\ \ \ \ \ user\_service.repository.get\_by\_email.return\_value\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00098\ \ \ \ \ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{comment}{\#\ Exécution\ et\ vérification}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(UserNotFoundError)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ await\ user\_service.get\_user\_by\_email(email)}
+\DoxyCodeLine{00102\ \ \ \ \ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}User\ not\ found"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00104\ \ \ \ \ user\_service.repository.get\_by\_email.assert\_called\_once\_with(email)}
+\DoxyCodeLine{00105\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ get\_user\_by\_email\ -\/\ utilisateur\ inexistant\ lève\ UserNotFoundError"{}})}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00108\ \textcolor{keyword}{async\ def\ }test\_activate\_user(user\_service):}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00110\ \textcolor{stringliteral}{\ \ \ \ Test\ de\ activate\_user}}
+\DoxyCodeLine{00111\ \textcolor{stringliteral}{\ \ \ \ Couvre\ la\ ligne\ 48}}
+\DoxyCodeLine{00112\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{comment}{\#\ Configuration}}
+\DoxyCodeLine{00114\ \ \ \ \ user\_id\ =\ uuid4()}
+\DoxyCodeLine{00115\ \ \ \ \ user\_service.repository.activate\_user\ =\ AsyncMock()}
+\DoxyCodeLine{00116\ \ \ \ \ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{\#\ Exécution}}
+\DoxyCodeLine{00118\ \ \ \ \ await\ user\_service.activate\_user(user\_id)}
+\DoxyCodeLine{00119\ \ \ \ \ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{comment}{\#\ Vérification}}
+\DoxyCodeLine{00121\ \ \ \ \ user\_service.repository.activate\_user.assert\_called\_once\_with(user\_id)}
+\DoxyCodeLine{00122\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ activate\_user\ -\/\ appel\ correct\ au\ repository"{}})}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00125\ \textcolor{keyword}{async\ def\ }test\_verify\_credentials\_success(user\_service,\ sample\_user\_in\_db):}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00127\ \textcolor{stringliteral}{\ \ \ \ Test\ de\ verify\_credentials\ avec\ identifiants\ valides}}
+\DoxyCodeLine{00128\ \textcolor{stringliteral}{\ \ \ \ Couvre\ la\ ligne\ 58\ (et\ le\ chemin\ de\ succès)}}
+\DoxyCodeLine{00129\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{\#\ Configuration}}
+\DoxyCodeLine{00131\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00132\ \ \ \ \ password\ =\ \textcolor{stringliteral}{"{}correct\_password"{}}}
+\DoxyCodeLine{00133\ \ \ \ \ sample\_user\_in\_db.password\_hash\ =\ \textcolor{stringliteral}{"{}\$2b\$12\$hashed\_password"{}}\ \ \textcolor{comment}{\#\ Hash\ valide}}
+\DoxyCodeLine{00134\ \ \ \ \ }
+\DoxyCodeLine{00135\ \ \ \ \ user\_service.repository.get\_by\_email.return\_value\ =\ sample\_user\_in\_db}
+\DoxyCodeLine{00136\ \ \ \ \ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{comment}{\#\ ✅\ Mock\ à\ la\ source\ dans\ core.security}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.core.security.verify\_password'},\ return\_value=\textcolor{keyword}{True})\ \textcolor{keyword}{as}\ mock\_verify:}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Exécution}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ result\ =\ await\ user\_service.verify\_credentials(email,\ password)}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Vérification}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ ==\ sample\_user\_in\_db}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ user\_service.repository.get\_by\_email.assert\_called\_once\_with(email)}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ mock\_verify.assert\_called\_once\_with(password,\ sample\_user\_in\_db.password\_hash)}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ verify\_credentials\ -\/\ identifiants\ valides\ retourne\ l'utilisateur"{}})}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00149\ \textcolor{keyword}{async\ def\ }test\_verify\_credentials\_user\_not\_found(user\_service):}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00151\ \textcolor{stringliteral}{\ \ \ \ Test\ de\ verify\_credentials\ quand\ l'utilisateur\ n'existe\ pas}}
+\DoxyCodeLine{00152\ \textcolor{stringliteral}{\ \ \ \ Couvre\ le\ chemin\ alternatif\ de\ la\ ligne\ 58}}
+\DoxyCodeLine{00153\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{comment}{\#\ Configuration}}
+\DoxyCodeLine{00155\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}unknown@example.com"{}}}
+\DoxyCodeLine{00156\ \ \ \ \ password\ =\ \textcolor{stringliteral}{"{}any\_password"{}}}
+\DoxyCodeLine{00157\ \ \ \ \ user\_service.repository.get\_by\_email.return\_value\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00158\ \ \ \ \ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{\#\ Exécution}}
+\DoxyCodeLine{00160\ \ \ \ \ result\ =\ await\ user\_service.verify\_credentials(email,\ password)}
+\DoxyCodeLine{00161\ \ \ \ \ }
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{comment}{\#\ Vérification}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00164\ \ \ \ \ user\_service.repository.get\_by\_email.assert\_called\_once\_with(email)}
+\DoxyCodeLine{00165\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ verify\_credentials\ -\/\ utilisateur\ inexistant\ retourne\ None"{}})}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00168\ \textcolor{keyword}{async\ def\ }test\_verify\_credentials\_wrong\_password(user\_service,\ sample\_user\_in\_db):}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00170\ \textcolor{stringliteral}{\ \ \ \ Test\ de\ verify\_credentials\ avec\ mauvais\ mot\ de\ passe}}
+\DoxyCodeLine{00171\ \textcolor{stringliteral}{\ \ \ \ Couvre\ le\ chemin\ alternatif\ de\ la\ ligne\ 58}}
+\DoxyCodeLine{00172\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{comment}{\#\ Configuration}}
+\DoxyCodeLine{00174\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00175\ \ \ \ \ wrong\_password\ =\ \textcolor{stringliteral}{"{}wrong\_password"{}}}
+\DoxyCodeLine{00176\ \ \ \ \ user\_service.repository.get\_by\_email.return\_value\ =\ sample\_user\_in\_db}
+\DoxyCodeLine{00177\ \ \ \ \ }
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{comment}{\#\ Mock\ de\ verify\_password\ à\ la\ source\ (dans\ core.security)}}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.core.security.verify\_password'},\ return\_value=\textcolor{keyword}{False})\ \textcolor{keyword}{as}\ mock\_verify:}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Exécution}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ result\ =\ await\ user\_service.verify\_credentials(email,\ wrong\_password)}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Vérification}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ user\_service.repository.get\_by\_email.assert\_called\_once\_with(email)}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ mock\_verify.assert\_called\_once\_with(wrong\_password,\ sample\_user\_in\_db.password\_hash)}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ verify\_credentials\ -\/\ mauvais\ mot\ de\ passe\ retourne\ None"{}})}
+
+\end{DoxyCode}

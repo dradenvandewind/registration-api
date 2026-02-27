@@ -1,0 +1,91 @@
+.TH "config.Settings" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+config.Settings
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits BaseSettings\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "str \fBdatabase_url_property\fP (self)"
+.br
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "str \fBdatabase_url\fP = 'postgresql://user:password@db:5432/registration_db'"
+.br
+.ti -1c
+.RI "str \fBredis_url\fP = 'redis://redis:6379'"
+.br
+.ti -1c
+.RI "str \fBsecret_key\fP = 'dev_secret_key_change_in_production'"
+.br
+.ti -1c
+.RI "int \fBbcrypt_rounds\fP = 12"
+.br
+.ti -1c
+.RI "str \fBsmtp_api_url\fP = 'http://mailhog:8025/api/v1/send'"
+.br
+.ti -1c
+.RI "int \fBactivation_code_ttl_seconds\fP = 60"
+.br
+.ti -1c
+.RI "\fBmodel_config\fP = SettingsConfigDict(env_file='\&.env')"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line \fB36\fP of file \fBconfig\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS " str config\&.Settings\&.database_url_property ( self)"
+
+.PP
+.nf
+Return database URL based on environment
+.fi
+.PP
+ 
+.PP
+Definition at line \fB54\fP of file \fBconfig\&.py\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "int config\&.Settings\&.activation_code_ttl_seconds = 60\fC [static]\fP"
+
+.PP
+Definition at line \fB51\fP of file \fBconfig\&.py\fP\&.
+.SS "int config\&.Settings\&.bcrypt_rounds = 12\fC [static]\fP"
+
+.PP
+Definition at line \fB45\fP of file \fBconfig\&.py\fP\&.
+.SS "str config\&.Settings\&.database_url = 'postgresql://user:password@db:5432/registration_db'\fC [static]\fP"
+
+.PP
+Definition at line \fB38\fP of file \fBconfig\&.py\fP\&.
+.SS "config\&.Settings\&.model_config = SettingsConfigDict(env_file='\&.env')\fC [static]\fP"
+
+.PP
+Definition at line \fB60\fP of file \fBconfig\&.py\fP\&.
+.SS "str config\&.Settings\&.redis_url = 'redis://redis:6379'\fC [static]\fP"
+
+.PP
+Definition at line \fB41\fP of file \fBconfig\&.py\fP\&.
+.SS "str config\&.Settings\&.secret_key = 'dev_secret_key_change_in_production'\fC [static]\fP"
+
+.PP
+Definition at line \fB44\fP of file \fBconfig\&.py\fP\&.
+.SS "str config\&.Settings\&.smtp_api_url = 'http://mailhog:8025/api/v1/send'\fC [static]\fP"
+
+.PP
+Definition at line \fB48\fP of file \fBconfig\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

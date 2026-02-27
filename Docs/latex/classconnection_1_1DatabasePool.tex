@@ -1,0 +1,149 @@
+\doxysection{connection.\+Database\+Pool Class Reference}
+\label{classconnection_1_1DatabasePool}\index{connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ \+\_\+\+\_\+init\+\_\+\+\_\+} (self)
+\item 
+\textbf{ initialize} (self)
+\item 
+\textbf{ close} (self)
+\item 
+\textbf{ execute} (self, str query, $\ast$args)
+\item 
+\textbf{ fetch} (self, str query, $\ast$args)
+\item 
+\textbf{ fetchrow} (self, str query, $\ast$args)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ pool}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ \+\_\+initialized}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \textbf{ 5} of file \textbf{ connection.\+py}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\label{classconnection_1_1DatabasePool_a19d45d7114bf9807d3a5ecae88e94383} 
+\index{connection.DatabasePool@{connection.DatabasePool}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection{\_\_init\_\_()}
+{\footnotesize\ttfamily connection.\+Database\+Pool.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Definition at line \textbf{ 6} of file \textbf{ connection.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classconnection_1_1DatabasePool_aff9cb2509f8c4b5ac5d9867b2ca3beb6} 
+\index{connection.DatabasePool@{connection.DatabasePool}!close@{close}}
+\index{close@{close}!connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection{close()}
+{\footnotesize\ttfamily connection.\+Database\+Pool.\+close (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Ferme le pool de connexions\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 28} of file \textbf{ connection.\+py}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{classconnection_1_1DatabasePool_aff9cb2509f8c4b5ac5d9867b2ca3beb6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{classconnection_1_1DatabasePool_aff9cb2509f8c4b5ac5d9867b2ca3beb6_icgraph}
+\end{center}
+\end{figure}
+\label{classconnection_1_1DatabasePool_a3a4fb64bb29e73da55c14663846ee713} 
+\index{connection.DatabasePool@{connection.DatabasePool}!execute@{execute}}
+\index{execute@{execute}!connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection{execute()}
+{\footnotesize\ttfamily connection.\+Database\+Pool.\+execute (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{query,  }\item[{$\ast$}]{args }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Exécute une requête sans retour de résultat\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 36} of file \textbf{ connection.\+py}.
+
+\label{classconnection_1_1DatabasePool_a3a23f5d2437355d79ba06ac977e79aa5} 
+\index{connection.DatabasePool@{connection.DatabasePool}!fetch@{fetch}}
+\index{fetch@{fetch}!connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection{fetch()}
+{\footnotesize\ttfamily connection.\+Database\+Pool.\+fetch (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{query,  }\item[{$\ast$}]{args }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Récupère plusieurs lignes\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 43} of file \textbf{ connection.\+py}.
+
+\label{classconnection_1_1DatabasePool_a06ac88392815f78424a7154878b69fc9} 
+\index{connection.DatabasePool@{connection.DatabasePool}!fetchrow@{fetchrow}}
+\index{fetchrow@{fetchrow}!connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection{fetchrow()}
+{\footnotesize\ttfamily connection.\+Database\+Pool.\+fetchrow (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{query,  }\item[{$\ast$}]{args }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Récupère une seule ligne\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 50} of file \textbf{ connection.\+py}.
+
+\label{classconnection_1_1DatabasePool_a2ceac4cb1abee786dc06a0b04f9fa5b8} 
+\index{connection.DatabasePool@{connection.DatabasePool}!initialize@{initialize}}
+\index{initialize@{initialize}!connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection{initialize()}
+{\footnotesize\ttfamily connection.\+Database\+Pool.\+initialize (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initialise le pool de connexions\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 10} of file \textbf{ connection.\+py}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\label{classconnection_1_1DatabasePool_ad8f467d1f3ce7a11300d45f926718543} 
+\index{connection.DatabasePool@{connection.DatabasePool}!\_initialized@{\_initialized}}
+\index{\_initialized@{\_initialized}!connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection{\_initialized}
+{\footnotesize\ttfamily connection.\+Database\+Pool.\+\_\+initialized\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \textbf{ 8} of file \textbf{ connection.\+py}.
+
+\label{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7} 
+\index{connection.DatabasePool@{connection.DatabasePool}!pool@{pool}}
+\index{pool@{pool}!connection.DatabasePool@{connection.DatabasePool}}
+\doxysubsubsection{pool}
+{\footnotesize\ttfamily connection.\+Database\+Pool.\+pool}
+
+
+
+Definition at line \textbf{ 16} of file \textbf{ connection.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+app/db/connection.\+py\end{DoxyCompactItemize}

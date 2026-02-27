@@ -1,0 +1,28 @@
+\doxysection{user.\+py}
+\label{user_8py_source}\index{app/models/user.py@{app/models/user.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ pydantic\ \textcolor{keyword}{import}\ BaseModel,\ EmailStr,\ Field}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ datetime\ \textcolor{keyword}{import}\ datetime}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }UserCreate(BaseModel):}
+\DoxyCodeLine{00007\ \ \ \ \ email:\ EmailStr}
+\DoxyCodeLine{00008\ \ \ \ \ password:\ str\ =\ Field(min\_length=6)}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UserInDB(BaseModel):}
+\DoxyCodeLine{00011\ \ \ \ \ id:\ UUID}
+\DoxyCodeLine{00012\ \ \ \ \ email:\ EmailStr}
+\DoxyCodeLine{00013\ \ \ \ \ password\_hash:\ str}
+\DoxyCodeLine{00014\ \ \ \ \ is\_active:\ bool}
+\DoxyCodeLine{00015\ \ \ \ \ created\_at:\ datetime}
+\DoxyCodeLine{00016\ \ \ \ \ updated\_at:\ datetime}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }UserResponse(BaseModel):}
+\DoxyCodeLine{00019\ \ \ \ \ id:\ UUID}
+\DoxyCodeLine{00020\ \ \ \ \ email:\ EmailStr}
+\DoxyCodeLine{00021\ \ \ \ \ is\_active:\ bool}
+\DoxyCodeLine{00022\ \ \ \ \ created\_at:\ datetime}
+
+\end{DoxyCode}

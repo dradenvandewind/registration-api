@@ -1,0 +1,168 @@
+.TH "test_config.TestSettingsDatabaseUrl" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+test_config.TestSettingsDatabaseUrl
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBtest_database_url_property_default_main_env\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_database_url_property_with_custom_main_env\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_database_url_property_test_environment_default\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_database_url_property_test_environment_custom\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_database_url_property_with_both_env_vars_main_env\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_database_url_property_with_both_env_vars_test_env\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_database_url_property_missing_env_vars\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_database_url_property_test_env_missing_test_url\fP (self)"
+.br
+.ti -1c
+.RI "\fBtest_database_url_property_with_empty_env_vars\fP (self)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Tests for database_url_property (lines 22-24)
+.fi
+.PP
+ 
+.PP
+Definition at line \fB7\fP of file \fBtest_config\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_default_main_env ( self)"
+
+.PP
+.nf
+Test database_url_property in main environment (not test)
+Covers lines 22-24 with default values
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB10\fP of file \fBtest_config\&.py\fP\&.
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_missing_env_vars ( self)"
+
+.PP
+.nf
+Test database_url_property when no environment variables are set
+Should fall back to defaults
+Covers lines 22-24
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB103\fP of file \fBtest_config\&.py\fP\&.
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_test_env_missing_test_url ( self)"
+
+.PP
+.nf
+Test database_url_property in test environment when TEST_DATABASE_URL is not set
+Should fall back to default test URL
+Covers lines 22-24
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB116\fP of file \fBtest_config\&.py\fP\&.
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_test_environment_custom ( self)"
+
+.PP
+.nf
+Test database_url_property in test environment with custom TEST_DATABASE_URL
+Covers lines 22-24 with custom test URL
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB53\fP of file \fBtest_config\&.py\fP\&.
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_test_environment_default ( self)"
+
+.PP
+.nf
+Test database_url_property in test environment with default TEST_DATABASE_URL
+Covers lines 22-24 with test environment
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB41\fP of file \fBtest_config\&.py\fP\&.
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_with_both_env_vars_main_env ( self)"
+
+.PP
+.nf
+Test database_url_property when both DATABASE_URL and TEST_DATABASE_URL are set but ENVIRONMENT is not test
+Should use DATABASE_URL
+Covers lines 22-24
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB70\fP of file \fBtest_config\&.py\fP\&.
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_with_both_env_vars_test_env ( self)"
+
+.PP
+.nf
+Test database_url_property when both DATABASE_URL and TEST_DATABASE_URL are set and ENVIRONMENT is test
+Should use TEST_DATABASE_URL
+Covers lines 22-24
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB86\fP of file \fBtest_config\&.py\fP\&.
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_with_custom_main_env ( self)"
+
+.PP
+.nf
+Test database_url_property with custom DATABASE_URL in main environment
+Covers lines 22-24 with custom value
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB27\fP of file \fBtest_config\&.py\fP\&.
+.SS "test_config\&.TestSettingsDatabaseUrl\&.test_database_url_property_with_empty_env_vars ( self)"
+
+.PP
+.nf
+Test database_url_property with empty string environment variables
+Covers lines 22-24
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB129\fP of file \fBtest_config\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

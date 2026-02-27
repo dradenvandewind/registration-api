@@ -1,0 +1,96 @@
+\doxysection{test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Get\+Valid\+Code Class Reference}
+\label{classtest__activation__repository_1_1TestActivationRepositoryGetValidCode}\index{test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ test\+\_\+get\+\_\+valid\+\_\+code\+\_\+success} (self, activation\+\_\+repository, sample\+\_\+user\+\_\+id, mock\+\_\+activation\+\_\+row, mock\+\_\+activation\+\_\+dict)
+\item 
+\textbf{ test\+\_\+get\+\_\+valid\+\_\+code\+\_\+not\+\_\+found} (self, activation\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+get\+\_\+valid\+\_\+code\+\_\+with\+\_\+expired\+\_\+code} (self, activation\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+get\+\_\+valid\+\_\+code\+\_\+with\+\_\+used\+\_\+code} (self, activation\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+get\+\_\+valid\+\_\+code\+\_\+orders\+\_\+by\+\_\+created\+\_\+at\+\_\+desc} (self, activation\+\_\+repository, sample\+\_\+user\+\_\+id, mock\+\_\+activation\+\_\+row)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Tests for get_valid_code method (lines 23-33)\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 73} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classtest__activation__repository_1_1TestActivationRepositoryGetValidCode_aab160a81131cac81b9b16d151d7f8ba2} 
+\index{test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}!test\_get\_valid\_code\_not\_found@{test\_get\_valid\_code\_not\_found}}
+\index{test\_get\_valid\_code\_not\_found@{test\_get\_valid\_code\_not\_found}!test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}}
+\doxysubsubsection{test\_get\_valid\_code\_not\_found()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Get\+Valid\+Code.\+test\+\_\+get\+\_\+valid\+\_\+code\+\_\+not\+\_\+found (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test get_valid_code when no valid code exists
+Covers line 33 (return None path)
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 125} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+\label{classtest__activation__repository_1_1TestActivationRepositoryGetValidCode_a52a4079787439ea6e261654726aa9838} 
+\index{test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}!test\_get\_valid\_code\_orders\_by\_created\_at\_desc@{test\_get\_valid\_code\_orders\_by\_created\_at\_desc}}
+\index{test\_get\_valid\_code\_orders\_by\_created\_at\_desc@{test\_get\_valid\_code\_orders\_by\_created\_at\_desc}!test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}}
+\doxysubsubsection{test\_get\_valid\_code\_orders\_by\_created\_at\_desc()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Get\+Valid\+Code.\+test\+\_\+get\+\_\+valid\+\_\+code\+\_\+orders\+\_\+by\+\_\+created\+\_\+at\+\_\+desc (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{mock\+\_\+activation\+\_\+row }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test that get_valid_code returns the most recent code
+The ORDER BY created_at DESC LIMIT 1 should ensure this
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 177} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+\label{classtest__activation__repository_1_1TestActivationRepositoryGetValidCode_aaf9c597faa236f0a09aa9ebfa6424388} 
+\index{test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}!test\_get\_valid\_code\_success@{test\_get\_valid\_code\_success}}
+\index{test\_get\_valid\_code\_success@{test\_get\_valid\_code\_success}!test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}}
+\doxysubsubsection{test\_get\_valid\_code\_success()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Get\+Valid\+Code.\+test\+\_\+get\+\_\+valid\+\_\+code\+\_\+success (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{mock\+\_\+activation\+\_\+row,  }\item[{}]{mock\+\_\+activation\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test successfully retrieving a valid code
+Covers lines 23-33 (full method)
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 77} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+\label{classtest__activation__repository_1_1TestActivationRepositoryGetValidCode_a4da6788d4b8993c242d8292739c03f32} 
+\index{test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}!test\_get\_valid\_code\_with\_expired\_code@{test\_get\_valid\_code\_with\_expired\_code}}
+\index{test\_get\_valid\_code\_with\_expired\_code@{test\_get\_valid\_code\_with\_expired\_code}!test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}}
+\doxysubsubsection{test\_get\_valid\_code\_with\_expired\_code()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Get\+Valid\+Code.\+test\+\_\+get\+\_\+valid\+\_\+code\+\_\+with\+\_\+expired\+\_\+code (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test get_valid_code with an expired code
+The query should not return it due to expires_at > CURRENT_TIMESTAMP condition
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 145} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+\label{classtest__activation__repository_1_1TestActivationRepositoryGetValidCode_a7314dc066a24f7bbe9db267c661a238e} 
+\index{test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}!test\_get\_valid\_code\_with\_used\_code@{test\_get\_valid\_code\_with\_used\_code}}
+\index{test\_get\_valid\_code\_with\_used\_code@{test\_get\_valid\_code\_with\_used\_code}!test\_activation\_repository.TestActivationRepositoryGetValidCode@{test\_activation\_repository.TestActivationRepositoryGetValidCode}}
+\doxysubsubsection{test\_get\_valid\_code\_with\_used\_code()}
+{\footnotesize\ttfamily test\+\_\+activation\+\_\+repository.\+Test\+Activation\+Repository\+Get\+Valid\+Code.\+test\+\_\+get\+\_\+valid\+\_\+code\+\_\+with\+\_\+used\+\_\+code (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{activation\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test get_valid_code with a used code
+The query should not return it due to used_at IS NULL condition
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 161} of file \textbf{ test\+\_\+activation\+\_\+repository.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/test\+\_\+repositories/test\+\_\+activation\+\_\+repository.\+py\end{DoxyCompactItemize}

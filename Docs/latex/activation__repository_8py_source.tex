@@ -1,0 +1,52 @@
+\doxysection{activation\+\_\+repository.\+py}
+\label{activation__repository_8py_source}\index{app/db/repositories/activation\_repository.py@{app/db/repositories/activation\_repository.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ app.db.connection\ \textcolor{keyword}{import}\ db}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.models.activation\ \textcolor{keyword}{import}\ ActivationCodeInDB,\ ActivationCodeCreate}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ datetime\ \textcolor{keyword}{import}\ datetime,\ timedelta}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }ActivationRepository:}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{keyword}{async\ def\ }create(self,\ activation\_data:\ ActivationCodeCreate)\ -\/>\ ActivationCodeInDB:}
+\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00010\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ INSERT\ INTO\ activation\_codes\ (user\_id,\ code,\ expires\_at)}}
+\DoxyCodeLine{00011\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ VALUES\ (\$1,\ \$2,\ \$3)}}
+\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ RETURNING\ id,\ user\_id,\ code,\ expires\_at,\ used\_at,\ created\_at}}
+\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ query,\ }
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ activation\_data.user\_id,\ }
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ activation\_data.code,\ }
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ activation\_data.expires\_at}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ActivationCodeInDB(**dict(row))}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{async\ def\ }get\_valid\_code(self,\ user\_id:\ UUID,\ code:\ str)\ -\/>\ Optional[ActivationCodeInDB]:}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00024\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ SELECT\ *\ FROM\ activation\_codes\ }}
+\DoxyCodeLine{00025\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ WHERE\ user\_id\ =\ \$1\ }}
+\DoxyCodeLine{00026\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ AND\ code\ =\ \$2\ }}
+\DoxyCodeLine{00027\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ AND\ used\_at\ IS\ NULL\ }}
+\DoxyCodeLine{00028\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ AND\ expires\_at\ >\ CURRENT\_TIMESTAMP}}
+\DoxyCodeLine{00029\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ ORDER\ BY\ created\_at\ DESC\ }}
+\DoxyCodeLine{00030\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ LIMIT\ 1}}
+\DoxyCodeLine{00031\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ user\_id,\ code)}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ActivationCodeInDB(**dict(row))\ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{else}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{async\ def\ }mark\_as\_used(self,\ code\_id:\ UUID)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}UPDATE\ activation\_codes\ SET\ used\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ await\ db.execute(query,\ code\_id)}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{async\ def\ }invalidate\_old\_codes(self,\ user\_id:\ UUID)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Mark\ all\ previous\ codes\ as\ used"{}"{}"{}}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00042\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ UPDATE\ activation\_codes\ }}
+\DoxyCodeLine{00043\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ SET\ used\_at\ =\ CURRENT\_TIMESTAMP\ }}
+\DoxyCodeLine{00044\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ WHERE\ user\_id\ =\ \$1\ AND\ used\_at\ IS\ NULL}}
+\DoxyCodeLine{00045\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ await\ db.execute(query,\ user\_id)}
+
+\end{DoxyCode}

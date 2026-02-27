@@ -1,0 +1,252 @@
+\doxysection{test\+\_\+activation.\+py}
+\label{test__activation_8py_source}\index{tests/test\_api/test\_activation.py@{tests/test\_api/test\_activation.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ httpx\ \textcolor{keyword}{import}\ AsyncClient,\ ASGITransport}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ base64\ \textcolor{keyword}{import}\ b64encode}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ app.main\ \textcolor{keyword}{import}\ app}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ patch,\ MagicMock}
+\DoxyCodeLine{00007\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ HTTPException,\ status}
+\DoxyCodeLine{00008\ \textcolor{keyword}{from}\ fastapi.security\ \textcolor{keyword}{import}\ HTTPBasicCredentials}
+\DoxyCodeLine{00009\ \textcolor{keyword}{from}\ app.api.v1.endpoints.activation\ \textcolor{keyword}{import}\ activate\_account}
+\DoxyCodeLine{00010\ \textcolor{keyword}{from}\ app.models.activation\ \textcolor{keyword}{import}\ ActivationRequest}
+\DoxyCodeLine{00011\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserInDB}
+\DoxyCodeLine{00012\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ (}
+\DoxyCodeLine{00013\ \ \ \ \ InvalidActivationCodeError,}
+\DoxyCodeLine{00014\ \ \ \ \ UserNotFoundError,}
+\DoxyCodeLine{00015\ \ \ \ \ UserAlreadyActiveError}
+\DoxyCodeLine{00016\ )}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{def\ }basic\_auth\_header(username:\ str,\ password:\ str)\ -\/>\ dict:}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Génère\ un\ header\ Basic\ Auth"{}"{}"{}}}
+\DoxyCodeLine{00020\ \ \ \ \ credentials\ =\ f\textcolor{stringliteral}{"{}\{username\}:\{password\}"{}}}
+\DoxyCodeLine{00021\ \ \ \ \ encoded\ =\ b64encode(credentials.encode()).decode()}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{stringliteral}{"{}Authorization"{}}:\ f\textcolor{stringliteral}{"{}Basic\ \{encoded\}"{}}\}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{async\ def\ }test\_activate\_account\_unauthorized():}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ sans\ authentification\ valide"{}"{}"{}}}
+\DoxyCodeLine{00027\ \ \ \ \ transport\ =\ ASGITransport(}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ app=app}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ AsyncClient(transport=transport,\ base\_url=\textcolor{stringliteral}{"{}http://test"{}})\ \textcolor{keyword}{as}\ client:}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ response\ =\ await\ client.post(}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}/v1/activation"{}},}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ json=\{\textcolor{stringliteral}{"{}code"{}}:\ \textcolor{stringliteral}{"{}123456"{}}\},}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ headers=basic\_auth\_header(\textcolor{stringliteral}{"{}wrong@email.com"{}},\ \textcolor{stringliteral}{"{}wrongpassword"{}})}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.status\_code\ ==\ 401}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Requête\ non\ autorisée\ correctement\ rejetée"{}})}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{async\ def\ }test\_activate\_account\_invalid\_code():}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Test\ avec\ code\ invalide"{}"{}"{}}}
+\DoxyCodeLine{00043\ \ \ \ \ transport\ =\ ASGITransport(}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ app=app}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ AsyncClient(transport=transport,\ base\_url=\textcolor{stringliteral}{"{}http://test"{}})\ \textcolor{keyword}{as}\ client:}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ TEST\_PASSWORD\ =\ \textcolor{stringliteral}{"{}secure123"{}}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ TEST\_EMAIL\ =\ \textcolor{stringliteral}{"{}invalidcode@example.com"{}}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ D\(\backslash\)'abord\ créer\ un\ utilisateur}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ register\_response\ =\ await\ client.post(}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}/v1/registration"{}},}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ json=\{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}email"{}}:\ TEST\_EMAIL,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}password"{}}:\ TEST\_PASSWORD}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ register\_response.status\_code\ ==\ 201}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Utilisateur\ créé\ pour\ le\ test"{}})}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Essayer\ avec\ un\ mauvais\ code}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ headers\ =\ basic\_auth\_header(TEST\_EMAIL,\ TEST\_PASSWORD)}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ response\ =\ await\ client.post(}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}/v1/activation"{}},}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ json=\{\textcolor{stringliteral}{"{}code"{}}:\ \textcolor{stringliteral}{"{}9999"{}}\},}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ headers=headers}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.status\_code\ ==\ 400}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}invalid"{}}\ \textcolor{keywordflow}{in}\ response.json()[\textcolor{stringliteral}{"{}detail"{}}].lower()}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Code\ invalide\ correctement\ rejeté"{}})}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00073\ \textcolor{keyword}{async\ def\ }test\_activate\_account\_handles\_exceptions():}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00075\ \textcolor{stringliteral}{\ \ \ \ Test\ that\ activate\_account\ properly\ catches\ exceptions\ and\ raises\ HTTPException}}
+\DoxyCodeLine{00076\ \textcolor{stringliteral}{\ \ \ \ Covers\ line\ 31\ (the\ except\ block\ that\ catches\ multiple\ exceptions)}}
+\DoxyCodeLine{00077\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{comment}{\#\ Create\ test\ data}}
+\DoxyCodeLine{00079\ \ \ \ \ activation\_request\ =\ ActivationRequest(code=\textcolor{stringliteral}{"{}123456"{}})}
+\DoxyCodeLine{00080\ \ \ \ \ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{comment}{\#\ Create\ a\ mock\ current\ user}}
+\DoxyCodeLine{00082\ \ \ \ \ mock\_user\ =\ UserInDB(}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ id=\textcolor{stringliteral}{"{}123e4567-\/e89b-\/12d3-\/a456-\/426614174000"{}},}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ email=\textcolor{stringliteral}{"{}test@example.com"{}},}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ password\_hash=\textcolor{stringliteral}{"{}hashed\_password"{}},}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ is\_active=\textcolor{keyword}{False},}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ created\_at=\textcolor{stringliteral}{"{}2024-\/01-\/01T00:00:00"{}},}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ updated\_at=\textcolor{stringliteral}{"{}2024-\/01-\/01T00:00:00"{}}}
+\DoxyCodeLine{00089\ \ \ \ \ )}
+\DoxyCodeLine{00090\ \ \ \ \ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{\#\ Test\ each\ exception\ type\ to\ ensure\ line\ 31\ catches\ them\ all}}
+\DoxyCodeLine{00092\ \ \ \ \ exceptions\_to\_test\ =\ [}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ (UserNotFoundError(\textcolor{stringliteral}{"{}User\ not\ found"{}}),\ \textcolor{stringliteral}{"{}User\ not\ found"{}}),}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ (UserAlreadyActiveError(\textcolor{stringliteral}{"{}User\ is\ already\ active"{}}),\ \textcolor{stringliteral}{"{}User\ is\ already\ active"{}}),}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ (InvalidActivationCodeError(\textcolor{stringliteral}{"{}Invalid\ or\ expired\ activation\ code"{}}),\ \textcolor{stringliteral}{"{}Invalid\ or\ expired\ activation\ code"{}})}
+\DoxyCodeLine{00096\ \ \ \ \ ]}
+\DoxyCodeLine{00097\ \ \ \ \ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{for}\ exception,\ expected\_message\ \textcolor{keywordflow}{in}\ exceptions\_to\_test:}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Mock\ the\ ActivationService\ to\ raise\ the\ exception}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.api.v1.endpoints.activation.ActivationService'})\ \textcolor{keyword}{as}\ mock\_service\_class:}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_service.activate\_user\ =\ AsyncMock(side\_effect=exception)}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_service\_class.return\_value\ =\ mock\_service}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute\ \&\ Verify}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ await\ activate\_account(activation\_request,\ mock\_user)}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ the\ HTTP\ exception\ (line\ 31)}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_400\_BAD\_REQUEST}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ expected\_message}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify\ the\ service\ was\ called}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_service.activate\_user.assert\_called\_once\_with(}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mock\_user.id,}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ activation\_request.code}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00118\ \ \ \ \ }
+\DoxyCodeLine{00119\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Line\ 31:\ All\ exceptions\ properly\ caught\ and\ converted\ to\ HTTP\ 400"{}})}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00122\ \textcolor{keyword}{async\ def\ }test\_activate\_account\_user\_not\_found():}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00124\ \textcolor{stringliteral}{\ \ \ \ Test\ that\ UserNotFoundError\ is\ properly\ caught\ and\ converted}}
+\DoxyCodeLine{00125\ \textcolor{stringliteral}{\ \ \ \ Specifically\ tests\ line\ 31\ with\ UserNotFoundError}}
+\DoxyCodeLine{00126\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00127\ \ \ \ \ activation\_request\ =\ ActivationRequest(code=\textcolor{stringliteral}{"{}123456"{}})}
+\DoxyCodeLine{00128\ \ \ \ \ mock\_user\ =\ MagicMock(spec=UserInDB)}
+\DoxyCodeLine{00129\ \ \ \ \ mock\_user.id\ =\ \textcolor{stringliteral}{"{}test-\/id"{}}}
+\DoxyCodeLine{00130\ \ \ \ \ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.api.v1.endpoints.activation.ActivationService'})\ \textcolor{keyword}{as}\ mock\_service\_class:}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ mock\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ mock\_service.activate\_user\ =\ AsyncMock(side\_effect=UserNotFoundError(\textcolor{stringliteral}{"{}User\ not\ found"{}}))}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ mock\_service\_class.return\_value\ =\ mock\_service}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activate\_account(activation\_request,\ mock\_user)}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_400\_BAD\_REQUEST}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}User\ not\ found"{}}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ UserNotFoundError\ correctly\ handled\ in\ line\ 31"{}})}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00145\ \textcolor{keyword}{async\ def\ }test\_activate\_account\_user\_already\_active():}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00147\ \textcolor{stringliteral}{\ \ \ \ Test\ that\ UserAlreadyActiveError\ is\ properly\ caught\ and\ converted}}
+\DoxyCodeLine{00148\ \textcolor{stringliteral}{\ \ \ \ Specifically\ tests\ line\ 31\ with\ UserAlreadyActiveError}}
+\DoxyCodeLine{00149\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00150\ \ \ \ \ activation\_request\ =\ ActivationRequest(code=\textcolor{stringliteral}{"{}123456"{}})}
+\DoxyCodeLine{00151\ \ \ \ \ mock\_user\ =\ MagicMock(spec=UserInDB)}
+\DoxyCodeLine{00152\ \ \ \ \ mock\_user.id\ =\ \textcolor{stringliteral}{"{}test-\/id"{}}}
+\DoxyCodeLine{00153\ \ \ \ \ }
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.api.v1.endpoints.activation.ActivationService'})\ \textcolor{keyword}{as}\ mock\_service\_class:}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ mock\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ mock\_service.activate\_user\ =\ AsyncMock(side\_effect=UserAlreadyActiveError(\textcolor{stringliteral}{"{}User\ is\ already\ active"{}}))}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ mock\_service\_class.return\_value\ =\ mock\_service}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activate\_account(activation\_request,\ mock\_user)}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_400\_BAD\_REQUEST}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}User\ is\ already\ active"{}}}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ UserAlreadyActiveError\ correctly\ handled\ in\ line\ 31"{}})}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00168\ \textcolor{keyword}{async\ def\ }test\_activate\_account\_invalid\_code():}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00170\ \textcolor{stringliteral}{\ \ \ \ Test\ that\ InvalidActivationCodeError\ is\ properly\ caught\ and\ converted}}
+\DoxyCodeLine{00171\ \textcolor{stringliteral}{\ \ \ \ Specifically\ tests\ line\ 31\ with\ InvalidActivationCodeError}}
+\DoxyCodeLine{00172\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00173\ \ \ \ \ activation\_request\ =\ ActivationRequest(code=\textcolor{stringliteral}{"{}123456"{}})}
+\DoxyCodeLine{00174\ \ \ \ \ mock\_user\ =\ MagicMock(spec=UserInDB)}
+\DoxyCodeLine{00175\ \ \ \ \ mock\_user.id\ =\ \textcolor{stringliteral}{"{}test-\/id"{}}}
+\DoxyCodeLine{00176\ \ \ \ \ }
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.api.v1.endpoints.activation.ActivationService'})\ \textcolor{keyword}{as}\ mock\_service\_class:}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ mock\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ mock\_service.activate\_user\ =\ AsyncMock(side\_effect=InvalidActivationCodeError(\textcolor{stringliteral}{"{}Invalid\ or\ expired\ activation\ code"{}}))}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ mock\_service\_class.return\_value\ =\ mock\_service}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(HTTPException)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activate\_account(activation\_request,\ mock\_user)}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.status\_code\ ==\ status.HTTP\_400\_BAD\_REQUEST}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ exc\_info.value.detail\ ==\ \textcolor{stringliteral}{"{}Invalid\ or\ expired\ activation\ code"{}}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ InvalidActivationCodeError\ correctly\ handled\ in\ line\ 31"{}})}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00191\ \textcolor{keyword}{async\ def\ }test\_activate\_account\_success():}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00193\ \textcolor{stringliteral}{\ \ \ \ Test\ successful\ activation\ (happy\ path)}}
+\DoxyCodeLine{00194\ \textcolor{stringliteral}{\ \ \ \ Ensures\ line\ 31\ is\ not\ triggered\ when\ no\ exception\ occurs}}
+\DoxyCodeLine{00195\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00196\ \ \ \ \ activation\_request\ =\ ActivationRequest(code=\textcolor{stringliteral}{"{}123456"{}})}
+\DoxyCodeLine{00197\ \ \ \ \ mock\_user\ =\ UserInDB(}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ id=\textcolor{stringliteral}{"{}123e4567-\/e89b-\/12d3-\/a456-\/426614174000"{}},}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ email=\textcolor{stringliteral}{"{}test@example.com"{}},}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ password\_hash=\textcolor{stringliteral}{"{}hashed\_password"{}},}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ is\_active=\textcolor{keyword}{False},}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ created\_at=\textcolor{stringliteral}{"{}2024-\/01-\/01T00:00:00"{}},}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ updated\_at=\textcolor{stringliteral}{"{}2024-\/01-\/01T00:00:00"{}}}
+\DoxyCodeLine{00204\ \ \ \ \ )}
+\DoxyCodeLine{00205\ \ \ \ \ }
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.api.v1.endpoints.activation.ActivationService'})\ \textcolor{keyword}{as}\ mock\_service\_class:}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ mock\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ mock\_service.activate\_user\ =\ AsyncMock(return\_value=\textcolor{keyword}{True})}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ mock\_service\_class.return\_value\ =\ mock\_service}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ response\ =\ await\ activate\_account(activation\_request,\ mock\_user)}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.message\ ==\ \textcolor{stringliteral}{"{}Account\ activated\ successfully"{}}}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ response.user\_id\ ==\ mock\_user.id}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ mock\_service.activate\_user.assert\_called\_once\_with(}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ mock\_user.id,}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ activation\_request.code}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Successful\ activation\ (line\ 31\ not\ triggered)"{}})}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00225\ \textcolor{keyword}{async\ def\ }test\_activate\_account\_unexpected\_exception():}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00227\ \textcolor{stringliteral}{\ \ \ \ Test\ that\ unexpected\ exceptions\ are\ not\ caught\ by\ line\ 31}}
+\DoxyCodeLine{00228\ \textcolor{stringliteral}{\ \ \ \ They\ should\ propagate\ normally}}
+\DoxyCodeLine{00229\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00230\ \ \ \ \ activation\_request\ =\ ActivationRequest(code=\textcolor{stringliteral}{"{}123456"{}})}
+\DoxyCodeLine{00231\ \ \ \ \ mock\_user\ =\ MagicMock(spec=UserInDB)}
+\DoxyCodeLine{00232\ \ \ \ \ mock\_user.id\ =\ \textcolor{stringliteral}{"{}test-\/id"{}}}
+\DoxyCodeLine{00233\ \ \ \ \ }
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'app.api.v1.endpoints.activation.ActivationService'})\ \textcolor{keyword}{as}\ mock\_service\_class:}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ mock\_service\ =\ AsyncMock()}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ mock\_service.activate\_user\ =\ AsyncMock(side\_effect=Exception(\textcolor{stringliteral}{"{}Unexpected\ database\ error"{}}))}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ mock\_service\_class.return\_value\ =\ mock\_service}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ The\ exception\ should\ propagate,\ not\ be\ caught}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ pytest.raises(Exception)\ \textcolor{keyword}{as}\ exc\_info:}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ await\ activate\_account(activation\_request,\ mock\_user)}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{stringliteral}{"{}Unexpected\ database\ error"{}}\ \textcolor{keywordflow}{in}\ str(exc\_info.value)}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ \textcolor{keywordflow}{not}\ isinstance(exc\_info.value,\ HTTPException)}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Unexpected\ exceptions\ not\ caught\ by\ line\ 31"{}})}
+
+\end{DoxyCode}

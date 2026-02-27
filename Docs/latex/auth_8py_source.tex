@@ -1,0 +1,39 @@
+\doxysection{auth.\+py}
+\label{auth_8py_source}\index{app/dependencies/auth.py@{app/dependencies/auth.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ Depends,\ HTTPException,\ status}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ fastapi.security\ \textcolor{keyword}{import}\ HTTPBasic,\ HTTPBasicCredentials}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.services.user\_service\ \textcolor{keyword}{import}\ UserService}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserNotFoundError}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ security\ =\ HTTPBasic()}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{async\ def\ }get\_current\_user(}
+\DoxyCodeLine{00009\ \ \ \ \ credentials:\ HTTPBasicCredentials\ =\ Depends(security)}
+\DoxyCodeLine{00010\ ):}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Dependency\ to\ get\ current\ authenticated\ user"{}"{}"{}}}
+\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ user\_service\ =\ UserService()}}
+\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ }}
+\DoxyCodeLine{00014\ \textcolor{stringliteral}{\ \ \ \ try:}}
+\DoxyCodeLine{00015\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ user\ =\ await\ user\_service.verify\_credentials(}}
+\DoxyCodeLine{00016\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ credentials.username,\ }}
+\DoxyCodeLine{00017\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ credentials.password}}
+\DoxyCodeLine{00018\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ )}}
+\DoxyCodeLine{00019\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{00020\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ if\ not\ user:}}
+\DoxyCodeLine{00021\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ raise\ HTTPException(}}
+\DoxyCodeLine{00022\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_401\_UNAUTHORIZED,}}
+\DoxyCodeLine{00023\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ detail="{}Invalid\ credentials"{},}}
+\DoxyCodeLine{00024\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ headers=\{"{}WWW-\/Authenticate"{}:\ "{}Basic"{}\},}}
+\DoxyCodeLine{00025\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ )}}
+\DoxyCodeLine{00026\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{00027\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ return\ user}}
+\DoxyCodeLine{00028\ \textcolor{stringliteral}{\ \ \ \ except\ UserNotFoundError:}}
+\DoxyCodeLine{00029\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ raise\ HTTPException(}}
+\DoxyCodeLine{00030\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_401\_UNAUTHORIZED,}}
+\DoxyCodeLine{00031\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ detail="{}Invalid\ credentials"{},}}
+\DoxyCodeLine{00032\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ headers=\{"{}WWW-\/Authenticate"{}:\ "{}Basic"{}\},}}
+\DoxyCodeLine{00033\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ )}}
+
+\end{DoxyCode}

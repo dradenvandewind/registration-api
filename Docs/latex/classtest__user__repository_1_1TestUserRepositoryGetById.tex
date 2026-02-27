@@ -1,0 +1,66 @@
+\doxysection{test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Get\+By\+Id Class Reference}
+\label{classtest__user__repository_1_1TestUserRepositoryGetById}\index{test\_user\_repository.TestUserRepositoryGetById@{test\_user\_repository.TestUserRepositoryGetById}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ test\+\_\+get\+\_\+by\+\_\+id\+\_\+success} (self, user\+\_\+repository, sample\+\_\+user\+\_\+id, mock\+\_\+user\+\_\+row, mock\+\_\+user\+\_\+dict)
+\item 
+\textbf{ test\+\_\+get\+\_\+by\+\_\+id\+\_\+not\+\_\+found} (self, user\+\_\+repository, sample\+\_\+user\+\_\+id)
+\item 
+\textbf{ test\+\_\+get\+\_\+by\+\_\+id\+\_\+db\+\_\+error} (self, user\+\_\+repository, sample\+\_\+user\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Tests for get_by_id method (lines 24-26)\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 66} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classtest__user__repository_1_1TestUserRepositoryGetById_ac6ef72487b940664f70bc0d68c0d80dd} 
+\index{test\_user\_repository.TestUserRepositoryGetById@{test\_user\_repository.TestUserRepositoryGetById}!test\_get\_by\_id\_db\_error@{test\_get\_by\_id\_db\_error}}
+\index{test\_get\_by\_id\_db\_error@{test\_get\_by\_id\_db\_error}!test\_user\_repository.TestUserRepositoryGetById@{test\_user\_repository.TestUserRepositoryGetById}}
+\doxysubsubsection{test\_get\_by\_id\_db\_error()}
+{\footnotesize\ttfamily test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Get\+By\+Id.\+test\+\_\+get\+\_\+by\+\_\+id\+\_\+db\+\_\+error (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{user\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test database error during get_by_id
+Ensures error propagation
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 114} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+\label{classtest__user__repository_1_1TestUserRepositoryGetById_a4a290fb140de469fba0a2a3bf0a99a5d} 
+\index{test\_user\_repository.TestUserRepositoryGetById@{test\_user\_repository.TestUserRepositoryGetById}!test\_get\_by\_id\_not\_found@{test\_get\_by\_id\_not\_found}}
+\index{test\_get\_by\_id\_not\_found@{test\_get\_by\_id\_not\_found}!test\_user\_repository.TestUserRepositoryGetById@{test\_user\_repository.TestUserRepositoryGetById}}
+\doxysubsubsection{test\_get\_by\_id\_not\_found()}
+{\footnotesize\ttfamily test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Get\+By\+Id.\+test\+\_\+get\+\_\+by\+\_\+id\+\_\+not\+\_\+found (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{user\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test get_by_id when user does not exist
+Covers line 26 (return None path)
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 96} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+\label{classtest__user__repository_1_1TestUserRepositoryGetById_a15440f7d8201115d335028269f3e51fe} 
+\index{test\_user\_repository.TestUserRepositoryGetById@{test\_user\_repository.TestUserRepositoryGetById}!test\_get\_by\_id\_success@{test\_get\_by\_id\_success}}
+\index{test\_get\_by\_id\_success@{test\_get\_by\_id\_success}!test\_user\_repository.TestUserRepositoryGetById@{test\_user\_repository.TestUserRepositoryGetById}}
+\doxysubsubsection{test\_get\_by\_id\_success()}
+{\footnotesize\ttfamily test\+\_\+user\+\_\+repository.\+Test\+User\+Repository\+Get\+By\+Id.\+test\+\_\+get\+\_\+by\+\_\+id\+\_\+success (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{user\+\_\+repository,  }\item[{}]{sample\+\_\+user\+\_\+id,  }\item[{}]{mock\+\_\+user\+\_\+row,  }\item[{}]{mock\+\_\+user\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Test successfully retrieving a user by ID
+Covers lines 24-26
+\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 70} of file \textbf{ test\+\_\+user\+\_\+repository.\+py}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/test\+\_\+repositories/test\+\_\+user\+\_\+repository.\+py\end{DoxyCompactItemize}

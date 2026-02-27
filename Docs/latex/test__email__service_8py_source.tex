@@ -1,0 +1,217 @@
+\doxysection{test\+\_\+email\+\_\+service.\+py}
+\label{test__email__service_8py_source}\index{tests/test\_services/test\_email\_service.py@{tests/test\_services/test\_email\_service.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{\#\ tests/test\_services/test\_email\_service.py}}
+\DoxyCodeLine{00002\ \textcolor{keyword}{import}\ pytest}
+\DoxyCodeLine{00003\ \textcolor{keyword}{import}\ httpx}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ unittest.mock\ \textcolor{keyword}{import}\ AsyncMock,\ patch,\ MagicMock}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.services.email\_service\ \textcolor{keyword}{import}\ EmailService,\ email\_service}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{@pytest.fixture}}
+\DoxyCodeLine{00008\ \textcolor{keyword}{def\ }email\_service\_instance():}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Fixture\ to\ create\ a\ clean\ EmailService\ instance"{}"{}"{}}}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordflow}{return}\ EmailService()}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{async\ def\ }test\_email\_service\_context\_manager(email\_service\_instance):}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00015\ \textcolor{stringliteral}{\ \ \ \ Test\ the\ context\ manager\ (\_\_aenter\_\_\ and\ \_\_aexit\_\_)}}
+\DoxyCodeLine{00016\ \textcolor{stringliteral}{\ \ \ \ Covers\ lines\ 11-\/12}}
+\DoxyCodeLine{00017\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{comment}{\#\ Use\ as\ context\ manager}}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ email\_service\_instance\ \textcolor{keyword}{as}\ service:}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ service.client\ \textcolor{keywordflow}{is}\ \textcolor{keywordflow}{not}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(service.client,\ httpx.AsyncClient)}
+\DoxyCodeLine{00022\ \ \ \ \ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{\#\ After\ exiting\ the\ context\ manager,\ the\ client\ is\ closed}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{comment}{\#\ Note:\ we\ can't\ directly\ verify\ as\ aclose()\ is\ called}}
+\DoxyCodeLine{00025\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Context\ manager\ works\ correctly"{}})}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{async\ def\ }test\_send\_activation\_code\_success(email\_service\_instance):}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00030\ \textcolor{stringliteral}{\ \ \ \ Test\ successful\ email\ sending}}
+\DoxyCodeLine{00031\ \textcolor{stringliteral}{\ \ \ \ Covers\ lines\ 15-\/16\ (beginning\ of\ the\ method)}}
+\DoxyCodeLine{00032\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00034\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00035\ \ \ \ \ code\ =\ \textcolor{stringliteral}{"{}ABC123"{}}}
+\DoxyCodeLine{00036\ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{\#\ Mock\ HTTP\ client}}
+\DoxyCodeLine{00038\ \ \ \ \ mock\_response\ =\ AsyncMock()}
+\DoxyCodeLine{00039\ \ \ \ \ mock\_response.raise\_for\_status\ =\ MagicMock()}
+\DoxyCodeLine{00040\ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ mock\_client\ =\ AsyncMock(spec=httpx.AsyncClient)}
+\DoxyCodeLine{00042\ \ \ \ \ mock\_client.post\ =\ AsyncMock(return\_value=mock\_response)}
+\DoxyCodeLine{00043\ \ \ \ \ mock\_client.\_\_aenter\_\_\ =\ AsyncMock(return\_value=mock\_client)}
+\DoxyCodeLine{00044\ \ \ \ \ mock\_client.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00045\ \ \ \ \ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{\#\ Replace\ client\ with\ our\ mock}}
+\DoxyCodeLine{00047\ \ \ \ \ email\_service\_instance.client\ =\ mock\_client}
+\DoxyCodeLine{00048\ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00050\ \ \ \ \ result\ =\ await\ email\_service\_instance.send\_activation\_code(email,\ code)}
+\DoxyCodeLine{00051\ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00054\ \ \ \ \ mock\_client.post.assert\_called\_once\_with(}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ email\_service\_instance.api\_url,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ json=\{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}to"{}}:\ email,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}subject"{}}:\ \textcolor{stringliteral}{"{}Your\ activation\ code"{}},}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}body"{}}:\ f\textcolor{stringliteral}{"{}Your\ activation\ code\ is:\ \{code\}"{}}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ timeout=10.0}
+\DoxyCodeLine{00062\ \ \ \ \ )}
+\DoxyCodeLine{00063\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Email\ sent\ successfully"{}})}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00066\ \textcolor{keyword}{async\ def\ }test\_send\_activation\_code\_without\_client(email\_service\_instance):}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00068\ \textcolor{stringliteral}{\ \ \ \ Test\ when\ client\ is\ not\ initialized\ (uses\ default\ AsyncClient())}}
+\DoxyCodeLine{00069\ \textcolor{stringliteral}{\ \ \ \ Covers\ line\ 24\ where\ we\ use\ 'self.client\ or\ httpx.AsyncClient()'}}
+\DoxyCodeLine{00070\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00072\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00073\ \ \ \ \ code\ =\ \textcolor{stringliteral}{"{}XYZ789"{}}}
+\DoxyCodeLine{00074\ \ \ \ \ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{\#\ Ensure\ client\ is\ None}}
+\DoxyCodeLine{00076\ \ \ \ \ email\_service\_instance.client\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00077\ \ \ \ \ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{comment}{\#\ Mock\ httpx.AsyncClient}}
+\DoxyCodeLine{00079\ \ \ \ \ mock\_response\ =\ AsyncMock()}
+\DoxyCodeLine{00080\ \ \ \ \ mock\_response.raise\_for\_status\ =\ MagicMock()}
+\DoxyCodeLine{00081\ \ \ \ \ }
+\DoxyCodeLine{00082\ \ \ \ \ mock\_client\ =\ AsyncMock(spec=httpx.AsyncClient)}
+\DoxyCodeLine{00083\ \ \ \ \ mock\_client.post\ =\ AsyncMock(return\_value=mock\_response)}
+\DoxyCodeLine{00084\ \ \ \ \ mock\_client.\_\_aenter\_\_\ =\ AsyncMock(return\_value=mock\_client)}
+\DoxyCodeLine{00085\ \ \ \ \ mock\_client.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00086\ \ \ \ \ }
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{with}\ patch(\textcolor{stringliteral}{'httpx.AsyncClient'},\ return\_value=mock\_client)\ \textcolor{keyword}{as}\ mock\_client\_class:}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ result\ =\ await\ email\_service\_instance.send\_activation\_code(email,\ code)}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ mock\_client\_class.assert\_called\_once()}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ mock\_client.post.assert\_called\_once()}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Client\ automatically\ created\ and\ email\ sent"{}})}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00098\ \textcolor{keyword}{async\ def\ }test\_send\_activation\_code\_http\_error(email\_service\_instance):}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00100\ \textcolor{stringliteral}{\ \ \ \ Test\ when\ API\ returns\ an\ HTTP\ error}}
+\DoxyCodeLine{00101\ \textcolor{stringliteral}{\ \ \ \ Covers\ line\ 41\ (return\ False\ on\ exception)}}
+\DoxyCodeLine{00102\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00104\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00105\ \ \ \ \ code\ =\ \textcolor{stringliteral}{"{}ERROR123"{}}}
+\DoxyCodeLine{00106\ \ \ \ \ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{\#\ Mock\ client\ that\ raises\ an\ exception}}
+\DoxyCodeLine{00108\ \ \ \ \ mock\_client\ =\ AsyncMock(spec=httpx.AsyncClient)}
+\DoxyCodeLine{00109\ \ \ \ \ mock\_client.post\ =\ AsyncMock(side\_effect=httpx.HTTPStatusError(}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}404\ Not\ Found"{}},\ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ request=MagicMock(),\ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ response=MagicMock(status\_code=404)}
+\DoxyCodeLine{00113\ \ \ \ \ ))}
+\DoxyCodeLine{00114\ \ \ \ \ mock\_client.\_\_aenter\_\_\ =\ AsyncMock(return\_value=mock\_client)}
+\DoxyCodeLine{00115\ \ \ \ \ mock\_client.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00116\ \ \ \ \ }
+\DoxyCodeLine{00117\ \ \ \ \ email\_service\_instance.client\ =\ mock\_client}
+\DoxyCodeLine{00118\ \ \ \ \ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00120\ \ \ \ \ result\ =\ await\ email\_service\_instance.send\_activation\_code(email,\ code)}
+\DoxyCodeLine{00121\ \ \ \ \ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00124\ \ \ \ \ mock\_client.post.assert\_called\_once()}
+\DoxyCodeLine{00125\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ HTTP\ error\ properly\ handled\ (returns\ False)"{}})}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00128\ \textcolor{keyword}{async\ def\ }test\_send\_activation\_code\_timeout\_error(email\_service\_instance):}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00130\ \textcolor{stringliteral}{\ \ \ \ Test\ timeout\ error\ handling}}
+\DoxyCodeLine{00131\ \textcolor{stringliteral}{\ \ \ \ Covers\ line\ 41\ (return\ False\ on\ exception)}}
+\DoxyCodeLine{00132\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00134\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00135\ \ \ \ \ code\ =\ \textcolor{stringliteral}{"{}TIMEOUT456"{}}}
+\DoxyCodeLine{00136\ \ \ \ \ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{comment}{\#\ Mock\ client\ that\ raises\ a\ timeout\ exception}}
+\DoxyCodeLine{00138\ \ \ \ \ mock\_client\ =\ AsyncMock(spec=httpx.AsyncClient)}
+\DoxyCodeLine{00139\ \ \ \ \ mock\_client.post\ =\ AsyncMock(side\_effect=httpx.TimeoutException(\textcolor{stringliteral}{"{}Request\ timed\ out"{}}))}
+\DoxyCodeLine{00140\ \ \ \ \ mock\_client.\_\_aenter\_\_\ =\ AsyncMock(return\_value=mock\_client)}
+\DoxyCodeLine{00141\ \ \ \ \ mock\_client.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00142\ \ \ \ \ }
+\DoxyCodeLine{00143\ \ \ \ \ email\_service\_instance.client\ =\ mock\_client}
+\DoxyCodeLine{00144\ \ \ \ \ }
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00146\ \ \ \ \ result\ =\ await\ email\_service\_instance.send\_activation\_code(email,\ code)}
+\DoxyCodeLine{00147\ \ \ \ \ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00150\ \ \ \ \ mock\_client.post.assert\_called\_once()}
+\DoxyCodeLine{00151\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Timeout\ properly\ handled\ (returns\ False)"{}})}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00154\ \textcolor{keyword}{async\ def\ }test\_send\_activation\_code\_connection\_error(email\_service\_instance):}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00156\ \textcolor{stringliteral}{\ \ \ \ Test\ connection\ error\ handling}}
+\DoxyCodeLine{00157\ \textcolor{stringliteral}{\ \ \ \ Covers\ line\ 41\ (return\ False\ on\ exception)}}
+\DoxyCodeLine{00158\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00160\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00161\ \ \ \ \ code\ =\ \textcolor{stringliteral}{"{}CONN789"{}}}
+\DoxyCodeLine{00162\ \ \ \ \ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{\#\ Mock\ client\ that\ raises\ a\ connection\ error}}
+\DoxyCodeLine{00164\ \ \ \ \ mock\_client\ =\ AsyncMock(spec=httpx.AsyncClient)}
+\DoxyCodeLine{00165\ \ \ \ \ mock\_client.post\ =\ AsyncMock(side\_effect=httpx.ConnectError(\textcolor{stringliteral}{"{}Failed\ to\ connect"{}}))}
+\DoxyCodeLine{00166\ \ \ \ \ mock\_client.\_\_aenter\_\_\ =\ AsyncMock(return\_value=mock\_client)}
+\DoxyCodeLine{00167\ \ \ \ \ mock\_client.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00168\ \ \ \ \ }
+\DoxyCodeLine{00169\ \ \ \ \ email\_service\_instance.client\ =\ mock\_client}
+\DoxyCodeLine{00170\ \ \ \ \ }
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00172\ \ \ \ \ result\ =\ await\ email\_service\_instance.send\_activation\_code(email,\ code)}
+\DoxyCodeLine{00173\ \ \ \ \ }
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00176\ \ \ \ \ mock\_client.post.assert\_called\_once()}
+\DoxyCodeLine{00177\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Connection\ error\ properly\ handled\ (returns\ False)"{}})}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{@pytest.mark.asyncio}}
+\DoxyCodeLine{00180\ \textcolor{keyword}{async\ def\ }test\_send\_activation\_code\_generic\_exception(email\_service\_instance):}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00182\ \textcolor{stringliteral}{\ \ \ \ Test\ with\ a\ generic\ exception}}
+\DoxyCodeLine{00183\ \textcolor{stringliteral}{\ \ \ \ Covers\ line\ 41\ (return\ False\ on\ exception)}}
+\DoxyCodeLine{00184\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{comment}{\#\ Setup}}
+\DoxyCodeLine{00186\ \ \ \ \ email\ =\ \textcolor{stringliteral}{"{}test@example.com"{}}}
+\DoxyCodeLine{00187\ \ \ \ \ code\ =\ \textcolor{stringliteral}{"{}GEN123"{}}}
+\DoxyCodeLine{00188\ \ \ \ \ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{comment}{\#\ Mock\ client\ that\ raises\ a\ generic\ exception}}
+\DoxyCodeLine{00190\ \ \ \ \ mock\_client\ =\ AsyncMock(spec=httpx.AsyncClient)}
+\DoxyCodeLine{00191\ \ \ \ \ mock\_client.post\ =\ AsyncMock(side\_effect=Exception(\textcolor{stringliteral}{"{}Something\ went\ wrong"{}}))}
+\DoxyCodeLine{00192\ \ \ \ \ mock\_client.\_\_aenter\_\_\ =\ AsyncMock(return\_value=mock\_client)}
+\DoxyCodeLine{00193\ \ \ \ \ mock\_client.\_\_aexit\_\_\ =\ AsyncMock(return\_value=\textcolor{keywordtype}{None})}
+\DoxyCodeLine{00194\ \ \ \ \ }
+\DoxyCodeLine{00195\ \ \ \ \ email\_service\_instance.client\ =\ mock\_client}
+\DoxyCodeLine{00196\ \ \ \ \ }
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{comment}{\#\ Execute}}
+\DoxyCodeLine{00198\ \ \ \ \ result\ =\ await\ email\_service\_instance.send\_activation\_code(email,\ code)}
+\DoxyCodeLine{00199\ \ \ \ \ }
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{comment}{\#\ Verify}}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{assert}\ result\ \textcolor{keywordflow}{is}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{00202\ \ \ \ \ mock\_client.post.assert\_called\_once()}
+\DoxyCodeLine{00203\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Generic\ exception\ properly\ handled\ (returns\ False)"{}})}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \textcolor{comment}{\#\ Singleton\ test\ (optional)}}
+\DoxyCodeLine{00206\ \textcolor{keyword}{def\ }test\_email\_service\_singleton():}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00208\ \textcolor{stringliteral}{\ \ \ \ Test\ that\ the\ singleton\ instance\ is\ of\ type\ EmailService}}
+\DoxyCodeLine{00209\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{assert}\ isinstance(email\_service,\ EmailService)}
+\DoxyCodeLine{00211\ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Singleton\ instance\ available"{}})}
+
+\end{DoxyCode}

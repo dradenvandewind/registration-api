@@ -1,0 +1,12 @@
+\doxysection{router.\+py}
+\label{router_8py_source}\index{app/api/v1/router.py@{app/api/v1/router.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.api.v1.endpoints\ \textcolor{keyword}{import}\ registration,\ activation}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/v1"{}})}
+\DoxyCodeLine{00005\ router.include\_router(registration.router)}
+\DoxyCodeLine{00006\ router.include\_router(activation.router)}
+
+\end{DoxyCode}

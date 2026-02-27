@@ -1,0 +1,78 @@
+.TH "user_service.UserService" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+user_service.UserService
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB__init__\fP (self)"
+.br
+.ti -1c
+.RI "UserResponse \fBcreate_user\fP (self, UserCreate user_data)"
+.br
+.ti -1c
+.RI "Optional[UserResponse] \fBget_user\fP (self, UUID user_id)"
+.br
+.ti -1c
+.RI "Optional[UserInDB] \fBget_user_by_email\fP (self, str email)"
+.br
+.ti -1c
+.RI "None \fBactivate_user\fP (self, UUID user_id)"
+.br
+.ti -1c
+.RI "Optional[UserInDB] \fBverify_credentials\fP (self, str email, str password)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBrepository\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line \fB11\fP of file \fBuser_service\&.py\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "user_service\&.UserService\&.__init__ ( self)"
+
+.PP
+Definition at line \fB12\fP of file \fBuser_service\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS " None user_service\&.UserService\&.activate_user ( self, UUID user_id)"
+
+.PP
+Definition at line \fB56\fP of file \fBuser_service\&.py\fP\&.
+.SS " UserResponse user_service\&.UserService\&.create_user ( self, UserCreate user_data)"
+
+.PP
+Definition at line \fB15\fP of file \fBuser_service\&.py\fP\&.
+.SS " Optional[UserResponse] user_service\&.UserService\&.get_user ( self, UUID user_id)"
+
+.PP
+Definition at line \fB35\fP of file \fBuser_service\&.py\fP\&.
+.SS " Optional[UserInDB] user_service\&.UserService\&.get_user_by_email ( self, str email)"
+
+.PP
+Definition at line \fB50\fP of file \fBuser_service\&.py\fP\&.
+.SS " Optional[UserInDB] user_service\&.UserService\&.verify_credentials ( self, str email, str password)"
+
+.PP
+Definition at line \fB59\fP of file \fBuser_service\&.py\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "user_service\&.UserService\&.repository"
+
+.PP
+Definition at line \fB13\fP of file \fBuser_service\&.py\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for registration-api from the source code\&.

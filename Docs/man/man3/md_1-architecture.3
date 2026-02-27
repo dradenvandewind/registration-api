@@ -1,0 +1,31 @@
+.TH "md_1-architecture" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+md_1-architecture \- Architecture Overview 
+.PP
+ ```mermaid graph TB Client[Client Application] API[FastAPI Application] DB[(PostgreSQL)] Redis[(Redis)] Email[Email Service API]
+.PP
+subgraph 'Docker Containers' API DB Redis Email end
+.PP
+Client -->|HTTP Requests| API
+.PP
+subgraph 'API Layer' direction TB Router[API Router] Auth[Auth Dependency] Registration[Registration Endpoint] Activation[Activation Endpoint] end
+.PP
+subgraph 'Service Layer' direction TB UserService[User Service] ActivationService[Activation Service] EmailService[Email Service] end
+.PP
+subgraph 'Data Layer' direction TB UserRepo[User Repository] ActivationRepo[Activation Repository] end
+.PP
+Router --> Registration Router --> Activation Activation --> Auth
+.PP
+Registration --> UserService Registration --> ActivationService Registration --> EmailService
+.PP
+Activation --> ActivationService ActivationService --> UserService
+.PP
+UserService --> UserRepo ActivationService --> ActivationRepo
+.PP
+UserRepo --> DB ActivationRepo --> DB
+.PP
+EmailService -->|HTTP| Email
+.PP
+style API fill:#f9f,stroke:#333,stroke-width:2px style DB fill:#dfd,stroke:#333,stroke-width:2px style Redis fill:#ffd,stroke:#333,stroke-width:2px 

@@ -1,0 +1,41 @@
+\doxysection{user\+\_\+repository.\+py}
+\label{user__repository_8py_source}\index{app/db/repositories/user\_repository.py@{app/db/repositories/user\_repository.py}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ app.db.connection\ \textcolor{keyword}{import}\ db}
+\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserInDB,\ UserCreate}
+\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.core.security\ \textcolor{keyword}{import}\ get\_password\_hash}
+\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }UserRepository:}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{keyword}{async\ def\ }create(self,\ user\_data:\ UserCreate)\ -\/>\ UserInDB:}
+\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ password\_hash\ =\ get\_password\_hash(user\_data.password)}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00011\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ INSERT\ INTO\ users\ (email,\ password\_hash)}}
+\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ VALUES\ (\$1,\ \$2)}}
+\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ RETURNING\ id,\ email,\ password\_hash,\ is\_active,\ created\_at,\ updated\_at}}
+\DoxyCodeLine{00014\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ user\_data.email,\ password\_hash)}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{async\ def\ }get\_by\_email(self,\ email:\ str)\ -\/>\ Optional[UserInDB]:}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ users\ WHERE\ email\ =\ \$1"{}}}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ email)}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))\ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{else}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{async\ def\ }get\_by\_id(self,\ user\_id:\ UUID)\ -\/>\ Optional[UserInDB]:}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ users\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ user\_id)}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))\ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{else}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{async\ def\ }activate\_user(self,\ user\_id:\ UUID)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ is\_active\ =\ TRUE,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ await\ db.execute(query,\ user\_id)}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{async\ def\ }update\_password(self,\ user\_id:\ UUID,\ new\_password:\ str)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ password\_hash\ =\ get\_password\_hash(new\_password)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ password\_hash\ =\ \$1,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$2"{}}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ await\ db.execute(query,\ password\_hash,\ user\_id)}
+
+\end{DoxyCode}
