@@ -115,7 +115,7 @@ class TestFastAPIApp:
     
     def test_app_creation(self):
         """Test that the FastAPI app is created with correct metadata"""
-        assert app.title == "Dailymotion Registration API"
+        assert app.title == "Registration API"
         assert app.description == "User registration and activation API"
         assert app.version == "1.0.0"
         print("✅ App created with correct metadata")

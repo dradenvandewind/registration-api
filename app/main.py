@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
 
 # Create FastAPI app
 app = FastAPI(
-    title="Dailymotion Registration API",
+    title="Registration API",
     description="User registration and activation API",
     version="1.0.0",
     lifespan=lifespan
