@@ -1,35 +1,68 @@
+# registration-api
 
-#1 - Clone the repository
+A containerized REST API with automated documentation and test coverage.
+
+---
+
+## 🚀 Getting Started
+
+### 1 — Clone the repository
+
+```bash
 git clone https://github.com/dradenvandewind/registration-api.git
 cd registration-api
+```
 
-# 2 - You need generate a secret key
+### 2 — Generate a secret key
+
+```bash
 ./GenerateSecretKey.sh
+```
 
-# 3 -1 Build and Run
+### 3 — Build & Run
+
+**First time (build the image):**
+```bash
 docker compose up -d --build
+```
 
-or 
-
-# 3- 2  Start all services
+**Subsequent starts:**
+```bash
 docker compose up -d
+```
 
+---
 
+## 📖 API Documentation
 
-# 4 - Access API documentation with your web browser
+Once the stack is running, open your browser at:
 
+```
 http://localhost:8000/docs
+```
 
+---
 
-#5 -  Run tests
+## 🧪 Run Tests
+
+```bash
 docker compose exec api pytest -v --cov=app
+```
 
+---
 
+## 📋 Logs
 
-#6 -  Check logs
+```bash
 docker compose logs -f api
+```
 
+---
 
+## 🛑 Stop & Clean Up
 
-#7 Stop and remove Volume
+```bash
 docker compose down -v
+```
+
+> ⚠️ The `-v` flag removes all volumes — any persisted data will be lost.
