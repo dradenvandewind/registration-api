@@ -13,17 +13,23 @@ class UserRepository:
             RETURNING id, email, password_hash, is_active, created_at, updated_at
         """
         row = await db.fetchrow(query, user_data.email, password_hash)
+        if row is None:
+            raise ValueError("Failed to create user - no row returned")
         return UserInDB(**dict(row))
 
     async def get_by_email(self, email: str) -> Optional[UserInDB]:
         query = "SELECT * FROM users WHERE email = $1"
         row = await db.fetchrow(query, email)
-        return UserInDB(**dict(row)) if row else None
+        if row is None:
+            return None
+        return UserInDB(**dict(row))
 
     async def get_by_id(self, user_id: UUID) -> Optional[UserInDB]:
         query = "SELECT * FROM users WHERE id = $1"
         row = await db.fetchrow(query, user_id)
-        return UserInDB(**dict(row)) if row else None
+        if row is None:
+            return None
+        return UserInDB(**dict(row))
 
     async def activate_user(self, user_id: UUID) -> None:
         query = "UPDATE users SET is_active = TRUE, updated_at = CURRENT_TIMESTAMP WHERE id = $1"
