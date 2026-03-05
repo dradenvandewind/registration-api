@@ -31,8 +31,8 @@ class ActivationService:
             ActivationCode: The created activation code
         """
         try:
-            # Generate a 6-character code (to match the database)
-            code = generate_activation_code(length=6)  # Force length to 6
+            # Generate a 4-character code (to match the database)
+            code = generate_activation_code(length=4)  # Force length to 4
             logger.info(f"Activation code generated for user {user_id}: {code}")
             expires_at = datetime.utcnow() + timedelta(hours=1)
             

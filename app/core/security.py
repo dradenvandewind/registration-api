@@ -60,12 +60,12 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hash(password: str) -> str:
     return password_handler.hash_password(password)
 
-def generate_activation_code(length: int = 6) -> str:
+def generate_activation_code(length: int = 4) -> str:
     """
     Generate a random activation code.
     
     Args:
-        length: Code length (default: 6)
+        length: Code length (default: 4)
     
     Returns:
         A random alphanumeric code

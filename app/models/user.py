@@ -5,7 +5,7 @@ from typing import Optional
 
 class UserCreate(BaseModel):
     email: EmailStr
-    password: str = Field(min_length=6)
+    password: str = Field(min_length=4)
 
 class UserInDB(BaseModel):
     id: UUID
