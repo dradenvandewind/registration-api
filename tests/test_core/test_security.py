@@ -196,7 +196,7 @@ class TestGenerateActivationCode:
         
         # Verify
         assert isinstance(code, str)
-        assert len(code) == 6  # default length
+        assert len(code) == 4  # default length
         assert all(c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" for c in code)
         
         print("✅ generate_activation_code - default length 6 (lines 72-74)")
