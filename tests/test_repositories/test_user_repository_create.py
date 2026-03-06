@@ -19,7 +19,7 @@ def user_repository():
 
 @pytest.fixture
 def sample_user_create():
-    return UserCreate(email="new@example.com", password="securepass123")
+    return UserCreate(email="new@example.com", password="s123")
 
 
 @pytest.fixture

@@ -21,7 +21,7 @@ def activation_repository():
 def sample_activation_create():
     return ActivationCodeCreate(
         user_id=uuid4(),
-        code="XY7K2P",
+        code="X123",
         expires_at=datetime.utcnow() + timedelta(hours=1),
     )
 

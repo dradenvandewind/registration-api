@@ -21,7 +21,7 @@ def sample_user_create():
     """Fixture for user creation data"""
     return UserCreate(
         email="test@example.com",
-        password="secure123"
+        password="s123"
     )
 
 @pytest.fixture

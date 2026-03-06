@@ -39,7 +39,7 @@ def _make_user_row(email: str):
 
 
 # ---------------------------------------------------------------------------
-# Tests
+# Tests nominaux
 # ---------------------------------------------------------------------------
 
 @pytest.mark.asyncio
@@ -84,6 +84,7 @@ async def test_register_user_success(mock_db_pool):
     print(f"Total appels: {call_count}")
     assert response.status_code == 201
 
+
 @pytest.mark.asyncio
 async def test_register_duplicate_email(mock_db_pool):
     """Email déjà utilisé → 409 Conflict."""
@@ -119,21 +120,12 @@ async def test_register_duplicate_email(mock_db_pool):
             )
     
     print(f"Total appels: {call_count}")
-    assert response.status_code == 409 
-@pytest.mark.asyncio
-async def test_register_user_short_password(mock_db_pool):
-    """Mot de passe trop court (< 6 chars) → 422 (validation Pydantic)."""
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
-        response = await client.post(
-            "/v1/registration",
-            json={"email": "test@example.com", "password": "ab"},
-        )
+    assert response.status_code == 409
 
-    assert response.status_code == 422
-    mock_db_pool.fetchrow.assert_not_called()
-    print("✅ Mot de passe trop court → 422")
 
+# ---------------------------------------------------------------------------
+# Tests de champs manquants
+# ---------------------------------------------------------------------------
 
 @pytest.mark.asyncio
 async def test_register_user_missing_email(mock_db_pool):
@@ -164,26 +156,6 @@ async def test_register_user_missing_password(mock_db_pool):
 
 
 @pytest.mark.asyncio
-async def test_register_duplicate_email(mock_db_pool):
-    """Email déjà utilisé → 409 Conflict."""
-    existing_row = _make_user_row("duplicate@example.com")
-
-    # fetchrow retourne une row existante → UserAlreadyExistsError
-    mock_db_pool.fetchrow = AsyncMock(return_value=existing_row)
-
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
-        response = await client.post(
-            "/v1/registration",
-            json={"email": "duplicate@example.com", "password": "secure123"},
-        )
-
-    assert response.status_code == 409
-    assert "already exists" in response.json()["detail"].lower()
-    print("✅ Email dupliqué → 409")
-
-
-@pytest.mark.asyncio
 async def test_register_empty_body(mock_db_pool):
     """Body vide → 422."""
     transport = ASGITransport(app=app)
@@ -192,3 +164,167 @@ async def test_register_empty_body(mock_db_pool):
 
     assert response.status_code == 422
     print("✅ Body vide → 422")
+
+
+# ---------------------------------------------------------------------------
+# Tests de contrôle de longueur du mot de passe (min_length=4)
+# ---------------------------------------------------------------------------
+
+@pytest.mark.asyncio
+async def test_register_password_length_1_rejected(mock_db_pool):
+    """Mot de passe de 1 caractère → 422."""
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/v1/registration",
+            json={"email": "test@example.com", "password": "a"},
+        )
+
+    assert response.status_code == 422
+    mock_db_pool.fetchrow.assert_not_called()
+    print("✅ Mot de passe de 1 caractère → 422")
+
+
+@pytest.mark.asyncio
+async def test_register_password_length_2_rejected(mock_db_pool):
+    """Mot de passe de 2 caractères → 422."""
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/v1/registration",
+            json={"email": "test@example.com", "password": "ab"},
+        )
+
+    assert response.status_code == 422
+    mock_db_pool.fetchrow.assert_not_called()
+    print("✅ Mot de passe de 2 caractères → 422")
+
+
+@pytest.mark.asyncio
+async def test_register_password_length_3_rejected(mock_db_pool):
+    """Mot de passe de 3 caractères (sous le minimum de 4) → 422."""
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/v1/registration",
+            json={"email": "test@example.com", "password": "abc"},
+        )
+
+    assert response.status_code == 422
+    mock_db_pool.fetchrow.assert_not_called()
+    print("✅ Mot de passe de 3 caractères → 422")
+
+
+@pytest.mark.asyncio
+async def test_register_password_empty_rejected(mock_db_pool):
+    """Mot de passe vide → 422."""
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/v1/registration",
+            json={"email": "test@example.com", "password": ""},
+        )
+
+    assert response.status_code == 422
+    mock_db_pool.fetchrow.assert_not_called()
+    print("✅ Mot de passe vide → 422")
+
+
+@pytest.mark.asyncio
+async def test_register_password_length_4_accepted(mock_db_pool):
+    """
+    Mot de passe de 4 caractères (frontière basse valide) → passe la validation Pydantic.
+    La DB mock renvoie None pour simuler un email libre, puis une row pour l'INSERT.
+    """
+    from tests.test_api.conftest import make_user_row, make_code_row
+
+    fake_user_row = make_user_row("boundary@example.com")
+    fake_code_row = make_code_row(fake_user_row._d["id"], "X123")
+
+    async def fetchrow_side_effect(*args, **kwargs):
+        query = args[0] if args else ""
+        if "SELECT" in query and "users" in query:
+            return None
+        elif "INSERT INTO users" in query:
+            return fake_user_row
+        elif "INSERT INTO activation_codes" in query:
+            return fake_code_row
+        return None
+
+    mock_db_pool.fetchrow.side_effect = fetchrow_side_effect
+
+    with patch("app.api.v1.endpoints.registration.email_service.send_activation_code",
+               new_callable=AsyncMock, return_value=True):
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.post(
+                "/v1/registration",
+                json={"email": "boundary@example.com", "password": "abcd"},
+            )
+
+    assert response.status_code == 201
+    print("✅ Mot de passe de 4 caractères (frontière basse valide) → 201")
+
+
+
+@pytest.mark.asyncio
+async def test_register_password_validation_error_detail(mock_db_pool):
+    """
+    Vérifier que la réponse 422 contient bien un message d'erreur
+    lié à la longueur du mot de passe (string_too_short).
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/v1/registration",
+            json={"email": "test@example.com", "password": "ab"},
+        )
+
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    # Pydantic v2 retourne "string_too_short" ou un message similaire
+    errors_str = str(detail).lower()
+    assert any(keyword in errors_str for keyword in ("too_short", "min_length", "short", "least 4"))
+    mock_db_pool.fetchrow.assert_not_called()
+    print("✅ Réponse 422 contient un message d'erreur sur la longueur")
+
+
+@pytest.mark.asyncio
+async def test_register_password_no_db_call_when_too_short(mock_db_pool):
+    """
+    La validation Pydantic doit bloquer la requête AVANT tout appel à la DB.
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        await client.post(
+            "/v1/registration",
+            json={"email": "test@example.com", "password": "ab"},
+        )
+
+    # Aucun appel DB ne doit avoir été effectué
+    mock_db_pool.fetchrow.assert_not_called()
+    mock_db_pool.execute.assert_not_called()
+    print("✅ Aucun appel DB lorsque le mot de passe est trop court")
+
+
+# ---------------------------------------------------------------------------
+# Duplicate email (version simplifiée utilisant _make_user_row local)
+# ---------------------------------------------------------------------------
+
+@pytest.mark.asyncio
+async def test_register_duplicate_email_simple(mock_db_pool):
+    """Email déjà utilisé → 409 Conflict (version directe)."""
+    existing_row = _make_user_row("duplicate@example.com")
+
+    mock_db_pool.fetchrow = AsyncMock(return_value=existing_row)
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/v1/registration",
+            json={"email": "duplicate@example.com", "password": "s123"},
+        )
+
+    assert response.status_code == 409
+    assert "already exists" in response.json()["detail"].lower()
+    print("✅ Email dupliqué → 409")

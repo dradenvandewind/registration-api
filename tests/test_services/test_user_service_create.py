@@ -23,7 +23,7 @@ def user_service():
 
 @pytest.fixture
 def user_create_data():
-    return UserCreate(email="alice@example.com", password="strongpass")
+    return UserCreate(email="alice@example.com", password="s123")
 
 
 @pytest.fixture

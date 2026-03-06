@@ -7,6 +7,32 @@ from app.core.exceptions import UserAlreadyExistsError
 
 router = APIRouter(prefix="/registration", tags=["registration"])
 
+def _validate_password(password: str) -> None:
+    """
+    Valide la longueur et la complexité du mot de passe.
+    Lève une HTTPException 422 avec un message clair en cas d'échec.
+    """
+    if len(password) < PASSWORD_MIN_LENGTH:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"Le mot de passe est trop court : "
+                f"minimum {PASSWORD_MIN_LENGTH} caractères "
+                f"(reçu : {len(password)})."
+            ),
+        )
+    if len(password) > PASSWORD_MAX_LENGTH:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"Le mot de passe est trop long : "
+                f"maximum {PASSWORD_MAX_LENGTH} caractères "
+                f"(reçu : {len(password)})."
+            ),
+        )
+
+
+
 @router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register_user(
     user_data: UserCreate,
