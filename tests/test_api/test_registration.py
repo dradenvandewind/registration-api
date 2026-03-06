@@ -116,7 +116,7 @@ async def test_register_duplicate_email(mock_db_pool):
         async with AsyncClient(transport=transport, base_url="http://test") as client:
             response = await client.post(
                 "/v1/registration",
-                json={"email": "duplicate@example.com", "password": "secure123"},
+                json={"email": "duplicate@example.com", "password": "e123"},
             )
     
     print(f"Total appels: {call_count}")
@@ -259,7 +259,7 @@ async def test_register_password_length_4_accepted(mock_db_pool):
         async with AsyncClient(transport=transport, base_url="http://test") as client:
             response = await client.post(
                 "/v1/registration",
-                json={"email": "boundary@example.com", "password": "abcd"},
+                json={"email": "boundary@example.com", "password": "1bcd"},
             )
 
     assert response.status_code == 201
