@@ -315,8 +315,9 @@ async def test_register_password_no_db_call_when_too_short(mock_db_pool):
 async def test_register_duplicate_email_simple(mock_db_pool):
     """Email déjà utilisé → 409 Conflict (version directe)."""
     existing_row = _make_user_row("duplicate@example.com")
+    
+    mock_db_pool.fetchrow.return_value = existing_row
 
-    mock_db_pool.fetchrow = AsyncMock(return_value=existing_row)
 
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
