@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['close_0',['close',['../classconnection_1_1DatabasePool.html#aff9cb2509f8c4b5ac5d9867b2ca3beb6',1,'connection::DatabasePool']]],
-  ['constraints_1',['Libraries constraints',['../md_Spec_2user__registration__api.html#autotoc_md10',1,'']]],
-  ['context_2',['Context',['../md_Spec_2user__registration__api.html#autotoc_md6',1,'']]],
-  ['create_5factivation_5fcode_3',['create_activation_code',['../classactivation__service_1_1ActivationService.html#a561a025da9ce4c7034a7fc8136f166f5',1,'activation_service::ActivationService']]]
+  ['initialize_0',['initialize',['../classconnection_1_1DatabasePool.html#a2ceac4cb1abee786dc06a0b04f9fa5b8',1,'connection::DatabasePool']]],
+  ['invalidactivationcodeerror_1',['InvalidActivationCodeError',['../classexceptions_1_1InvalidActivationCodeError.html',1,'exceptions']]],
+  ['invalidate_5fold_5fcodes_2',['invalidate_old_codes',['../classactivation__repository_1_1ActivationRepository.html#a922e21031474e9a87ea63c66c30f2d70',1,'activation_repository::ActivationRepository']]]
 ];

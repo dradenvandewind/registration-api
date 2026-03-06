@@ -1,20 +1,11 @@
 var searchData=
 [
-  ['testactivationrepositorygetvalidcode_0',['TestActivationRepositoryGetValidCode',['../classtest__activation__repository_1_1TestActivationRepositoryGetValidCode.html',1,'test_activation_repository']]],
-  ['testactivationrepositoryinvalidateoldcodes_1',['TestActivationRepositoryInvalidateOldCodes',['../classtest__activation__repository_1_1TestActivationRepositoryInvalidateOldCodes.html',1,'test_activation_repository']]],
-  ['testactivationrepositorymarkasused_2',['TestActivationRepositoryMarkAsUsed',['../classtest__activation__repository_1_1TestActivationRepositoryMarkAsUsed.html',1,'test_activation_repository']]],
-  ['testactivationserviceactivateuser_3',['TestActivationServiceActivateUser',['../classtest__activation__service_1_1TestActivationServiceActivateUser.html',1,'test_activation_service']]],
-  ['testerrorhandling_4',['TestErrorHandling',['../classtest__activation__repository_1_1TestErrorHandling.html',1,'test_activation_repository']]],
-  ['testexceptionhandlers_5',['TestExceptionHandlers',['../classtest__exceptions_1_1TestExceptionHandlers.html',1,'test_exceptions']]],
-  ['testfastapiapp_6',['TestFastAPIApp',['../classtest__main_1_1TestFastAPIApp.html',1,'test_main']]],
-  ['testgenerateactivationcode_7',['TestGenerateActivationCode',['../classtest__security_1_1TestGenerateActivationCode.html',1,'test_security']]],
-  ['testintegration_8',['TestIntegration',['../classtest__main_1_1TestIntegration.html',1,'test_main']]],
-  ['testlifespan_9',['TestLifespan',['../classtest__main_1_1TestLifespan.html',1,'test_main']]],
-  ['testpasswordhandler_10',['TestPasswordHandler',['../classtest__security_1_1TestPasswordHandler.html',1,'test_security']]],
-  ['testsettingsdatabaseurl_11',['TestSettingsDatabaseUrl',['../classtest__config_1_1TestSettingsDatabaseUrl.html',1,'test_config']]],
-  ['testsingletoninstance_12',['TestSingletonInstance',['../classtest__security_1_1TestSingletonInstance.html',1,'test_security']]],
-  ['testuserrepositoryactivateuser_13',['TestUserRepositoryActivateUser',['../classtest__user__repository_1_1TestUserRepositoryActivateUser.html',1,'test_user_repository']]],
-  ['testuserrepositorygetbyid_14',['TestUserRepositoryGetById',['../classtest__user__repository_1_1TestUserRepositoryGetById.html',1,'test_user_repository']]],
-  ['testuserrepositoryupdatepassword_15',['TestUserRepositoryUpdatePassword',['../classtest__user__repository_1_1TestUserRepositoryUpdatePassword.html',1,'test_user_repository']]],
-  ['testwrapperfunctions_16',['TestWrapperFunctions',['../classtest__security_1_1TestWrapperFunctions.html',1,'test_security']]]
+  ['useralreadyactiveerror_0',['UserAlreadyActiveError',['../classexceptions_1_1UserAlreadyActiveError.html',1,'exceptions']]],
+  ['useralreadyexistserror_1',['UserAlreadyExistsError',['../classexceptions_1_1UserAlreadyExistsError.html',1,'exceptions']]],
+  ['usercreate_2',['UserCreate',['../classuser_1_1UserCreate.html',1,'user']]],
+  ['userindb_3',['UserInDB',['../classuser_1_1UserInDB.html',1,'user']]],
+  ['usernotfounderror_4',['UserNotFoundError',['../classexceptions_1_1UserNotFoundError.html',1,'exceptions']]],
+  ['userrepository_5',['UserRepository',['../classuser__repository_1_1UserRepository.html',1,'user_repository']]],
+  ['userresponse_6',['UserResponse',['../classuser_1_1UserResponse.html',1,'user']]],
+  ['userservice_7',['UserService',['../classuser__service_1_1UserService.html',1,'user_service']]]
 ];

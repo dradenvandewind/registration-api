@@ -1,5 +1,5 @@
 \doxysection{security.\+py}
-\label{security_8py_source}\index{app/core/security.py@{app/core/security.py}}
+\label{security_8py_source}\index{core/security.py@{core/security.py}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{\#\ app/core/security.py}}
@@ -64,12 +64,12 @@
 \DoxyCodeLine{00060\ \textcolor{keyword}{def\ }get\_password\_hash(password:\ str)\ -\/>\ str:}
 \DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ password\_handler.hash\_password(password)}
 \DoxyCodeLine{00062\ }
-\DoxyCodeLine{00063\ \textcolor{keyword}{def\ }generate\_activation\_code(length:\ int\ =\ 6)\ -\/>\ str:}
+\DoxyCodeLine{00063\ \textcolor{keyword}{def\ }generate\_activation\_code(length:\ int\ =\ 4)\ -\/>\ str:}
 \DoxyCodeLine{00064\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
 \DoxyCodeLine{00065\ \textcolor{stringliteral}{\ \ \ \ Generate\ a\ random\ activation\ code.}}
 \DoxyCodeLine{00066\ \textcolor{stringliteral}{\ \ \ \ }}
 \DoxyCodeLine{00067\ \textcolor{stringliteral}{\ \ \ \ Args:}}
-\DoxyCodeLine{00068\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ length:\ Code\ length\ (default:\ 6)}}
+\DoxyCodeLine{00068\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ length:\ Code\ length\ (default:\ 4)}}
 \DoxyCodeLine{00069\ \textcolor{stringliteral}{\ \ \ \ }}
 \DoxyCodeLine{00070\ \textcolor{stringliteral}{\ \ \ \ Returns:}}
 \DoxyCodeLine{00071\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ A\ random\ alphanumeric\ code}}

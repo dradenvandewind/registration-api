@@ -1,5 +1,5 @@
 \doxysection{registration.\+py}
-\label{registration_8py_source}\index{app/api/v1/endpoints/registration.py@{app/api/v1/endpoints/registration.py}}
+\label{registration_8py_source}\index{api/v1/endpoints/registration.py@{api/v1/endpoints/registration.py}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter,\ HTTPException,\ status,\ BackgroundTasks}
@@ -11,37 +11,63 @@
 \DoxyCodeLine{00007\ }
 \DoxyCodeLine{00008\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/registration"{}},\ tags=[\textcolor{stringliteral}{"{}registration"{}}])}
 \DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{preprocessor}{@router.post("{}"{},\ response\_model=UserResponse,\ status\_code=status.HTTP\_201\_CREATED)}}
-\DoxyCodeLine{00011\ \textcolor{keyword}{async\ def\ }register\_user(}
-\DoxyCodeLine{00012\ \ \ \ \ user\_data:\ UserCreate,}
-\DoxyCodeLine{00013\ \ \ \ \ background\_tasks:\ BackgroundTasks}
-\DoxyCodeLine{00014\ ):}
-\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
-\DoxyCodeLine{00016\ \textcolor{stringliteral}{\ \ \ \ Register\ a\ new\ user\ with\ email\ and\ password}}
-\DoxyCodeLine{00017\ \textcolor{stringliteral}{\ \ \ \ An\ activation\ code\ will\ be\ sent\ via\ email}}
-\DoxyCodeLine{00018\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
-\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordflow}{try}:}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ user}}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ user\_service\ =\ UserService()}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ user\ =\ await\ user\_service.create\_user(user\_data)}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Generate\ activation\ code}}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ activation\_service\ =\ ActivationService()}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ code\ =\ await\ activation\_service.create\_activation\_code(user.id)}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Send\ email\ with\ code\ (background\ task)}}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ background\_tasks.add\_task(}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ email\_service.send\_activation\_code,}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ user.email,}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ code}
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{except}\ UserAlreadyExistsError\ \textcolor{keyword}{as}\ e:}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_409\_CONFLICT,}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ detail=str(e)}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00010\ \textcolor{keyword}{def\ }\_validate\_password(password:\ str)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ Valide\ la\ longueur\ et\ la\ complexité\ du\ mot\ de\ passe.}}
+\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ Lève\ une\ HTTPException\ 422\ avec\ un\ message\ clair\ en\ cas\ d'échec.}}
+\DoxyCodeLine{00014\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordflow}{if}\ len(password)\ <\ PASSWORD\_MIN\_LENGTH:}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_422\_UNPROCESSABLE\_ENTITY,}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ detail=(}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}Le\ mot\ de\ passe\ est\ trop\ court\ :\ "{}}}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}minimum\ \{PASSWORD\_MIN\_LENGTH\}\ caractères\ "{}}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}(reçu\ :\ \{len(password)\})."{}}}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{if}\ len(password)\ >\ PASSWORD\_MAX\_LENGTH:}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_422\_UNPROCESSABLE\_ENTITY,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ detail=(}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}Le\ mot\ de\ passe\ est\ trop\ long\ :\ "{}}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}maximum\ \{PASSWORD\_MAX\_LENGTH\}\ caractères\ "{}}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}(reçu\ :\ \{len(password)\})."{}}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{@router.post("{}"{},\ response\_model=UserResponse,\ status\_code=status.HTTP\_201\_CREATED)}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{async\ def\ }register\_user(}
+\DoxyCodeLine{00038\ \ \ \ \ user\_data:\ UserCreate,}
+\DoxyCodeLine{00039\ \ \ \ \ background\_tasks:\ BackgroundTasks}
+\DoxyCodeLine{00040\ ):}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{00042\ \textcolor{stringliteral}{\ \ \ \ Register\ a\ new\ user\ with\ email\ and\ password}}
+\DoxyCodeLine{00043\ \textcolor{stringliteral}{\ \ \ \ An\ activation\ code\ will\ be\ sent\ via\ email}}
+\DoxyCodeLine{00044\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ user}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ user\_service\ =\ UserService()}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ user\ =\ await\ user\_service.create\_user(user\_data)}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Generate\ activation\ code}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ activation\_service\ =\ ActivationService()}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ code\ =\ await\ activation\_service.create\_activation\_code(user.id)}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Send\ email\ with\ code\ (background\ task)}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ background\_tasks.add\_task(}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ email\_service.send\_activation\_code,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ user.email,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ code}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{except}\ UserAlreadyExistsError\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_409\_CONFLICT,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ detail=str(e)}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ )}
 
 \end{DoxyCode}

@@ -1,6 +1,11 @@
 var searchData=
 [
-  ['fetch_0',['fetch',['../classconnection_1_1DatabasePool.html#a3a23f5d2437355d79ba06ac977e79aa5',1,'connection::DatabasePool']]],
-  ['fetchrow_1',['fetchrow',['../classconnection_1_1DatabasePool.html#a06ac88392815f78424a7154878b69fc9',1,'connection::DatabasePool']]],
-  ['framework_20architecture_2',['Framework &amp; Architecture',['../md_Spec_2user__registration__api.html#autotoc_md9',1,'']]]
+  ['useralreadyactiveerror_0',['UserAlreadyActiveError',['../classexceptions_1_1UserAlreadyActiveError.html',1,'exceptions']]],
+  ['useralreadyexistserror_1',['UserAlreadyExistsError',['../classexceptions_1_1UserAlreadyExistsError.html',1,'exceptions']]],
+  ['usercreate_2',['UserCreate',['../classuser_1_1UserCreate.html',1,'user']]],
+  ['userindb_3',['UserInDB',['../classuser_1_1UserInDB.html',1,'user']]],
+  ['usernotfounderror_4',['UserNotFoundError',['../classexceptions_1_1UserNotFoundError.html',1,'exceptions']]],
+  ['userrepository_5',['UserRepository',['../classuser__repository_1_1UserRepository.html',1,'user_repository']]],
+  ['userresponse_6',['UserResponse',['../classuser_1_1UserResponse.html',1,'user']]],
+  ['userservice_7',['UserService',['../classuser__service_1_1UserService.html',1,'user_service']]]
 ];

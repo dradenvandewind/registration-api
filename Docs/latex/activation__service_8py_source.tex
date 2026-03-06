@@ -1,5 +1,5 @@
 \doxysection{activation\+\_\+service.\+py}
-\label{activation__service_8py_source}\index{app/services/activation\_service.py@{app/services/activation\_service.py}}
+\label{activation__service_8py_source}\index{services/activation\_service.py@{services/activation\_service.py}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{keyword}{from}\ app.db.repositories.activation\_repository\ \textcolor{keyword}{import}\ ActivationRepository}
@@ -35,8 +35,8 @@
 \DoxyCodeLine{00031\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ ActivationCode:\ The\ created\ activation\ code}}
 \DoxyCodeLine{00032\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
 \DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Generate\ a\ 6-\/character\ code\ (to\ match\ the\ database)}}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ code\ =\ generate\_activation\_code(length=6)\ \ \textcolor{comment}{\#\ Force\ length\ to\ 6}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Generate\ a\ 4-\/character\ code\ (to\ match\ the\ database)}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ code\ =\ generate\_activation\_code(length=4)\ \ \textcolor{comment}{\#\ Force\ length\ to\ 4}}
 \DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ logger.info(f\textcolor{stringliteral}{"{}Activation\ code\ generated\ for\ user\ \{user\_id\}:\ \{code\}"{}})}
 \DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ expires\_at\ =\ datetime.utcnow()\ +\ timedelta(hours=1)}
 \DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ }

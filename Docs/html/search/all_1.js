@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['2_20start_20all_20services_0',['3- 2  Start all services',['../md_README.html#autotoc_md3',1,'']]],
-  ['2_20you_20need_20generate_20a_20secret_20key_1',['2 - You need generate a secret key',['../md_README.html#autotoc_md1',1,'']]]
+  ['close_0',['close',['../classconnection_1_1DatabasePool.html#aff9cb2509f8c4b5ac5d9867b2ca3beb6',1,'connection::DatabasePool']]],
+  ['create_5factivation_5fcode_1',['create_activation_code',['../classactivation__service_1_1ActivationService.html#a561a025da9ce4c7034a7fc8136f166f5',1,'activation_service::ActivationService']]]
 ];

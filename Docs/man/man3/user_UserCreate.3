@@ -1,4 +1,4 @@
-.TH "user.UserCreate" 3 "Version v1.0" "registration-api" \" -*- nroff -*-
+.TH "user.UserCreate" 3 "My Project" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -8,6 +8,13 @@ user.UserCreate
 .PP
 .PP
 Inherits BaseModel\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "str \fBpassword_complexity\fP (cls, str v)"
+.br
+.in -1c
 .SS "Static Public Attributes"
 
 .in +1c
@@ -15,23 +22,35 @@ Inherits BaseModel\&.
 .RI "EmailStr \fBemail\fP"
 .br
 .ti -1c
-.RI "str \fBpassword\fP = Field(min_length=6)"
+.RI "str \fBpassword\fP = Field(min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)"
 .br
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line \fB6\fP of file \fBuser\&.py\fP\&.
+Definition at line \fB10\fP of file \fBuser\&.py\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS " str user\&.UserCreate\&.password_complexity ( cls, str v)"
+
+.PP
+.nf
+Vérifie que le mot de passe contient au moins une lettre et un chiffre\&.
+.fi
+.PP
+ 
+.PP
+Definition at line \fB16\fP of file \fBuser\&.py\fP\&.
 .SH "Member Data Documentation"
 .PP 
 .SS "EmailStr user\&.UserCreate\&.email\fC [static]\fP"
 
 .PP
-Definition at line \fB7\fP of file \fBuser\&.py\fP\&.
-.SS "str user\&.UserCreate\&.password = Field(min_length=6)\fC [static]\fP"
+Definition at line \fB11\fP of file \fBuser\&.py\fP\&.
+.SS "str user\&.UserCreate\&.password = Field(min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)\fC [static]\fP"
 
 .PP
-Definition at line \fB8\fP of file \fBuser\&.py\fP\&.
+Definition at line \fB12\fP of file \fBuser\&.py\fP\&.
 
 .SH "Author"
 .PP 
-Generated automatically by Doxygen for registration-api from the source code\&.
+Generated automatically by Doxygen for My Project from the source code\&.

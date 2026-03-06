@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>registration-api: user.UserCreate Class Reference</title>
+<title>My Project: user.UserCreate Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">registration-api<span id="projectnumber">&#160;v1.0</span>
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -74,6 +74,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classuser_1_1UserCreate-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">user.UserCreate Class Reference</div></div>
@@ -102,17 +103,53 @@ Collaboration diagram for user.UserCreate:</div>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a8a0183d739cbf7455d2e9a7569d0622a" id="r_a8a0183d739cbf7455d2e9a7569d0622a"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_1_1UserCreate.html#a8a0183d739cbf7455d2e9a7569d0622a">password_complexity</a> (cls, str v)</td></tr>
+<tr class="separator:a8a0183d739cbf7455d2e9a7569d0622a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a074eb4ec1d35d3408bb06656928fc56f" id="r_a074eb4ec1d35d3408bb06656928fc56f"><td class="memItemLeft" align="right" valign="top">EmailStr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_1_1UserCreate.html#a074eb4ec1d35d3408bb06656928fc56f">email</a></td></tr>
 <tr class="separator:a074eb4ec1d35d3408bb06656928fc56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a288f0c3d81b188f5091b0b18d834e11e" id="r_a288f0c3d81b188f5091b0b18d834e11e"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_1_1UserCreate.html#a288f0c3d81b188f5091b0b18d834e11e">password</a> = Field(min_length=6)</td></tr>
+<tr class="memitem:a288f0c3d81b188f5091b0b18d834e11e" id="r_a288f0c3d81b188f5091b0b18d834e11e"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_1_1UserCreate.html#a288f0c3d81b188f5091b0b18d834e11e">password</a> = Field(min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)</td></tr>
 <tr class="separator:a288f0c3d81b188f5091b0b18d834e11e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="user_8py_source.html#l00006">6</a> of file <a class="el" href="user_8py_source.html">user.py</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="user_8py_source.html#l00010">10</a> of file <a class="el" href="user_8py_source.html">user.py</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8a0183d739cbf7455d2e9a7569d0622a" name="a8a0183d739cbf7455d2e9a7569d0622a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a0183d739cbf7455d2e9a7569d0622a">&#9670;&#160;</a></span>password_complexity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> str user.UserCreate.password_complexity </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>cls</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">str&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Vérifie que le mot de passe contient au moins une lettre et un chiffre.</pre> 
+<p class="definition">Definition at line <a class="el" href="user_8py_source.html#l00016">16</a> of file <a class="el" href="user_8py_source.html">user.py</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a id="a074eb4ec1d35d3408bb06656928fc56f" name="a074eb4ec1d35d3408bb06656928fc56f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a074eb4ec1d35d3408bb06656928fc56f">&#9670;&#160;</a></span>email</h2>
 
@@ -133,7 +170,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="user_8py_source.html#l00007">7</a> of file <a class="el" href="user_8py_source.html">user.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="user_8py_source.html#l00011">11</a> of file <a class="el" href="user_8py_source.html">user.py</a>.</p>
 
 </div>
 </div>
@@ -147,7 +184,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str user.UserCreate.password = Field(min_length=6)</td>
+          <td class="memname">str user.UserCreate.password = Field(min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)</td>
         </tr>
       </table>
   </td>
@@ -157,12 +194,12 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="user_8py_source.html#l00008">8</a> of file <a class="el" href="user_8py_source.html">user.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="user_8py_source.html#l00012">12</a> of file <a class="el" href="user_8py_source.html">user.py</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>app/models/<a class="el" href="user_8py_source.html">user.py</a></li>
+<li>models/<a class="el" href="user_8py_source.html">user.py</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -2,8 +2,7 @@
 \label{classuser_1_1UserCreate}\index{user.UserCreate@{user.UserCreate}}
 
 
-Inheritance diagram for user.\+User\+Create\+:
-\nopagebreak
+Inheritance diagram for user.\+User\+Create\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -12,27 +11,45 @@ Inheritance diagram for user.\+User\+Create\+:
 \end{figure}
 
 
-Collaboration diagram for user.\+User\+Create\+:
-\nopagebreak
+Collaboration diagram for user.\+User\+Create\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=228pt]{classuser_1_1UserCreate__coll__graph}
 \end{center}
 \end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+str \textbf{ password\+\_\+complexity} (cls, str v)
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 Email\+Str \textbf{ email}
 \item 
-str \textbf{ password} = Field(min\+\_\+length=6)
+str \textbf{ password} = Field(min\+\_\+length=PASSWORD\+\_\+\+MIN\+\_\+\+LENGTH, max\+\_\+length=PASSWORD\+\_\+\+MAX\+\_\+\+LENGTH)
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 
 
-Definition at line \textbf{ 6} of file \textbf{ user.\+py}.
+Definition at line \textbf{ 10} of file \textbf{ user.\+py}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\label{classuser_1_1UserCreate_a8a0183d739cbf7455d2e9a7569d0622a} 
+\index{user.UserCreate@{user.UserCreate}!password\_complexity@{password\_complexity}}
+\index{password\_complexity@{password\_complexity}!user.UserCreate@{user.UserCreate}}
+\doxysubsubsection{password\_complexity()}
+{\footnotesize\ttfamily  str user.\+User\+Create.\+password\+\_\+complexity (\begin{DoxyParamCaption}\item[{}]{cls,  }\item[{str}]{v }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Vérifie que le mot de passe contient au moins une lettre et un chiffre.\end{DoxyVerb}
+ 
+
+Definition at line \textbf{ 16} of file \textbf{ user.\+py}.
 
 
 
@@ -45,20 +62,20 @@ Definition at line \textbf{ 6} of file \textbf{ user.\+py}.
 
 
 
-Definition at line \textbf{ 7} of file \textbf{ user.\+py}.
+Definition at line \textbf{ 11} of file \textbf{ user.\+py}.
 
 \label{classuser_1_1UserCreate_a288f0c3d81b188f5091b0b18d834e11e} 
 \index{user.UserCreate@{user.UserCreate}!password@{password}}
 \index{password@{password}!user.UserCreate@{user.UserCreate}}
 \doxysubsubsection{password}
-{\footnotesize\ttfamily str user.\+User\+Create.\+password = Field(min\+\_\+length=6)\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily str user.\+User\+Create.\+password = Field(min\+\_\+length=PASSWORD\+\_\+\+MIN\+\_\+\+LENGTH, max\+\_\+length=PASSWORD\+\_\+\+MAX\+\_\+\+LENGTH)\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
-Definition at line \textbf{ 8} of file \textbf{ user.\+py}.
+Definition at line \textbf{ 12} of file \textbf{ user.\+py}.
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-app/models/user.\+py\end{DoxyCompactItemize}
+models/user.\+py\end{DoxyCompactItemize}

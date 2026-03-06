@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['emailservice_0',['EmailService',['../classemail__service_1_1EmailService.html',1,'email_service']]],
-  ['execute_1',['execute',['../classconnection_1_1DatabasePool.html#a3a4fb64bb29e73da55c14663846ee713',1,'connection::DatabasePool']]],
-  ['expect_2',['What do we expect?',['../md_Spec_2user__registration__api.html#autotoc_md8',1,'']]]
+  ['send_5factivation_5fcode_0',['send_activation_code',['../classemail__service_1_1EmailService.html#ab1584c1b0e16c9c4dc226a5295e3d9d7',1,'email_service::EmailService']]],
+  ['settings_1',['Settings',['../classconfig_1_1Settings.html',1,'config']]]
 ];
