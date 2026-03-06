@@ -81,43 +81,46 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">registration.py</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">from</span> fastapi <span class="keyword">import</span> APIRouter, HTTPException, status, BackgroundTasks</div>
+<a href="registration_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceregistration.html">    1</a></span><span class="keyword">from</span> fastapi <span class="keyword">import</span> APIRouter, HTTPException, status, BackgroundTasks</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> app.models.user <span class="keyword">import</span> UserCreate, UserResponse</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> app.services.user_service <span class="keyword">import</span> UserService</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> app.services.activation_service <span class="keyword">import</span> ActivationService</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">from</span> app.services.email_service <span class="keyword">import</span> email_service</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">from</span> app.core.exceptions <span class="keyword">import</span> UserAlreadyExistsError</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>router = APIRouter(prefix=<span class="stringliteral">&quot;/registration&quot;</span>, tags=[<span class="stringliteral">&quot;registration&quot;</span>])</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespaceregistration.html#ae2f390c2d6e22aafcde543e2831f8f98">    8</a></span>router = APIRouter(prefix=<span class="stringliteral">&quot;/registration&quot;</span>, tags=[<span class="stringliteral">&quot;registration&quot;</span>])</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">def </span>_validate_password(password: str) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="foldopen" id="foldopen00010" data-start="" data-end="">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespaceregistration.html#a40c89b3efa1cbe793d2fc9c40dd4d59a">   10</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceregistration.html#a40c89b3efa1cbe793d2fc9c40dd4d59a">_validate_password</a>(password: str) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="stringliteral">    Valide la longueur et la complexité du mot de passe.</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="stringliteral">    Lève une HTTPException 422 avec un message clair en cas d&#39;échec.</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="stringliteral">    Validates password length and complexity.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="stringliteral">    Throws an HTTPException 422 with a clear message on failure..</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">if</span> len(password) &lt; PASSWORD_MIN_LENGTH:</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="keywordflow">raise</span> HTTPException(</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            detail=(</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                f<span class="stringliteral">&quot;Le mot de passe est trop court : &quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                f<span class="stringliteral">&quot;minimum {PASSWORD_MIN_LENGTH} caractères &quot;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                f<span class="stringliteral">&quot;(reçu : {len(password)}).&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                f<span class="stringliteral">&quot;The password is too short : &quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                f<span class="stringliteral">&quot;minimum {PASSWORD_MIN_LENGTH} characters &quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                f<span class="stringliteral">&quot;(received : {len(password)}).&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            ),</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        )</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">if</span> len(password) &gt; PASSWORD_MAX_LENGTH:</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordflow">raise</span> HTTPException(</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            detail=(</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                f<span class="stringliteral">&quot;Le mot de passe est trop long : &quot;</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                f<span class="stringliteral">&quot;maximum {PASSWORD_MAX_LENGTH} caractères &quot;</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                f<span class="stringliteral">&quot;(reçu : {len(password)}).&quot;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                f<span class="stringliteral">&quot;The password is too long :  &quot;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                f<span class="stringliteral">&quot;maximum {PASSWORD_MAX_LENGTH} characters &quot;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                f<span class="stringliteral">&quot;(received : {len(password)}).&quot;</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            ),</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        )</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">@router.post(&quot;&quot;, response_model=UserResponse, status_code=status.HTTP_201_CREATED)</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">async def </span>register_user(</div>
+</div>
+<div class="foldopen" id="foldopen00037" data-start="" data-end="">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespaceregistration.html#a5961ad78b20eed4e57b75274ee975926">   37</a></span><span class="keyword">async def </span><a class="code hl_function" href="namespaceregistration.html#a5961ad78b20eed4e57b75274ee975926">register_user</a>(</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    user_data: UserCreate,</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    background_tasks: BackgroundTasks</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>):</div>
@@ -148,6 +151,9 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            status_code=status.HTTP_409_CONFLICT,</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            detail=str(e)</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        )</div>
+</div>
+<div class="ttc" id="anamespaceregistration_html_a40c89b3efa1cbe793d2fc9c40dd4d59a"><div class="ttname"><a href="namespaceregistration.html#a40c89b3efa1cbe793d2fc9c40dd4d59a">registration._validate_password</a></div><div class="ttdeci">None _validate_password(str password)</div><div class="ttdef"><b>Definition</b> <a href="registration_8py_source.html#l00010">registration.py:10</a></div></div>
+<div class="ttc" id="anamespaceregistration_html_a5961ad78b20eed4e57b75274ee975926"><div class="ttname"><a href="namespaceregistration.html#a5961ad78b20eed4e57b75274ee975926">registration.register_user</a></div><div class="ttdeci">register_user(UserCreate user_data, BackgroundTasks background_tasks)</div><div class="ttdef"><b>Definition</b> <a href="registration_8py_source.html#l00037">registration.py:40</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

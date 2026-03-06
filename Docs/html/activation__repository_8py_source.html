@@ -81,7 +81,7 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">activation_repository.py</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">from</span> app.db.connection <span class="keyword">import</span> db</div>
+<a href="activation__repository_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceactivation__repository.html">    1</a></span><span class="keyword">from</span> app.db.connection <span class="keyword">import</span> db</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> app.models.activation <span class="keyword">import</span> ActivationCodeInDB, ActivationCodeCreate</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> typing <span class="keyword">import</span> Optional</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> uuid <span class="keyword">import</span> UUID</div>
@@ -89,7 +89,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="foldopen" id="foldopen00007" data-start="" data-end="">
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classactivation__repository_1_1ActivationRepository.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classactivation__repository_1_1ActivationRepository.html">ActivationRepository</a>:</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">async def </span>create(self, activation_data: ActivationCodeCreate) -&gt; ActivationCodeInDB:</div>
+<div class="foldopen" id="foldopen00008" data-start="" data-end="">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classactivation__repository_1_1ActivationRepository.html#ad4a8be7e4d88843f54514dcca394eac2">    8</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classactivation__repository_1_1ActivationRepository.html#ad4a8be7e4d88843f54514dcca394eac2">create</a>(self, activation_data: ActivationCodeCreate) -&gt; ActivationCodeInDB:</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        query = <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="stringliteral">            INSERT INTO activation_codes (user_id, code, expires_at)</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="stringliteral">            VALUES ($1, $2, $3)</span></div>
@@ -103,7 +104,9 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        )</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keywordflow">return</span> ActivationCodeInDB(**dict(row))</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">async def </span>get_valid_code(self, user_id: UUID, code: str) -&gt; Optional[ActivationCodeInDB]:</div>
+</div>
+<div class="foldopen" id="foldopen00022" data-start="" data-end="">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classactivation__repository_1_1ActivationRepository.html#a8131d8ecab2f98667863992258bf0d17">   22</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classactivation__repository_1_1ActivationRepository.html#a8131d8ecab2f98667863992258bf0d17">get_valid_code</a>(self, user_id: UUID, code: str) -&gt; Optional[ActivationCodeInDB]:</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        query = <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="stringliteral">            SELECT * FROM activation_codes </span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="stringliteral">            WHERE user_id = $1 </span></div>
@@ -116,10 +119,13 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        row = await db.fetchrow(query, user_id, code)</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordflow">return</span> ActivationCodeInDB(**dict(row)) <span class="keywordflow">if</span> row <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">async def </span>mark_as_used(self, code_id: UUID) -&gt; <span class="keywordtype">None</span>:</div>
+</div>
+<div class="foldopen" id="foldopen00035" data-start="" data-end="">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classactivation__repository_1_1ActivationRepository.html#a133b30eec708ec15d365beb17d162a90">   35</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classactivation__repository_1_1ActivationRepository.html#a133b30eec708ec15d365beb17d162a90">mark_as_used</a>(self, code_id: UUID) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        query = <span class="stringliteral">&quot;UPDATE activation_codes SET used_at = CURRENT_TIMESTAMP WHERE id = $1&quot;</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        await db.execute(query, code_id)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+</div>
 <div class="foldopen" id="foldopen00039" data-start="" data-end="">
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classactivation__repository_1_1ActivationRepository.html#a922e21031474e9a87ea63c66c30f2d70">   39</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classactivation__repository_1_1ActivationRepository.html#a922e21031474e9a87ea63c66c30f2d70">invalidate_old_codes</a>(self, user_id: UUID) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="stringliteral">&quot;&quot;&quot;Mark all previous codes as used&quot;&quot;&quot;</span></div>
@@ -132,7 +138,10 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 <div class="ttc" id="aclassactivation__repository_1_1ActivationRepository_html"><div class="ttname"><a href="classactivation__repository_1_1ActivationRepository.html">activation_repository.ActivationRepository</a></div><div class="ttdef"><b>Definition</b> <a href="activation__repository_8py_source.html#l00007">activation_repository.py:7</a></div></div>
+<div class="ttc" id="aclassactivation__repository_1_1ActivationRepository_html_a133b30eec708ec15d365beb17d162a90"><div class="ttname"><a href="classactivation__repository_1_1ActivationRepository.html#a133b30eec708ec15d365beb17d162a90">activation_repository.ActivationRepository.mark_as_used</a></div><div class="ttdeci">None mark_as_used(self, UUID code_id)</div><div class="ttdef"><b>Definition</b> <a href="activation__repository_8py_source.html#l00035">activation_repository.py:35</a></div></div>
+<div class="ttc" id="aclassactivation__repository_1_1ActivationRepository_html_a8131d8ecab2f98667863992258bf0d17"><div class="ttname"><a href="classactivation__repository_1_1ActivationRepository.html#a8131d8ecab2f98667863992258bf0d17">activation_repository.ActivationRepository.get_valid_code</a></div><div class="ttdeci">Optional[ActivationCodeInDB] get_valid_code(self, UUID user_id, str code)</div><div class="ttdef"><b>Definition</b> <a href="activation__repository_8py_source.html#l00022">activation_repository.py:22</a></div></div>
 <div class="ttc" id="aclassactivation__repository_1_1ActivationRepository_html_a922e21031474e9a87ea63c66c30f2d70"><div class="ttname"><a href="classactivation__repository_1_1ActivationRepository.html#a922e21031474e9a87ea63c66c30f2d70">activation_repository.ActivationRepository.invalidate_old_codes</a></div><div class="ttdeci">None invalidate_old_codes(self, UUID user_id)</div><div class="ttdef"><b>Definition</b> <a href="activation__repository_8py_source.html#l00039">activation_repository.py:39</a></div></div>
+<div class="ttc" id="aclassactivation__repository_1_1ActivationRepository_html_ad4a8be7e4d88843f54514dcca394eac2"><div class="ttname"><a href="classactivation__repository_1_1ActivationRepository.html#ad4a8be7e4d88843f54514dcca394eac2">activation_repository.ActivationRepository.create</a></div><div class="ttdeci">ActivationCodeInDB create(self, ActivationCodeCreate activation_data)</div><div class="ttdef"><b>Definition</b> <a href="activation__repository_8py_source.html#l00008">activation_repository.py:8</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

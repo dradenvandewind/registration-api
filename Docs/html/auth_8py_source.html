@@ -81,14 +81,15 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">auth.py</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">from</span> fastapi <span class="keyword">import</span> Depends, HTTPException, status</div>
+<a href="auth_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceauth.html">    1</a></span><span class="keyword">from</span> fastapi <span class="keyword">import</span> Depends, HTTPException, status</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> fastapi.security <span class="keyword">import</span> HTTPBasic, HTTPBasicCredentials</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> app.services.user_service <span class="keyword">import</span> UserService</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> app.core.exceptions <span class="keyword">import</span> UserNotFoundError</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>security = HTTPBasic()</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespaceauth.html#aeb0cd5ae42d07279f9c08a1e105a02ec">    6</a></span>security = HTTPBasic()</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">async def </span>get_current_user(</div>
+<div class="foldopen" id="foldopen00008" data-start="" data-end="">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespaceauth.html#a420ceb2e6f13fe21c4f7b4696d328112">    8</a></span><span class="keyword">async def </span>get_current_user(</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    credentials: HTTPBasicCredentials = Depends(security)</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>):</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="stringliteral">&quot;&quot;&quot;Dependency to get current authenticated user&quot;&quot;&quot;</span></div>
@@ -114,6 +115,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="stringliteral">            detail=&quot;Invalid credentials&quot;,</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="stringliteral">            headers={&quot;WWW-Authenticate&quot;: &quot;Basic&quot;},</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="stringliteral">        )</span></div>
+</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

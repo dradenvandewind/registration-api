@@ -1,68 +1,37 @@
 \doxysection{config.\+py}
-\label{config_8py_source}\index{core/config.py@{core/config.py}}
-
+\hypertarget{config_8py_source}{}\label{config_8py_source}\index{core/config.py@{core/config.py}}
+\mbox{\hyperlink{config_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{comment}{\#\ from\ pydantic\_settings\ import\ SettingsConfigDict,\ BaseSettings}}
-\DoxyCodeLine{00002\ \textcolor{comment}{\#\ from\ typing\ import\ Optional}}
-\DoxyCodeLine{00003\ \textcolor{comment}{\#\ import\ os}}
-\DoxyCodeLine{00004\ }
-\DoxyCodeLine{00005\ \textcolor{comment}{\#\ class\ Settings(BaseSettings):}}
-\DoxyCodeLine{00006\ \textcolor{comment}{\#\ \ \ \ \ \#\ Database}}
-\DoxyCodeLine{00007\ \textcolor{comment}{\#\ \ \ \ \ database\_url:\ str\ =\ "{}postgresql://user:password@db:5432/registration\_db"{}}}
-\DoxyCodeLine{00008\ \ \ \ \ }
-\DoxyCodeLine{00009\ \textcolor{comment}{\#\ \ \ \ \ \#\ Redis}}
-\DoxyCodeLine{00010\ \textcolor{comment}{\#\ \ \ \ \ redis\_url:\ str\ =\ "{}redis://redis:6379"{}}}
-\DoxyCodeLine{00011\ \ \ \ \ }
-\DoxyCodeLine{00012\ \textcolor{comment}{\#\ \ \ \ \ \#\ Security}}
-\DoxyCodeLine{00013\ \textcolor{comment}{\#\ \ \ \ \ secret\_key:\ str\ =\ "{}dev\_secret\_key\_change\_in\_production"{}}}
-\DoxyCodeLine{00014\ \textcolor{comment}{\#\ \ \ \ \ bcrypt\_rounds:\ int\ =\ 12}}
-\DoxyCodeLine{00015\ \ \ \ \ }
-\DoxyCodeLine{00016\ \textcolor{comment}{\#\ \ \ \ \ \#\ Email}}
-\DoxyCodeLine{00017\ \textcolor{comment}{\#\ \ \ \ \ smtp\_api\_url:\ str\ =\ "{}http://mailhog:8025/api/v1/send"{}}}
-\DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \textcolor{comment}{\#\ \ \ \ \ @property}}
-\DoxyCodeLine{00020\ \textcolor{comment}{\#\ \ \ \ \ def\ database\_url(self)\ -\/>\ str:}}
-\DoxyCodeLine{00021\ \textcolor{comment}{\#\ \ \ \ \ \ \ \ \ "{}"{}"{}Retourne\ l'URL\ de\ la\ base\ de\ données\ selon\ l'environnement"{}"{}"{}}}
-\DoxyCodeLine{00022\ \textcolor{comment}{\#\ \ \ \ \ \ \ \ \ if\ os.getenv("{}ENVIRONMENT"{})\ ==\ "{}test"{}:}}
-\DoxyCodeLine{00023\ \textcolor{comment}{\#\ \ \ \ \ \ \ \ \ \ \ \ \ return\ os.getenv("{}TEST\_DATABASE\_URL"{},\ "{}postgresql://user:pass@localhost:5432/test\_db"{})}}
-\DoxyCodeLine{00024\ \textcolor{comment}{\#\ \ \ \ \ \ \ \ \ return\ os.getenv("{}DATABASE\_URL"{},\ "{}postgresql://user:pass@localhost:5432/main\_db"{})}}
-\DoxyCodeLine{00025\ \ \ \ \ }
-\DoxyCodeLine{00026\ \textcolor{comment}{\#\ \ \ \ \ \#\ Activation}}
-\DoxyCodeLine{00027\ \textcolor{comment}{\#\ \ \ \ \ activation\_code\_ttl\_seconds:\ int\ =\ 60\ \ \#\ 1\ minute}}
-\DoxyCodeLine{00028\ \textcolor{comment}{\#\ \ \ \ \ model\_config\ =\ SettingsConfigDict(env\_file="{}.env"{})}}
-\DoxyCodeLine{00029\ }
-\DoxyCodeLine{00030\ \textcolor{comment}{\#\ settings\ =\ Settings()}}
-\DoxyCodeLine{00031\ \textcolor{comment}{\#\ app/core/config.py}}
-\DoxyCodeLine{00032\ \textcolor{keyword}{from}\ pydantic\_settings\ \textcolor{keyword}{import}\ BaseSettings,\ SettingsConfigDict}
-\DoxyCodeLine{00033\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
-\DoxyCodeLine{00034\ \textcolor{keyword}{import}\ os}
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \textcolor{keyword}{class\ }Settings(BaseSettings):}
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{\#\ Database}}
-\DoxyCodeLine{00038\ \ \ \ \ database\_url:\ str\ =\ \textcolor{stringliteral}{"{}postgresql://user:password@db:5432/registration\_db"{}}}
-\DoxyCodeLine{00039\ \ \ \ \ }
-\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{\#\ Redis}}
-\DoxyCodeLine{00041\ \ \ \ \ redis\_url:\ str\ =\ \textcolor{stringliteral}{"{}redis://redis:6379"{}}}
-\DoxyCodeLine{00042\ \ \ \ \ }
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{\#\ Security}}
-\DoxyCodeLine{00044\ \ \ \ \ secret\_key:\ str\ =\ \textcolor{stringliteral}{"{}dev\_secret\_key\_change\_in\_production"{}}}
-\DoxyCodeLine{00045\ \ \ \ \ bcrypt\_rounds:\ int\ =\ 12}
-\DoxyCodeLine{00046\ \ \ \ \ }
-\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{\#\ Email}}
-\DoxyCodeLine{00048\ \ \ \ \ smtp\_api\_url:\ str\ =\ \textcolor{stringliteral}{"{}http://mailhog:8025/api/v1/send"{}}}
-\DoxyCodeLine{00049\ }
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{\#\ Activation}}
-\DoxyCodeLine{00051\ \ \ \ \ activation\_code\_ttl\_seconds:\ int\ =\ 60\ \ \textcolor{comment}{\#\ 1\ minute}}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{preprocessor}{@property}}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{def\ }database\_url\_property(self)\ -\/>\ str:}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Return\ database\ URL\ based\ on\ environment"{}"{}"{}}}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ os.getenv(\textcolor{stringliteral}{"{}ENVIRONMENT"{}})\ ==\ \textcolor{stringliteral}{"{}test"{}}:}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ os.getenv(\textcolor{stringliteral}{"{}TEST\_DATABASE\_URL"{}},\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/test\_db"{}})}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ os.getenv(\textcolor{stringliteral}{"{}DATABASE\_URL"{}},\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/main\_db"{}})}
-\DoxyCodeLine{00059\ \ \ \ \ }
-\DoxyCodeLine{00060\ \ \ \ \ model\_config\ =\ SettingsConfigDict(env\_file=\textcolor{stringliteral}{"{}.env"{}})}
-\DoxyCodeLine{00061\ }
-\DoxyCodeLine{00062\ settings\ =\ Settings()}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00001}\mbox{\hyperlink{namespaceconfig}{00001}}\ \textcolor{keyword}{from}\ pydantic\_settings\ \textcolor{keyword}{import}\ BaseSettings,\ SettingsConfigDict}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00002}00002\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00003}00003\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00005}\mbox{\hyperlink{classconfig_1_1Settings}{00005}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classconfig_1_1Settings}{Settings}}(BaseSettings):}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00006}00006\ \ \ \ \ \textcolor{comment}{\#\ Database}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00007}\mbox{\hyperlink{classconfig_1_1Settings_ac14c9b1b0e81fffb6d1fa0c54b0106de}{00007}}\ \ \ \ \ database\_url:\ str\ =\ \textcolor{stringliteral}{"{}postgresql://user:password@db:5432/registration\_db"{}}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00008}00008\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00009}00009\ \ \ \ \ \textcolor{comment}{\#\ Redis}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00010}\mbox{\hyperlink{classconfig_1_1Settings_aee832a3b0c7f56feaac49bef0468f8a9}{00010}}\ \ \ \ \ redis\_url:\ str\ =\ \textcolor{stringliteral}{"{}redis://redis:6379"{}}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00011}00011\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00012}00012\ \ \ \ \ \textcolor{comment}{\#\ Security}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00013}\mbox{\hyperlink{classconfig_1_1Settings_a51137930eb23f2fc0612a8e35c34393f}{00013}}\ \ \ \ \ secret\_key:\ str\ =\ \textcolor{stringliteral}{"{}dev\_secret\_key\_change\_in\_production"{}}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00014}\mbox{\hyperlink{classconfig_1_1Settings_a4ef679ea492762b8d842c56ca17fe7ad}{00014}}\ \ \ \ \ bcrypt\_rounds:\ int\ =\ 12}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00015}00015\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00016}00016\ \ \ \ \ \textcolor{comment}{\#\ Email}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00017}\mbox{\hyperlink{classconfig_1_1Settings_a1f8ece1e65ef5a5da5f198c433a394af}{00017}}\ \ \ \ \ smtp\_api\_url:\ str\ =\ \textcolor{stringliteral}{"{}http://mailhog:8025/api/v1/send"{}}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00019}00019\ \ \ \ \ \textcolor{comment}{\#\ Activation}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00020}\mbox{\hyperlink{classconfig_1_1Settings_a74f828bd229129c6e6f081e0731d89c5}{00020}}\ \ \ \ \ activation\_code\_ttl\_seconds:\ int\ =\ 60\ \ \textcolor{comment}{\#\ 1\ minute}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00022}00022\ \ \ \ \ \textcolor{preprocessor}{@property}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00023}\mbox{\hyperlink{classconfig_1_1Settings_acf14354dede999d4818e15d86a8a55ea}{00023}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classconfig_1_1Settings_acf14354dede999d4818e15d86a8a55ea}{database\_url\_property}}(self)\ -\/>\ str:}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Return\ database\ URL\ based\ on\ environment"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ os.getenv(\textcolor{stringliteral}{"{}ENVIRONMENT"{}})\ ==\ \textcolor{stringliteral}{"{}test"{}}:}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00026}00026\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ os.getenv(\textcolor{stringliteral}{"{}TEST\_DATABASE\_URL"{}},\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/test\_db"{}})}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ os.getenv(\textcolor{stringliteral}{"{}DATABASE\_URL"{}},\ \textcolor{stringliteral}{"{}postgresql://user:pass@localhost:5432/main\_db"{}})}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00028}00028\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00029}\mbox{\hyperlink{classconfig_1_1Settings_af6174003575009a1db872a3f47d8ef7d}{00029}}\ \ \ \ \ model\_config\ =\ SettingsConfigDict(env\_file=\textcolor{stringliteral}{"{}.env"{}})}
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{config_8py_source_l00031}\mbox{\hyperlink{namespaceconfig_a76d38d4622bf020f68c8b7a7a52280db}{00031}}\ settings\ =\ \mbox{\hyperlink{classconfig_1_1Settings}{Settings}}()}
 
 \end{DoxyCode}

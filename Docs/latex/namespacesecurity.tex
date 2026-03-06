@@ -1,0 +1,87 @@
+\doxysection{security Namespace Reference}
+\hypertarget{namespacesecurity}{}\label{namespacesecurity}\index{security@{security}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classsecurity_1_1PasswordHandler}{Password\+Handler}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacesecurity_a423ef75c462259fc8eaf0b5884655d3c}{verify\+\_\+password}} (str plain\+\_\+password, str hashed\+\_\+password)
+\item 
+str \mbox{\hyperlink{namespacesecurity_a1e2eb2823cdaace73a6ebc5d1ca094a8}{get\+\_\+password\+\_\+hash}} (str password)
+\item 
+str \mbox{\hyperlink{namespacesecurity_a247843f2e2a6e3ff3b3a6b9970a5212e}{generate\+\_\+activation\+\_\+code}} (int length=4)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacesecurity_ae21d74ffdcf59b78c7f341cee964ef5f}{logger}} = logging.\+get\+Logger(\+\_\+\+\_\+name\+\_\+\+\_\+)
+\item 
+\mbox{\hyperlink{namespacesecurity_a3a49628e91424d55704444a93150c55d}{password\+\_\+handler}} = \mbox{\hyperlink{classsecurity_1_1PasswordHandler}{Password\+Handler}}()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacesecurity_a247843f2e2a6e3ff3b3a6b9970a5212e}\label{namespacesecurity_a247843f2e2a6e3ff3b3a6b9970a5212e} 
+\index{security@{security}!generate\_activation\_code@{generate\_activation\_code}}
+\index{generate\_activation\_code@{generate\_activation\_code}!security@{security}}
+\doxysubsubsection{\texorpdfstring{generate\_activation\_code()}{generate\_activation\_code()}}
+{\footnotesize\ttfamily  str security.\+generate\+\_\+activation\+\_\+code (\begin{DoxyParamCaption}\item[{int }]{length = {\ttfamily 4} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Generate a random activation code.
+
+Args:
+    length: Code length (default: 4)
+
+Returns:
+    A random alphanumeric code
+\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{security_8py_source_l00063}{63}} of file \mbox{\hyperlink{security_8py_source}{security.\+py}}.
+
+\Hypertarget{namespacesecurity_a1e2eb2823cdaace73a6ebc5d1ca094a8}\label{namespacesecurity_a1e2eb2823cdaace73a6ebc5d1ca094a8} 
+\index{security@{security}!get\_password\_hash@{get\_password\_hash}}
+\index{get\_password\_hash@{get\_password\_hash}!security@{security}}
+\doxysubsubsection{\texorpdfstring{get\_password\_hash()}{get\_password\_hash()}}
+{\footnotesize\ttfamily  str security.\+get\+\_\+password\+\_\+hash (\begin{DoxyParamCaption}\item[{str}]{password }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{security_8py_source_l00060}{60}} of file \mbox{\hyperlink{security_8py_source}{security.\+py}}.
+
+\Hypertarget{namespacesecurity_a423ef75c462259fc8eaf0b5884655d3c}\label{namespacesecurity_a423ef75c462259fc8eaf0b5884655d3c} 
+\index{security@{security}!verify\_password@{verify\_password}}
+\index{verify\_password@{verify\_password}!security@{security}}
+\doxysubsubsection{\texorpdfstring{verify\_password()}{verify\_password()}}
+{\footnotesize\ttfamily  bool security.\+verify\+\_\+password (\begin{DoxyParamCaption}\item[{str}]{plain\+\_\+password,  }\item[{str}]{hashed\+\_\+password }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{security_8py_source_l00057}{57}} of file \mbox{\hyperlink{security_8py_source}{security.\+py}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacesecurity_ae21d74ffdcf59b78c7f341cee964ef5f}\label{namespacesecurity_ae21d74ffdcf59b78c7f341cee964ef5f} 
+\index{security@{security}!logger@{logger}}
+\index{logger@{logger}!security@{security}}
+\doxysubsubsection{\texorpdfstring{logger}{logger}}
+{\footnotesize\ttfamily security.\+logger = logging.\+get\+Logger(\+\_\+\+\_\+name\+\_\+\+\_\+)}
+
+
+
+Definition at line \mbox{\hyperlink{security_8py_source_l00009}{9}} of file \mbox{\hyperlink{security_8py_source}{security.\+py}}.
+
+\Hypertarget{namespacesecurity_a3a49628e91424d55704444a93150c55d}\label{namespacesecurity_a3a49628e91424d55704444a93150c55d} 
+\index{security@{security}!password\_handler@{password\_handler}}
+\index{password\_handler@{password\_handler}!security@{security}}
+\doxysubsubsection{\texorpdfstring{password\_handler}{password\_handler}}
+{\footnotesize\ttfamily security.\+password\+\_\+handler = \mbox{\hyperlink{classsecurity_1_1PasswordHandler}{Password\+Handler}}()}
+
+
+
+Definition at line \mbox{\hyperlink{security_8py_source_l00054}{54}} of file \mbox{\hyperlink{security_8py_source}{security.\+py}}.
+

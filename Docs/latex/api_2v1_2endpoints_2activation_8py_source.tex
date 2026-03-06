@@ -1,46 +1,46 @@
 \doxysection{activation.\+py}
-\label{api_2v1_2endpoints_2activation_8py_source}\index{api/v1/endpoints/activation.py@{api/v1/endpoints/activation.py}}
-
+\hypertarget{api_2v1_2endpoints_2activation_8py_source}{}\label{api_2v1_2endpoints_2activation_8py_source}\index{api/v1/endpoints/activation.py@{api/v1/endpoints/activation.py}}
+\mbox{\hyperlink{api_2v1_2endpoints_2activation_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter,\ HTTPException,\ status,\ Depends}
-\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.models.activation\ \textcolor{keyword}{import}\ ActivationRequest,\ ActivationResponse}
-\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.services.activation\_service\ \textcolor{keyword}{import}\ ActivationService}
-\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ app.dependencies.auth\ \textcolor{keyword}{import}\ get\_current\_user}
-\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserInDB}
-\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ (}
-\DoxyCodeLine{00007\ \ \ \ \ InvalidActivationCodeError,\ }
-\DoxyCodeLine{00008\ \ \ \ \ UserNotFoundError,}
-\DoxyCodeLine{00009\ \ \ \ \ UserAlreadyActiveError}
-\DoxyCodeLine{00010\ )}
-\DoxyCodeLine{00011\ }
-\DoxyCodeLine{00012\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/activation"{}},\ tags=[\textcolor{stringliteral}{"{}activation"{}}])}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \textcolor{preprocessor}{@router.post("{}"{},\ response\_model=ActivationResponse)}}
-\DoxyCodeLine{00015\ \textcolor{keyword}{async\ def\ }activate\_account(}
-\DoxyCodeLine{00016\ \ \ \ \ activation\_data:\ ActivationRequest,}
-\DoxyCodeLine{00017\ \ \ \ \ current\_user:\ UserInDB\ =\ Depends(get\_current\_user)}
-\DoxyCodeLine{00018\ ):}
-\DoxyCodeLine{00019\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
-\DoxyCodeLine{00020\ \textcolor{stringliteral}{\ \ \ \ Activate\ user\ account\ with\ 4-\/digit\ code}}
-\DoxyCodeLine{00021\ \textcolor{stringliteral}{\ \ \ \ Requires\ Basic\ Auth\ with\ email\ and\ password}}
-\DoxyCodeLine{00022\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
-\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{try}:}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ activation\_service\ =\ ActivationService()}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ current\_user.id,}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ activation\_data.code}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ActivationResponse(}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ message=\textcolor{stringliteral}{"{}Account\ activated\ successfully"{}},}
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ user\_id=current\_user.id}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{except}\ (UserNotFoundError,\ UserAlreadyActiveError,\ InvalidActivationCodeError)\ \textcolor{keyword}{as}\ e:}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ detail=str(e)}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00001}\mbox{\hyperlink{namespaceactivation}{00001}}\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter,\ HTTPException,\ status,\ Depends}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00002}00002\ \textcolor{keyword}{from}\ app.models.activation\ \textcolor{keyword}{import}\ ActivationRequest,\ ActivationResponse}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00003}00003\ \textcolor{keyword}{from}\ app.services.activation\_service\ \textcolor{keyword}{import}\ ActivationService}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00004}00004\ \textcolor{keyword}{from}\ app.dependencies.auth\ \textcolor{keyword}{import}\ get\_current\_user}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00005}00005\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserInDB}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00006}00006\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ (}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00007}00007\ \ \ \ \ InvalidActivationCodeError,\ }
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00008}00008\ \ \ \ \ UserNotFoundError,}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00009}00009\ \ \ \ \ UserAlreadyActiveError}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00010}00010\ )}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00012}\mbox{\hyperlink{namespaceactivation_a6ffeb88ef3760245c5ffa49aa61a005b}{00012}}\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/activation"{}},\ tags=[\textcolor{stringliteral}{"{}activation"{}}])}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00014}00014\ \textcolor{preprocessor}{@router.post("{}"{},\ response\_model=ActivationResponse)}}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00015}\mbox{\hyperlink{namespaceactivation_af119e2cdb3112032eb44b7e5b1c16c31}{00015}}\ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{namespaceactivation_af119e2cdb3112032eb44b7e5b1c16c31}{activate\_account}}(}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00016}00016\ \ \ \ \ activation\_data:\ ActivationRequest,}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00017}00017\ \ \ \ \ current\_user:\ UserInDB\ =\ Depends(get\_current\_user)}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00018}00018\ ):}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00019}00019\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00020}00020\ \textcolor{stringliteral}{\ \ \ \ Activate\ user\ account\ with\ 4-\/digit\ code}}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00021}00021\ \textcolor{stringliteral}{\ \ \ \ Requires\ Basic\ Auth\ with\ email\ and\ password}}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00022}00022\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00023}00023\ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ activation\_service\ =\ ActivationService()}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00026}00026\ \ \ \ \ \ \ \ \ await\ activation\_service.activate\_user(}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ current\_user.id,}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ activation\_data.code}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00030}00030\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classactivation_1_1ActivationResponse}{ActivationResponse}}(}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ message=\textcolor{stringliteral}{"{}Account\ activated\ successfully"{}},}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ user\_id=current\_user.id}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00035}00035\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00036}00036\ \ \ \ \ \textcolor{keywordflow}{except}\ (UserNotFoundError,\ UserAlreadyActiveError,\ InvalidActivationCodeError)\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ detail=str(e)}
+\DoxyCodeLine{\Hypertarget{api_2v1_2endpoints_2activation_8py_source_l00040}00040\ \ \ \ \ \ \ \ \ )}
 
 \end{DoxyCode}

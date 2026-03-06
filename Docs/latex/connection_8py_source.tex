@@ -1,63 +1,63 @@
 \doxysection{connection.\+py}
-\label{connection_8py_source}\index{db/connection.py@{db/connection.py}}
-
+\hypertarget{connection_8py_source}{}\label{connection_8py_source}\index{db/connection.py@{db/connection.py}}
+\mbox{\hyperlink{connection_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{keyword}{import}\ asyncpg}
-\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
-\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.core.config\ \textcolor{keyword}{import}\ settings}
-\DoxyCodeLine{00004\ }
-\DoxyCodeLine{00005\ \textcolor{keyword}{class\ }DatabasePool:}
-\DoxyCodeLine{00006\ \ \ \ \ \textcolor{keyword}{def\ }\_\_init\_\_(self):}
-\DoxyCodeLine{00007\ \ \ \ \ \ \ \ \ self.pool:\ Optional[asyncpg.Pool]\ =\ \textcolor{keywordtype}{None}}
-\DoxyCodeLine{00008\ \ \ \ \ \ \ \ \ self.\_initialized\ =\ \textcolor{keyword}{False}}
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{async\ def\ }initialize(self):}
-\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Initialise\ le\ pool\ de\ connexions"{}"{}"{}}}
-\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ self.\_initialized:}
-\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
-\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ self.pool\ =\ await\ asyncpg.create\_pool(}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ settings.database\_url,}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ min\_size=5,}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ max\_size=20,}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ command\_timeout=60}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ self.\_initialized\ =\ \textcolor{keyword}{True}}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}✅\ Pool\ de\ connexions\ initialisé:\ \{settings.database\_url\}"{}})}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}❌\ Erreur\ lors\ de\ l'initialisation\ du\ pool:\ \{e\}"{}})}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}}
-\DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{async\ def\ }close(self):}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Ferme\ le\ pool\ de\ connexions"{}"{}"{}}}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ self.pool:}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ await\ self.pool.close()}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ self.pool\ =\ \textcolor{keywordtype}{None}}
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ self.\_initialized\ =\ \textcolor{keyword}{False}}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Pool\ de\ connexions\ fermé"{}})}
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{async\ def\ }execute(self,\ query:\ str,\ *args):}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exécute\ une\ requête\ sans\ retour\ de\ résultat"{}"{}"{}}}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.pool:}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ RuntimeError(\textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée.\ Appelez\ initialize()\ d'abord."{}})}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ self.pool.acquire()\ \textcolor{keyword}{as}\ connection:}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ connection.execute(query,\ *args)}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{async\ def\ }fetch(self,\ query:\ str,\ *args):}
-\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Récupère\ plusieurs\ lignes"{}"{}"{}}}
-\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.pool:}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ RuntimeError(\textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée.\ Appelez\ initialize()\ d'abord."{}})}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ self.pool.acquire()\ \textcolor{keyword}{as}\ connection:}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ connection.fetch(query,\ *args)}
-\DoxyCodeLine{00049\ }
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{async\ def\ }fetchrow(self,\ query:\ str,\ *args):}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Récupère\ une\ seule\ ligne"{}"{}"{}}}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.pool:}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ RuntimeError(\textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée.\ Appelez\ initialize()\ d'abord."{}})}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ self.pool.acquire()\ \textcolor{keyword}{as}\ connection:}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ connection.fetchrow(query,\ *args)}
-\DoxyCodeLine{00056\ }
-\DoxyCodeLine{00057\ db\ =\ DatabasePool()}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00001}\mbox{\hyperlink{namespaceconnection}{00001}}\ \textcolor{keyword}{import}\ asyncpg}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00002}00002\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00003}00003\ \textcolor{keyword}{from}\ app.core.config\ \textcolor{keyword}{import}\ settings}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00005}\mbox{\hyperlink{classconnection_1_1DatabasePool}{00005}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classconnection_1_1DatabasePool}{DatabasePool}}:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00006}\mbox{\hyperlink{classconnection_1_1DatabasePool_a19d45d7114bf9807d3a5ecae88e94383}{00006}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classconnection_1_1DatabasePool_a19d45d7114bf9807d3a5ecae88e94383}{\_\_init\_\_}}(self):}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00007}00007\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}:\ Optional[asyncpg.Pool]\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00008}\mbox{\hyperlink{classconnection_1_1DatabasePool_ad8f467d1f3ce7a11300d45f926718543}{00008}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_ad8f467d1f3ce7a11300d45f926718543}{\_initialized}}\ =\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00010}\mbox{\hyperlink{classconnection_1_1DatabasePool_a2ceac4cb1abee786dc06a0b04f9fa5b8}{00010}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classconnection_1_1DatabasePool_a2ceac4cb1abee786dc06a0b04f9fa5b8}{initialize}}(self):}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00011}00011\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Initialise\ le\ pool\ de\ connexions"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00012}00012\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_ad8f467d1f3ce7a11300d45f926718543}{\_initialized}}:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00013}00013\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00014}00014\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00015}00015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00016}\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{00016}}\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}\ =\ await\ asyncpg.create\_pool(}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00017}00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ settings.database\_url,}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00018}00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ min\_size=5,}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ max\_size=20,}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00020}00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ command\_timeout=60}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00021}00021\ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00022}00022\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_ad8f467d1f3ce7a11300d45f926718543}{\_initialized}}\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00023}00023\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}✅\ Pool\ de\ connexions\ initialisé:\ \{settings.database\_url\}"{}})}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}❌\ Erreur\ lors\ de\ l'initialisation\ du\ pool:\ \{e\}"{}})}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00026}00026\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00028}\mbox{\hyperlink{classconnection_1_1DatabasePool_aff9cb2509f8c4b5ac5d9867b2ca3beb6}{00028}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classconnection_1_1DatabasePool_aff9cb2509f8c4b5ac5d9867b2ca3beb6}{close}}(self):}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Ferme\ le\ pool\ de\ connexions"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00030}00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ await\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}.\mbox{\hyperlink{classconnection_1_1DatabasePool_aff9cb2509f8c4b5ac5d9867b2ca3beb6}{close}}()}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_ad8f467d1f3ce7a11300d45f926718543}{\_initialized}}\ =\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}✅\ Pool\ de\ connexions\ fermé"{}})}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00036}\mbox{\hyperlink{classconnection_1_1DatabasePool_a3a4fb64bb29e73da55c14663846ee713}{00036}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classconnection_1_1DatabasePool_a3a4fb64bb29e73da55c14663846ee713}{execute}}(self,\ query:\ str,\ *args):}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exécute\ une\ requête\ sans\ retour\ de\ résultat"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00038}00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ RuntimeError(\textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée.\ Appelez\ initialize()\ d'abord."{}})}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}.acquire()\ \textcolor{keyword}{as}\ connection:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ connection.execute(query,\ *args)}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00043}\mbox{\hyperlink{classconnection_1_1DatabasePool_a3a23f5d2437355d79ba06ac977e79aa5}{00043}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classconnection_1_1DatabasePool_a3a23f5d2437355d79ba06ac977e79aa5}{fetch}}(self,\ query:\ str,\ *args):}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00044}00044\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Récupère\ plusieurs\ lignes"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00045}00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ RuntimeError(\textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée.\ Appelez\ initialize()\ d'abord."{}})}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}.acquire()\ \textcolor{keyword}{as}\ connection:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ connection.fetch(query,\ *args)}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00050}\mbox{\hyperlink{classconnection_1_1DatabasePool_a06ac88392815f78424a7154878b69fc9}{00050}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classconnection_1_1DatabasePool_a06ac88392815f78424a7154878b69fc9}{fetchrow}}(self,\ query:\ str,\ *args):}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Récupère\ une\ seule\ ligne"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ RuntimeError(\textcolor{stringliteral}{"{}Base\ de\ données\ non\ initialisée.\ Appelez\ initialize()\ d'abord."{}})}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keyword}{async}\ \textcolor{keyword}{with}\ self.\mbox{\hyperlink{classconnection_1_1DatabasePool_a1de3c1b77d97d146f9f1651c65addef7}{pool}}.acquire()\ \textcolor{keyword}{as}\ connection:}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ connection.fetchrow(query,\ *args)}
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{connection_8py_source_l00057}\mbox{\hyperlink{namespaceconnection_ad657554668749420b7f819848f386100}{00057}}\ db\ =\ \mbox{\hyperlink{classconnection_1_1DatabasePool}{DatabasePool}}()}
 
 \end{DoxyCode}

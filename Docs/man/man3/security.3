@@ -1,0 +1,78 @@
+.TH "security" 3 "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+security
+.SH SYNOPSIS
+.br
+.PP
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBPasswordHandler\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBverify_password\fP (str plain_password, str hashed_password)"
+.br
+.ti -1c
+.RI "str \fBget_password_hash\fP (str password)"
+.br
+.ti -1c
+.RI "str \fBgenerate_activation_code\fP (int length=4)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBlogger\fP = logging\&.getLogger(__name__)"
+.br
+.ti -1c
+.RI "\fBpassword_handler\fP = \fBPasswordHandler\fP()"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS " str security\&.generate_activation_code (int  length = \fC4\fP)"
+
+.PP
+.nf
+Generate a random activation code\&.
+
+Args:
+    length: Code length (default: 4)
+
+Returns:
+    A random alphanumeric code
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB63\fP of file \fBsecurity\&.py\fP\&.
+.SS " str security\&.get_password_hash (str password)"
+
+.PP
+Definition at line \fB60\fP of file \fBsecurity\&.py\fP\&.
+.SS " bool security\&.verify_password (str plain_password, str hashed_password)"
+
+.PP
+Definition at line \fB57\fP of file \fBsecurity\&.py\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "security\&.logger = logging\&.getLogger(__name__)"
+
+.PP
+Definition at line \fB9\fP of file \fBsecurity\&.py\fP\&.
+.SS "security\&.password_handler = \fBPasswordHandler\fP()"
+
+.PP
+Definition at line \fB54\fP of file \fBsecurity\&.py\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

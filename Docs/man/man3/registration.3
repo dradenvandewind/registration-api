@@ -1,0 +1,61 @@
+.TH "registration" 3 "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+registration
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "None \fB_validate_password\fP (str password)"
+.br
+.ti -1c
+.RI "\fBregister_user\fP (UserCreate user_data, BackgroundTasks background_tasks)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBrouter\fP = APIRouter(prefix='/registration', tags=['registration'])"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS " None registration\&._validate_password (str password)\fC [protected]\fP"
+
+.PP
+.nf
+Validates password length and complexity\&.
+Throws an HTTPException 422 with a clear message on failure\&.\&.
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB10\fP of file \fBregistration\&.py\fP\&.
+.SS "registration\&.register_user (UserCreate user_data, BackgroundTasks
+ background_tasks)"
+
+.PP
+.nf
+Register a new user with email and password
+An activation code will be sent via email
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB37\fP of file \fBregistration\&.py\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "registration\&.router = APIRouter(prefix='/registration', tags=['registration'])"
+
+.PP
+Definition at line \fB8\fP of file \fBregistration\&.py\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

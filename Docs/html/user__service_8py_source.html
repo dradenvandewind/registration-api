@@ -81,7 +81,7 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">user_service.py</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">from</span> app.db.repositories.user_repository <span class="keyword">import</span> UserRepository</div>
+<a href="user__service_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceuser__service.html">    1</a></span><span class="keyword">from</span> app.db.repositories.user_repository <span class="keyword">import</span> UserRepository</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> app.models.user <span class="keyword">import</span> UserCreate, UserResponse, UserInDB</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> app.core.exceptions <span class="keyword">import</span> UserAlreadyExistsError, UserNotFoundError</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> typing <span class="keyword">import</span> Optional</div>
@@ -89,14 +89,17 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">import</span> logging</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>logger = logging.getLogger(__name__)</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespaceuser__service.html#a7a23bd80afae9780ff790629bc2d5415">    9</a></span>logger = logging.getLogger(__name__)</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="foldopen" id="foldopen00011" data-start="" data-end="">
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classuser__service_1_1UserService.html">   11</a></span><span class="keyword">class </span><a class="code hl_class" href="classuser__service_1_1UserService.html">UserService</a>:</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a> = UserRepository()</div>
+<div class="foldopen" id="foldopen00012" data-start="" data-end="">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classuser__service_1_1UserService.html#a52659dd4083fba7b88b01750c60318c1">   12</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classuser__service_1_1UserService.html#a52659dd4083fba7b88b01750c60318c1">__init__</a>(self):</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">   13</a></span>        self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a> = UserRepository()</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">async def </span>create_user(self, user_data: UserCreate) -&gt; UserResponse:</div>
+</div>
+<div class="foldopen" id="foldopen00015" data-start="" data-end="">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classuser__service_1_1UserService.html#a8583ecf4e65e3754ba9e55fc1f97e44d">   15</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classuser__service_1_1UserService.html#a8583ecf4e65e3754ba9e55fc1f97e44d">create_user</a>(self, user_data: UserCreate) -&gt; UserResponse:</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="comment"># Vérifier si l&#39;utilisateur existe déjà</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        existing_user = await self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a>.get_by_email(user_data.email)</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">if</span> existing_user:</div>
@@ -104,7 +107,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="comment"># Créer l&#39;utilisateur</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        user_in_db = await self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a>.create(user_data)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        logger.info(f<span class="stringliteral">&quot;Utilisateur créé en base: {user_in_db}&quot;</span>)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        logger.info(f<span class="stringliteral">&quot;User created in the database: {user_in_db}&quot;</span>)</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="comment"># SOLUTION: Créer manuellement le UserResponse</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        user_response = UserResponse(</div>
@@ -116,7 +119,9 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordflow">return</span> user_response</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">async def </span>get_user(self, user_id: UUID) -&gt; Optional[UserResponse]:</div>
+</div>
+<div class="foldopen" id="foldopen00035" data-start="" data-end="">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classuser__service_1_1UserService.html#a71764d7cf8d7d1ee788aaf6049119b42">   35</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classuser__service_1_1UserService.html#a71764d7cf8d7d1ee788aaf6049119b42">get_user</a>(self, user_id: UUID) -&gt; Optional[UserResponse]:</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        user = await self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a>.get_by_id(user_id)</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> user:</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keywordflow">raise</span> UserNotFoundError(<span class="stringliteral">&quot;User not found&quot;</span>)</div>
@@ -131,16 +136,22 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordflow">return</span> user_response</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">async def </span>get_user_by_email(self, email: str) -&gt; Optional[UserInDB]:</div>
+</div>
+<div class="foldopen" id="foldopen00050" data-start="" data-end="">
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classuser__service_1_1UserService.html#ae4f01f63e57f9b8bcafcaf67b4912d7d">   50</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classuser__service_1_1UserService.html#ae4f01f63e57f9b8bcafcaf67b4912d7d">get_user_by_email</a>(self, email: str) -&gt; Optional[UserInDB]:</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        user = await self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a>.get_by_email(email)</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> user:</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="keywordflow">raise</span> UserNotFoundError(<span class="stringliteral">&quot;User not found&quot;</span>)</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordflow">return</span> user</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keyword">async def </span>activate_user(self, user_id: UUID) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        await self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a>.activate_user(user_id)</div>
+</div>
+<div class="foldopen" id="foldopen00056" data-start="" data-end="">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classuser__service_1_1UserService.html#a5cb321e4ea4ce93eb7c723ccaaaf368e">   56</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classuser__service_1_1UserService.html#a5cb321e4ea4ce93eb7c723ccaaaf368e">activate_user</a>(self, user_id: UUID) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        await self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a>.<a class="code hl_function" href="classuser__service_1_1UserService.html#a5cb321e4ea4ce93eb7c723ccaaaf368e">activate_user</a>(user_id)</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">async def </span>verify_credentials(self, email: str, password: str) -&gt; Optional[UserInDB]:</div>
+</div>
+<div class="foldopen" id="foldopen00059" data-start="" data-end="">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classuser__service_1_1UserService.html#a8c3cbb500a04aaf7b580e1c462f9a1e0">   59</a></span>    <span class="keyword">async def </span><a class="code hl_function" href="classuser__service_1_1UserService.html#a8c3cbb500a04aaf7b580e1c462f9a1e0">verify_credentials</a>(self, email: str, password: str) -&gt; Optional[UserInDB]:</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keyword">from</span> app.core.security <span class="keyword">import</span> verify_password</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        user = await self.<a class="code hl_variable" href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">repository</a>.get_by_email(email)</div>
@@ -152,8 +163,15 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">return</span> user</div>
 </div>
+</div>
 <div class="ttc" id="aclassuser__service_1_1UserService_html"><div class="ttname"><a href="classuser__service_1_1UserService.html">user_service.UserService</a></div><div class="ttdef"><b>Definition</b> <a href="user__service_8py_source.html#l00011">user_service.py:11</a></div></div>
 <div class="ttc" id="aclassuser__service_1_1UserService_html_a0223b515ed7cd01189c88c69c579b469"><div class="ttname"><a href="classuser__service_1_1UserService.html#a0223b515ed7cd01189c88c69c579b469">user_service.UserService.repository</a></div><div class="ttdeci">repository</div><div class="ttdef"><b>Definition</b> <a href="user__service_8py_source.html#l00013">user_service.py:13</a></div></div>
+<div class="ttc" id="aclassuser__service_1_1UserService_html_a52659dd4083fba7b88b01750c60318c1"><div class="ttname"><a href="classuser__service_1_1UserService.html#a52659dd4083fba7b88b01750c60318c1">user_service.UserService.__init__</a></div><div class="ttdeci">__init__(self)</div><div class="ttdef"><b>Definition</b> <a href="user__service_8py_source.html#l00012">user_service.py:12</a></div></div>
+<div class="ttc" id="aclassuser__service_1_1UserService_html_a5cb321e4ea4ce93eb7c723ccaaaf368e"><div class="ttname"><a href="classuser__service_1_1UserService.html#a5cb321e4ea4ce93eb7c723ccaaaf368e">user_service.UserService.activate_user</a></div><div class="ttdeci">None activate_user(self, UUID user_id)</div><div class="ttdef"><b>Definition</b> <a href="user__service_8py_source.html#l00056">user_service.py:56</a></div></div>
+<div class="ttc" id="aclassuser__service_1_1UserService_html_a71764d7cf8d7d1ee788aaf6049119b42"><div class="ttname"><a href="classuser__service_1_1UserService.html#a71764d7cf8d7d1ee788aaf6049119b42">user_service.UserService.get_user</a></div><div class="ttdeci">Optional[UserResponse] get_user(self, UUID user_id)</div><div class="ttdef"><b>Definition</b> <a href="user__service_8py_source.html#l00035">user_service.py:35</a></div></div>
+<div class="ttc" id="aclassuser__service_1_1UserService_html_a8583ecf4e65e3754ba9e55fc1f97e44d"><div class="ttname"><a href="classuser__service_1_1UserService.html#a8583ecf4e65e3754ba9e55fc1f97e44d">user_service.UserService.create_user</a></div><div class="ttdeci">UserResponse create_user(self, UserCreate user_data)</div><div class="ttdef"><b>Definition</b> <a href="user__service_8py_source.html#l00015">user_service.py:15</a></div></div>
+<div class="ttc" id="aclassuser__service_1_1UserService_html_a8c3cbb500a04aaf7b580e1c462f9a1e0"><div class="ttname"><a href="classuser__service_1_1UserService.html#a8c3cbb500a04aaf7b580e1c462f9a1e0">user_service.UserService.verify_credentials</a></div><div class="ttdeci">Optional[UserInDB] verify_credentials(self, str email, str password)</div><div class="ttdef"><b>Definition</b> <a href="user__service_8py_source.html#l00059">user_service.py:59</a></div></div>
+<div class="ttc" id="aclassuser__service_1_1UserService_html_ae4f01f63e57f9b8bcafcaf67b4912d7d"><div class="ttname"><a href="classuser__service_1_1UserService.html#ae4f01f63e57f9b8bcafcaf67b4912d7d">user_service.UserService.get_user_by_email</a></div><div class="ttdeci">Optional[UserInDB] get_user_by_email(self, str email)</div><div class="ttdef"><b>Definition</b> <a href="user__service_8py_source.html#l00050">user_service.py:50</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

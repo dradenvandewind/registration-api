@@ -1,0 +1,61 @@
+.TH "activation" 3 "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+activation
+.SH SYNOPSIS
+.br
+.PP
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBActivationCodeCreate\fP"
+.br
+.ti -1c
+.RI "class \fBActivationCodeInDB\fP"
+.br
+.ti -1c
+.RI "class \fBActivationRequest\fP"
+.br
+.ti -1c
+.RI "class \fBActivationResponse\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBactivate_account\fP (\fBActivationRequest\fP activation_data, UserInDB current_user=Depends(get_current_user))"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBrouter\fP = APIRouter(prefix='/activation', tags=['activation'])"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "activation\&.activate_account (\fBActivationRequest\fP activation_data, UserInDB  current_user = \fCDepends(get_current_user)\fP)"
+
+.PP
+.nf
+Activate user account with 4-digit code
+Requires Basic Auth with email and password
+
+.fi
+.PP
+ 
+.PP
+Definition at line \fB15\fP of file \fBactivation\&.py\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "activation\&.router = APIRouter(prefix='/activation', tags=['activation'])"
+
+.PP
+Definition at line \fB12\fP of file \fBactivation\&.py\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

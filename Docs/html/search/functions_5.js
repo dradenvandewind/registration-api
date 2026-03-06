@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['hash_5fpassword_0',['hash_password',['../classsecurity_1_1PasswordHandler.html#a51cfc8bea381b71542c54ae05ab1d026',1,'security::PasswordHandler']]]
+  ['fetch_0',['fetch',['../classconnection_1_1DatabasePool.html#a3a23f5d2437355d79ba06ac977e79aa5',1,'connection::DatabasePool']]],
+  ['fetchrow_1',['fetchrow',['../classconnection_1_1DatabasePool.html#a06ac88392815f78424a7154878b69fc9',1,'connection::DatabasePool']]]
 ];

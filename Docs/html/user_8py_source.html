@@ -81,29 +81,29 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">user.py</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, EmailStr, Field, field_validator</div>
+<a href="user_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceuser.html">    1</a></span><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, EmailStr, Field, field_validator</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> uuid <span class="keyword">import</span> UUID</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> typing <span class="keyword">import</span> Optional</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>PASSWORD_MIN_LENGTH = 4</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>PASSWORD_MAX_LENGTH = 4 </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespaceuser.html#a65e8a25f4752cec8c7500e071e993f2a">    6</a></span>PASSWORD_MIN_LENGTH = 4</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespaceuser.html#a425870fe997d4e0e6841a92a19f78426">    7</a></span>PASSWORD_MAX_LENGTH = 4 </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="foldopen" id="foldopen00010" data-start="" data-end="">
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classuser_1_1UserCreate.html">   10</a></span><span class="keyword">class </span><a class="code hl_class" href="classuser_1_1UserCreate.html">UserCreate</a>(BaseModel):</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    email: EmailStr</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    password: str = Field(min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classuser_1_1UserCreate.html#a074eb4ec1d35d3408bb06656928fc56f">   11</a></span>    email: EmailStr</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classuser_1_1UserCreate.html#a288f0c3d81b188f5091b0b18d834e11e">   12</a></span>    password: str = Field(min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="preprocessor">@field_validator(&quot;password&quot;)</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="preprocessor">@classmethod</span></div>
 <div class="foldopen" id="foldopen00016" data-start="" data-end="">
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classuser_1_1UserCreate.html#a8a0183d739cbf7455d2e9a7569d0622a">   16</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classuser_1_1UserCreate.html#a8a0183d739cbf7455d2e9a7569d0622a">password_complexity</a>(cls, v: str) -&gt; str:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="stringliteral">&quot;&quot;&quot;Vérifie que le mot de passe contient au moins une lettre et un chiffre.&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="stringliteral">&quot;&quot;&quot;Check that the password contains at least one letter and one number..&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> any(c.isdigit() <span class="keywordflow">for</span> c <span class="keywordflow">in</span> v):</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;Le mot de passe doit contenir au moins un chiffre.&quot;</span>)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;The password must contain at least one number.&quot;</span>)</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> any(c.isalpha() <span class="keywordflow">for</span> c <span class="keywordflow">in</span> v):</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;Le mot de passe doit contenir au moins une lettre.&quot;</span>)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;The password must contain at least one letter.&quot;</span>)</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keywordflow">return</span> v</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
@@ -111,21 +111,21 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="foldopen" id="foldopen00025" data-start="" data-end="">
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classuser_1_1UserInDB.html">   25</a></span><span class="keyword">class </span><a class="code hl_class" href="classuser_1_1UserInDB.html">UserInDB</a>(BaseModel):</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    id: UUID</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    email: EmailStr</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    password_hash: str</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    is_active: bool</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    created_at: datetime</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    updated_at: datetime</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classuser_1_1UserInDB.html#a0dec11799025e39d69a43fa588933c06">   26</a></span>    id: UUID</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classuser_1_1UserInDB.html#a56e8ff8acc618577b891999b0b167c96">   27</a></span>    email: EmailStr</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classuser_1_1UserInDB.html#a4c624945c95d46106d04bbb21cbbf7d6">   28</a></span>    password_hash: str</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classuser_1_1UserInDB.html#a18992e29ec065e68bdae2eddcabdb660">   29</a></span>    is_active: bool</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classuser_1_1UserInDB.html#a0e0066483b597019c7a30866428306b7">   30</a></span>    created_at: datetime</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classuser_1_1UserInDB.html#a818e87ecce38e4d4ce9bd832fd59a49b">   31</a></span>    updated_at: datetime</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 </div>
 <div class="foldopen" id="foldopen00034" data-start="" data-end="">
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classuser_1_1UserResponse.html">   34</a></span><span class="keyword">class </span><a class="code hl_class" href="classuser_1_1UserResponse.html">UserResponse</a>(BaseModel):</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    id: UUID</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    email: EmailStr</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    is_active: bool</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    created_at: datetime</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classuser_1_1UserResponse.html#a6ad75c33e8f8821dbf66df812b2b2a4e">   35</a></span>    id: UUID</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classuser_1_1UserResponse.html#a832128f359e1fbe1b5b72b21e4aaa7b7">   36</a></span>    email: EmailStr</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classuser_1_1UserResponse.html#ad7437a4d92df01286416f294ac08dfce">   37</a></span>    is_active: bool</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classuser_1_1UserResponse.html#ae488fc7cc135c2625ba92b68e9dcda7a">   38</a></span>    created_at: datetime</div>
 </div>
 <div class="ttc" id="aclassuser_1_1UserCreate_html"><div class="ttname"><a href="classuser_1_1UserCreate.html">user.UserCreate</a></div><div class="ttdef"><b>Definition</b> <a href="user_8py_source.html#l00010">user.py:10</a></div></div>
 <div class="ttc" id="aclassuser_1_1UserCreate_html_a8a0183d739cbf7455d2e9a7569d0622a"><div class="ttname"><a href="classuser_1_1UserCreate.html#a8a0183d739cbf7455d2e9a7569d0622a">user.UserCreate.password_complexity</a></div><div class="ttdeci">str password_complexity(cls, str v)</div><div class="ttdef"><b>Definition</b> <a href="user_8py_source.html#l00016">user.py:16</a></div></div>

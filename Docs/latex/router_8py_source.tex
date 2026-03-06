@@ -1,12 +1,12 @@
 \doxysection{router.\+py}
-\label{router_8py_source}\index{api/v1/router.py@{api/v1/router.py}}
-
+\hypertarget{router_8py_source}{}\label{router_8py_source}\index{api/v1/router.py@{api/v1/router.py}}
+\mbox{\hyperlink{router_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter}
-\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.api.v1.endpoints\ \textcolor{keyword}{import}\ registration,\ activation}
-\DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/v1"{}})}
-\DoxyCodeLine{00005\ router.include\_router(registration.router)}
-\DoxyCodeLine{00006\ router.include\_router(activation.router)}
+\DoxyCodeLine{\Hypertarget{router_8py_source_l00001}\mbox{\hyperlink{namespacerouter}{00001}}\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter}
+\DoxyCodeLine{\Hypertarget{router_8py_source_l00002}00002\ \textcolor{keyword}{from}\ app.api.v1.endpoints\ \textcolor{keyword}{import}\ registration,\ activation}
+\DoxyCodeLine{\Hypertarget{router_8py_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{router_8py_source_l00004}\mbox{\hyperlink{namespacerouter_afb34fc8d7db7b226fcf2bfcc2df0e1f5}{00004}}\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/v1"{}})}
+\DoxyCodeLine{\Hypertarget{router_8py_source_l00005}00005\ router.include\_router(registration.router)}
+\DoxyCodeLine{\Hypertarget{router_8py_source_l00006}00006\ router.include\_router(activation.router)}
 
 \end{DoxyCode}

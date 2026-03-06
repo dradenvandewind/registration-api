@@ -1,39 +1,39 @@
 \doxysection{auth.\+py}
-\label{auth_8py_source}\index{dependencies/auth.py@{dependencies/auth.py}}
-
+\hypertarget{auth_8py_source}{}\label{auth_8py_source}\index{dependencies/auth.py@{dependencies/auth.py}}
+\mbox{\hyperlink{auth_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ Depends,\ HTTPException,\ status}
-\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ fastapi.security\ \textcolor{keyword}{import}\ HTTPBasic,\ HTTPBasicCredentials}
-\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.services.user\_service\ \textcolor{keyword}{import}\ UserService}
-\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserNotFoundError}
-\DoxyCodeLine{00005\ }
-\DoxyCodeLine{00006\ security\ =\ HTTPBasic()}
-\DoxyCodeLine{00007\ }
-\DoxyCodeLine{00008\ \textcolor{keyword}{async\ def\ }get\_current\_user(}
-\DoxyCodeLine{00009\ \ \ \ \ credentials:\ HTTPBasicCredentials\ =\ Depends(security)}
-\DoxyCodeLine{00010\ ):}
-\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Dependency\ to\ get\ current\ authenticated\ user"{}"{}"{}}}
-\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ user\_service\ =\ UserService()}}
-\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ }}
-\DoxyCodeLine{00014\ \textcolor{stringliteral}{\ \ \ \ try:}}
-\DoxyCodeLine{00015\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ user\ =\ await\ user\_service.verify\_credentials(}}
-\DoxyCodeLine{00016\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ credentials.username,\ }}
-\DoxyCodeLine{00017\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ credentials.password}}
-\DoxyCodeLine{00018\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ )}}
-\DoxyCodeLine{00019\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ }}
-\DoxyCodeLine{00020\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ if\ not\ user:}}
-\DoxyCodeLine{00021\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ raise\ HTTPException(}}
-\DoxyCodeLine{00022\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_401\_UNAUTHORIZED,}}
-\DoxyCodeLine{00023\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ detail="{}Invalid\ credentials"{},}}
-\DoxyCodeLine{00024\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ headers=\{"{}WWW-\/Authenticate"{}:\ "{}Basic"{}\},}}
-\DoxyCodeLine{00025\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ )}}
-\DoxyCodeLine{00026\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ }}
-\DoxyCodeLine{00027\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ return\ user}}
-\DoxyCodeLine{00028\ \textcolor{stringliteral}{\ \ \ \ except\ UserNotFoundError:}}
-\DoxyCodeLine{00029\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ raise\ HTTPException(}}
-\DoxyCodeLine{00030\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_401\_UNAUTHORIZED,}}
-\DoxyCodeLine{00031\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ detail="{}Invalid\ credentials"{},}}
-\DoxyCodeLine{00032\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ headers=\{"{}WWW-\/Authenticate"{}:\ "{}Basic"{}\},}}
-\DoxyCodeLine{00033\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ )}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00001}\mbox{\hyperlink{namespaceauth}{00001}}\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ Depends,\ HTTPException,\ status}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00002}00002\ \textcolor{keyword}{from}\ fastapi.security\ \textcolor{keyword}{import}\ HTTPBasic,\ HTTPBasicCredentials}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00003}00003\ \textcolor{keyword}{from}\ app.services.user\_service\ \textcolor{keyword}{import}\ UserService}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00004}00004\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserNotFoundError}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00006}\mbox{\hyperlink{namespaceauth_aeb0cd5ae42d07279f9c08a1e105a02ec}{00006}}\ security\ =\ HTTPBasic()}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00008}\mbox{\hyperlink{namespaceauth_a420ceb2e6f13fe21c4f7b4696d328112}{00008}}\ \textcolor{keyword}{async\ def\ }get\_current\_user(}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00009}00009\ \ \ \ \ credentials:\ HTTPBasicCredentials\ =\ Depends(security)}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00010}00010\ ):}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00011}00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Dependency\ to\ get\ current\ authenticated\ user"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00012}00012\ \textcolor{stringliteral}{\ \ \ \ user\_service\ =\ UserService()}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00013}00013\ \textcolor{stringliteral}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00014}00014\ \textcolor{stringliteral}{\ \ \ \ try:}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00015}00015\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ user\ =\ await\ user\_service.verify\_credentials(}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00016}00016\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ credentials.username,\ }}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00017}00017\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ credentials.password}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00018}00018\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ )}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00019}00019\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00020}00020\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ if\ not\ user:}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00021}00021\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ raise\ HTTPException(}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00022}00022\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_401\_UNAUTHORIZED,}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00023}00023\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ detail="{}Invalid\ credentials"{},}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00024}00024\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ headers=\{"{}WWW-\/Authenticate"{}:\ "{}Basic"{}\},}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00025}00025\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ )}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00026}00026\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00027}00027\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ return\ user}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00028}00028\ \textcolor{stringliteral}{\ \ \ \ except\ UserNotFoundError:}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00029}00029\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ raise\ HTTPException(}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00030}00030\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_401\_UNAUTHORIZED,}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00031}00031\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ detail="{}Invalid\ credentials"{},}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00032}00032\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ headers=\{"{}WWW-\/Authenticate"{}:\ "{}Basic"{}\},}}
+\DoxyCodeLine{\Hypertarget{auth_8py_source_l00033}00033\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ )}}
 
 \end{DoxyCode}

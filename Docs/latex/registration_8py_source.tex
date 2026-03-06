@@ -1,73 +1,73 @@
 \doxysection{registration.\+py}
-\label{registration_8py_source}\index{api/v1/endpoints/registration.py@{api/v1/endpoints/registration.py}}
-
+\hypertarget{registration_8py_source}{}\label{registration_8py_source}\index{api/v1/endpoints/registration.py@{api/v1/endpoints/registration.py}}
+\mbox{\hyperlink{registration_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter,\ HTTPException,\ status,\ BackgroundTasks}
-\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserCreate,\ UserResponse}
-\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.services.user\_service\ \textcolor{keyword}{import}\ UserService}
-\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ app.services.activation\_service\ \textcolor{keyword}{import}\ ActivationService}
-\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ app.services.email\_service\ \textcolor{keyword}{import}\ email\_service}
-\DoxyCodeLine{00006\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserAlreadyExistsError}
-\DoxyCodeLine{00007\ }
-\DoxyCodeLine{00008\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/registration"{}},\ tags=[\textcolor{stringliteral}{"{}registration"{}}])}
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{keyword}{def\ }\_validate\_password(password:\ str)\ -\/>\ \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
-\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ Valide\ la\ longueur\ et\ la\ complexité\ du\ mot\ de\ passe.}}
-\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ Lève\ une\ HTTPException\ 422\ avec\ un\ message\ clair\ en\ cas\ d'échec.}}
-\DoxyCodeLine{00014\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
-\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordflow}{if}\ len(password)\ <\ PASSWORD\_MIN\_LENGTH:}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_422\_UNPROCESSABLE\_ENTITY,}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ detail=(}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}Le\ mot\ de\ passe\ est\ trop\ court\ :\ "{}}}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}minimum\ \{PASSWORD\_MIN\_LENGTH\}\ caractères\ "{}}}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}(reçu\ :\ \{len(password)\})."{}}}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{if}\ len(password)\ >\ PASSWORD\_MAX\_LENGTH:}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_422\_UNPROCESSABLE\_ENTITY,}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ detail=(}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}Le\ mot\ de\ passe\ est\ trop\ long\ :\ "{}}}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}maximum\ \{PASSWORD\_MAX\_LENGTH\}\ caractères\ "{}}}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}(reçu\ :\ \{len(password)\})."{}}}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ }
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \textcolor{preprocessor}{@router.post("{}"{},\ response\_model=UserResponse,\ status\_code=status.HTTP\_201\_CREATED)}}
-\DoxyCodeLine{00037\ \textcolor{keyword}{async\ def\ }register\_user(}
-\DoxyCodeLine{00038\ \ \ \ \ user\_data:\ UserCreate,}
-\DoxyCodeLine{00039\ \ \ \ \ background\_tasks:\ BackgroundTasks}
-\DoxyCodeLine{00040\ ):}
-\DoxyCodeLine{00041\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
-\DoxyCodeLine{00042\ \textcolor{stringliteral}{\ \ \ \ Register\ a\ new\ user\ with\ email\ and\ password}}
-\DoxyCodeLine{00043\ \textcolor{stringliteral}{\ \ \ \ An\ activation\ code\ will\ be\ sent\ via\ email}}
-\DoxyCodeLine{00044\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{try}:}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ user}}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ user\_service\ =\ UserService()}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ user\ =\ await\ user\_service.create\_user(user\_data)}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Generate\ activation\ code}}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ activation\_service\ =\ ActivationService()}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ code\ =\ await\ activation\_service.create\_activation\_code(user.id)}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Send\ email\ with\ code\ (background\ task)}}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ background\_tasks.add\_task(}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ email\_service.send\_activation\_code,}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ user.email,}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ code}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user}
-\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{except}\ UserAlreadyExistsError\ \textcolor{keyword}{as}\ e:}
-\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_409\_CONFLICT,}
-\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ detail=str(e)}
-\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00001}\mbox{\hyperlink{namespaceregistration}{00001}}\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ APIRouter,\ HTTPException,\ status,\ BackgroundTasks}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00002}00002\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserCreate,\ UserResponse}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00003}00003\ \textcolor{keyword}{from}\ app.services.user\_service\ \textcolor{keyword}{import}\ UserService}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00004}00004\ \textcolor{keyword}{from}\ app.services.activation\_service\ \textcolor{keyword}{import}\ ActivationService}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00005}00005\ \textcolor{keyword}{from}\ app.services.email\_service\ \textcolor{keyword}{import}\ email\_service}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00006}00006\ \textcolor{keyword}{from}\ app.core.exceptions\ \textcolor{keyword}{import}\ UserAlreadyExistsError}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00008}\mbox{\hyperlink{namespaceregistration_ae2f390c2d6e22aafcde543e2831f8f98}{00008}}\ router\ =\ APIRouter(prefix=\textcolor{stringliteral}{"{}/registration"{}},\ tags=[\textcolor{stringliteral}{"{}registration"{}}])}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00010}\mbox{\hyperlink{namespaceregistration_a40c89b3efa1cbe793d2fc9c40dd4d59a}{00010}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceregistration_a40c89b3efa1cbe793d2fc9c40dd4d59a}{\_validate\_password}}(password:\ str)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00011}00011\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00012}00012\ \textcolor{stringliteral}{\ \ \ \ Validates\ password\ length\ and\ complexity.}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00013}00013\ \textcolor{stringliteral}{\ \ \ \ Throws\ an\ HTTPException\ 422\ with\ a\ clear\ message\ on\ failure..}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00014}00014\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00015}00015\ \ \ \ \ \textcolor{keywordflow}{if}\ len(password)\ <\ PASSWORD\_MIN\_LENGTH:}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00016}00016\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00017}00017\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_422\_UNPROCESSABLE\_ENTITY,}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00018}00018\ \ \ \ \ \ \ \ \ \ \ \ \ detail=(}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}The\ password\ is\ too\ short\ :\ "{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00020}00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}minimum\ \{PASSWORD\_MIN\_LENGTH\}\ characters\ "{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00021}00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}(received\ :\ \{len(password)\})."{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00022}00022\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00023}00023\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00024}00024\ \ \ \ \ \textcolor{keywordflow}{if}\ len(password)\ >\ PASSWORD\_MAX\_LENGTH:}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00026}00026\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_422\_UNPROCESSABLE\_ENTITY,}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ detail=(}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}The\ password\ is\ too\ long\ :\ \ "{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}maximum\ \{PASSWORD\_MAX\_LENGTH\}\ characters\ "{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}(received\ :\ \{len(password)\})."{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00032}00032\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00036}00036\ \textcolor{preprocessor}{@router.post("{}"{},\ response\_model=UserResponse,\ status\_code=status.HTTP\_201\_CREATED)}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00037}\mbox{\hyperlink{namespaceregistration_a5961ad78b20eed4e57b75274ee975926}{00037}}\ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{namespaceregistration_a5961ad78b20eed4e57b75274ee975926}{register\_user}}(}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00038}00038\ \ \ \ \ user\_data:\ UserCreate,}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00039}00039\ \ \ \ \ background\_tasks:\ BackgroundTasks}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00040}00040\ ):}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00041}00041\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00042}00042\ \textcolor{stringliteral}{\ \ \ \ Register\ a\ new\ user\ with\ email\ and\ password}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00043}00043\ \textcolor{stringliteral}{\ \ \ \ An\ activation\ code\ will\ be\ sent\ via\ email}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00044}00044\ \textcolor{stringliteral}{\ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00045}00045\ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00046}00046\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ user}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ user\_service\ =\ UserService()}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00048}00048\ \ \ \ \ \ \ \ \ user\ =\ await\ user\_service.create\_user(user\_data)}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00049}00049\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Generate\ activation\ code}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00051}00051\ \ \ \ \ \ \ \ \ activation\_service\ =\ ActivationService()}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00052}00052\ \ \ \ \ \ \ \ \ code\ =\ await\ activation\_service.create\_activation\_code(user.id)}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00053}00053\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Send\ email\ with\ code\ (background\ task)}}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00055}00055\ \ \ \ \ \ \ \ \ background\_tasks.add\_task(}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ email\_service.send\_activation\_code,}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ user.email,}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ code}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00059}00059\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00060}00060\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ user}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00062}00062\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00063}00063\ \ \ \ \ \textcolor{keywordflow}{except}\ UserAlreadyExistsError\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_409\_CONFLICT,}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ detail=str(e)}
+\DoxyCodeLine{\Hypertarget{registration_8py_source_l00067}00067\ \ \ \ \ \ \ \ \ )}
 
 \end{DoxyCode}

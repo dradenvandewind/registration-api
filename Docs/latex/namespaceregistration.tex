@@ -1,0 +1,56 @@
+\doxysection{registration Namespace Reference}
+\hypertarget{namespaceregistration}{}\label{namespaceregistration}\index{registration@{registration}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{namespaceregistration_a40c89b3efa1cbe793d2fc9c40dd4d59a}{\+\_\+validate\+\_\+password}} (str password)
+\item 
+\mbox{\hyperlink{namespaceregistration_a5961ad78b20eed4e57b75274ee975926}{register\+\_\+user}} (User\+Create user\+\_\+data, Background\+Tasks background\+\_\+tasks)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceregistration_ae2f390c2d6e22aafcde543e2831f8f98}{router}} = APIRouter(prefix="{}/registration"{}, tags=\mbox{[}"{}registration"{}\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceregistration_a40c89b3efa1cbe793d2fc9c40dd4d59a}\label{namespaceregistration_a40c89b3efa1cbe793d2fc9c40dd4d59a} 
+\index{registration@{registration}!\_validate\_password@{\_validate\_password}}
+\index{\_validate\_password@{\_validate\_password}!registration@{registration}}
+\doxysubsubsection{\texorpdfstring{\_validate\_password()}{\_validate\_password()}}
+{\footnotesize\ttfamily  None registration.\+\_\+validate\+\_\+password (\begin{DoxyParamCaption}\item[{str}]{password }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\begin{DoxyVerb}Validates password length and complexity.
+Throws an HTTPException 422 with a clear message on failure..
+\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{registration_8py_source_l00010}{10}} of file \mbox{\hyperlink{registration_8py_source}{registration.\+py}}.
+
+\Hypertarget{namespaceregistration_a5961ad78b20eed4e57b75274ee975926}\label{namespaceregistration_a5961ad78b20eed4e57b75274ee975926} 
+\index{registration@{registration}!register\_user@{register\_user}}
+\index{register\_user@{register\_user}!registration@{registration}}
+\doxysubsubsection{\texorpdfstring{register\_user()}{register\_user()}}
+{\footnotesize\ttfamily registration.\+register\+\_\+user (\begin{DoxyParamCaption}\item[{User\+Create}]{user\+\_\+data,  }\item[{Background\+Tasks }]{background\+\_\+tasks }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Register a new user with email and password
+An activation code will be sent via email
+\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{registration_8py_source_l00037}{37}} of file \mbox{\hyperlink{registration_8py_source}{registration.\+py}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespaceregistration_ae2f390c2d6e22aafcde543e2831f8f98}\label{namespaceregistration_ae2f390c2d6e22aafcde543e2831f8f98} 
+\index{registration@{registration}!router@{router}}
+\index{router@{router}!registration@{registration}}
+\doxysubsubsection{\texorpdfstring{router}{router}}
+{\footnotesize\ttfamily registration.\+router = APIRouter(prefix="{}/registration"{}, tags=\mbox{[}"{}registration"{}\mbox{]})}
+
+
+
+Definition at line \mbox{\hyperlink{registration_8py_source_l00008}{8}} of file \mbox{\hyperlink{registration_8py_source}{registration.\+py}}.
+

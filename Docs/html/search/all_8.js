@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['send_5factivation_5fcode_0',['send_activation_code',['../classemail__service_1_1EmailService.html#ab1584c1b0e16c9c4dc226a5295e3d9d7',1,'email_service::EmailService']]],
-  ['settings_1',['Settings',['../classconfig_1_1Settings.html',1,'config']]]
+  ['hash_5fpassword_0',['hash_password',['../classsecurity_1_1PasswordHandler.html#a51cfc8bea381b71542c54ae05ab1d026',1,'security::PasswordHandler']]],
+  ['health_5fcheck_1',['health_check',['../namespacemain.html#af0fb25cf693c599e0d77e29e802af13a',1,'main']]]
 ];

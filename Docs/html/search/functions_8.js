@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['send_5factivation_5fcode_0',['send_activation_code',['../classemail__service_1_1EmailService.html#ab1584c1b0e16c9c4dc226a5295e3d9d7',1,'email_service::EmailService']]]
+  ['initialize_0',['initialize',['../classconnection_1_1DatabasePool.html#a2ceac4cb1abee786dc06a0b04f9fa5b8',1,'connection::DatabasePool']]],
+  ['invalidate_5fold_5fcodes_1',['invalidate_old_codes',['../classactivation__repository_1_1ActivationRepository.html#a922e21031474e9a87ea63c66c30f2d70',1,'activation_repository::ActivationRepository']]]
 ];

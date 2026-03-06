@@ -1,0 +1,48 @@
+.TH "core/security.py" 3 "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+core/security.py
+.SH SYNOPSIS
+.br
+.PP
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBsecurity\&.PasswordHandler\fP"
+.br
+.in -1c
+.SS "Namespaces"
+
+.in +1c
+.ti -1c
+.RI "namespace \fBsecurity\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBsecurity\&.verify_password\fP (str plain_password, str hashed_password)"
+.br
+.ti -1c
+.RI "str \fBsecurity\&.get_password_hash\fP (str password)"
+.br
+.ti -1c
+.RI "str \fBsecurity\&.generate_activation_code\fP (int length=4)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBsecurity\&.logger\fP = logging\&.getLogger(__name__)"
+.br
+.ti -1c
+.RI "\fBsecurity\&.password_handler\fP = \fBPasswordHandler\fP()"
+.br
+.in -1c
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

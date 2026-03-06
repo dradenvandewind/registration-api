@@ -1,0 +1,52 @@
+\doxysection{activation Namespace Reference}
+\hypertarget{namespaceactivation}{}\label{namespaceactivation}\index{activation@{activation}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classactivation_1_1ActivationCodeCreate}{Activation\+Code\+Create}}
+\item 
+class \mbox{\hyperlink{classactivation_1_1ActivationCodeInDB}{Activation\+Code\+In\+DB}}
+\item 
+class \mbox{\hyperlink{classactivation_1_1ActivationRequest}{Activation\+Request}}
+\item 
+class \mbox{\hyperlink{classactivation_1_1ActivationResponse}{Activation\+Response}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceactivation_af119e2cdb3112032eb44b7e5b1c16c31}{activate\+\_\+account}} (\mbox{\hyperlink{classactivation_1_1ActivationRequest}{Activation\+Request}} activation\+\_\+data, User\+In\+DB current\+\_\+user=Depends(get\+\_\+current\+\_\+user))
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceactivation_a6ffeb88ef3760245c5ffa49aa61a005b}{router}} = APIRouter(prefix="{}/activation"{}, tags=\mbox{[}"{}activation"{}\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceactivation_af119e2cdb3112032eb44b7e5b1c16c31}\label{namespaceactivation_af119e2cdb3112032eb44b7e5b1c16c31} 
+\index{activation@{activation}!activate\_account@{activate\_account}}
+\index{activate\_account@{activate\_account}!activation@{activation}}
+\doxysubsubsection{\texorpdfstring{activate\_account()}{activate\_account()}}
+{\footnotesize\ttfamily activation.\+activate\+\_\+account (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classactivation_1_1ActivationRequest}{Activation\+Request}}}]{activation\+\_\+data,  }\item[{User\+In\+DB }]{current\+\_\+user = {\ttfamily Depends(get\+\_\+current\+\_\+user)} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Activate user account with 4-digit code
+Requires Basic Auth with email and password
+\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{api_2v1_2endpoints_2activation_8py_source_l00015}{15}} of file \mbox{\hyperlink{api_2v1_2endpoints_2activation_8py_source}{activation.\+py}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespaceactivation_a6ffeb88ef3760245c5ffa49aa61a005b}\label{namespaceactivation_a6ffeb88ef3760245c5ffa49aa61a005b} 
+\index{activation@{activation}!router@{router}}
+\index{router@{router}!activation@{activation}}
+\doxysubsubsection{\texorpdfstring{router}{router}}
+{\footnotesize\ttfamily activation.\+router = APIRouter(prefix="{}/activation"{}, tags=\mbox{[}"{}activation"{}\mbox{]})}
+
+
+
+Definition at line \mbox{\hyperlink{api_2v1_2endpoints_2activation_8py_source_l00012}{12}} of file \mbox{\hyperlink{api_2v1_2endpoints_2activation_8py_source}{activation.\+py}}.
+

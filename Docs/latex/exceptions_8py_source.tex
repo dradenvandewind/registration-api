@@ -1,56 +1,56 @@
 \doxysection{exceptions.\+py}
-\label{exceptions_8py_source}\index{core/exceptions.py@{core/exceptions.py}}
-
+\hypertarget{exceptions_8py_source}{}\label{exceptions_8py_source}\index{core/exceptions.py@{core/exceptions.py}}
+\mbox{\hyperlink{exceptions_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{comment}{\#\ app/core/exceptions.py}}
-\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ HTTPException,\ status}
-\DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{keyword}{class\ }UserAlreadyExistsError(Exception):}
-\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ a\ user\ already\ exists"{}"{}"{}}}
-\DoxyCodeLine{00006\ \ \ \ \ \textcolor{keywordflow}{pass}}
-\DoxyCodeLine{00007\ }
-\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }UserNotFoundError(Exception):}
-\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ a\ user\ is\ not\ found"{}"{}"{}}}
-\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordflow}{pass}}
-\DoxyCodeLine{00011\ }
-\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }InvalidActivationCodeError(Exception):}
-\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ the\ activation\ code\ is\ invalid\ or\ expired"{}"{}"{}}}
-\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordflow}{pass}}
-\DoxyCodeLine{00015\ }
-\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }UserAlreadyActiveError(Exception):}
-\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ the\ user\ is\ already\ active"{}"{}"{}}}
-\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{pass}}
-\DoxyCodeLine{00019\ }
-\DoxyCodeLine{00020\ \textcolor{comment}{\#\ Function\ to\ set\ up\ FastAPI\ exception\ handlers}}
-\DoxyCodeLine{00021\ \textcolor{keyword}{def\ }setup\_exception\_handlers(app):}
-\DoxyCodeLine{00022\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Configure\ exception\ handlers\ for\ the\ FastAPI\ application"{}"{}"{}}}
-\DoxyCodeLine{00023\ \ \ \ \ }
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserAlreadyExistsError)}}
-\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_already\_exists\_handler(request,\ exc):}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_409\_CONFLICT,}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ with\ this\ email\ already\ exists"{}}}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00030\ \ \ \ \ }
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserNotFoundError)}}
-\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_not\_found\_handler(request,\ exc):}
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_404\_NOT\_FOUND,}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ not\ found"{}}}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00037\ \ \ \ \ }
-\DoxyCodeLine{00038\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(InvalidActivationCodeError)}}
-\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{async\ def\ }invalid\_activation\_code\_handler(request,\ exc):}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}Invalid\ or\ expired\ activation\ code"{}}}
-\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{00044\ \ \ \ \ }
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserAlreadyActiveError)}}
-\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_already\_active\_handler(request,\ exc):}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ is\ already\ active"{}}}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00001}\mbox{\hyperlink{namespaceexceptions}{00001}}\ \textcolor{comment}{\#\ app/core/exceptions.py}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00002}00002\ \textcolor{keyword}{from}\ fastapi\ \textcolor{keyword}{import}\ HTTPException,\ status}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00004}\mbox{\hyperlink{classexceptions_1_1UserAlreadyExistsError}{00004}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classexceptions_1_1UserAlreadyExistsError}{UserAlreadyExistsError}}(Exception):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00005}00005\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ a\ user\ already\ exists"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00006}00006\ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00008}\mbox{\hyperlink{classexceptions_1_1UserNotFoundError}{00008}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classexceptions_1_1UserNotFoundError}{UserNotFoundError}}(Exception):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00009}00009\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ a\ user\ is\ not\ found"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00010}00010\ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00012}\mbox{\hyperlink{classexceptions_1_1InvalidActivationCodeError}{00012}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classexceptions_1_1InvalidActivationCodeError}{InvalidActivationCodeError}}(Exception):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00013}00013\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ the\ activation\ code\ is\ invalid\ or\ expired"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00014}00014\ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00016}\mbox{\hyperlink{classexceptions_1_1UserAlreadyActiveError}{00016}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classexceptions_1_1UserAlreadyActiveError}{UserAlreadyActiveError}}(Exception):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00017}00017\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Exception\ raised\ when\ the\ user\ is\ already\ active"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00018}00018\ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00020}00020\ \textcolor{comment}{\#\ Function\ to\ set\ up\ FastAPI\ exception\ handlers}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00021}\mbox{\hyperlink{namespaceexceptions_ab6ff07c707750af27098430df7d5a49d}{00021}}\ \textcolor{keyword}{def\ }setup\_exception\_handlers(app):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00022}00022\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Configure\ exception\ handlers\ for\ the\ FastAPI\ application"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00023}00023\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00024}00024\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserAlreadyExistsError)}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00025}00025\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_already\_exists\_handler(request,\ exc):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00026}00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_409\_CONFLICT,}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ with\ this\ email\ already\ exists"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00030}00030\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00031}00031\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserNotFoundError)}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00032}00032\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_not\_found\_handler(request,\ exc):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00033}00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_404\_NOT\_FOUND,}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ not\ found"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00036}00036\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00037}00037\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00038}00038\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(InvalidActivationCodeError)}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00039}00039\ \ \ \ \ \textcolor{keyword}{async\ def\ }invalid\_activation\_code\_handler(request,\ exc):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}Invalid\ or\ expired\ activation\ code"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00043}00043\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00044}00044\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00045}00045\ \ \ \ \ \textcolor{preprocessor}{@app.exception\_handler(UserAlreadyActiveError)}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00046}00046\ \ \ \ \ \textcolor{keyword}{async\ def\ }user\_already\_active\_handler(request,\ exc):}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ HTTPException(}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ status\_code=status.HTTP\_400\_BAD\_REQUEST,}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ detail=\textcolor{stringliteral}{"{}User\ is\ already\ active"{}}}
+\DoxyCodeLine{\Hypertarget{exceptions_8py_source_l00050}00050\ \ \ \ \ \ \ \ \ )}
 
 \end{DoxyCode}

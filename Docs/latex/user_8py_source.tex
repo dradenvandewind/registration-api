@@ -1,44 +1,44 @@
 \doxysection{user.\+py}
-\label{user_8py_source}\index{models/user.py@{models/user.py}}
-
+\hypertarget{user_8py_source}{}\label{user_8py_source}\index{models/user.py@{models/user.py}}
+\mbox{\hyperlink{user_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ pydantic\ \textcolor{keyword}{import}\ BaseModel,\ EmailStr,\ Field,\ field\_validator}
-\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ datetime\ \textcolor{keyword}{import}\ datetime}
-\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
-\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
-\DoxyCodeLine{00005\ }
-\DoxyCodeLine{00006\ PASSWORD\_MIN\_LENGTH\ =\ 4}
-\DoxyCodeLine{00007\ PASSWORD\_MAX\_LENGTH\ =\ 4\ }
-\DoxyCodeLine{00008\ }
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UserCreate(BaseModel):}
-\DoxyCodeLine{00011\ \ \ \ \ email:\ EmailStr}
-\DoxyCodeLine{00012\ \ \ \ \ password:\ str\ =\ Field(min\_length=PASSWORD\_MIN\_LENGTH,\ max\_length=PASSWORD\_MAX\_LENGTH)}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \ \ \ \ \textcolor{preprocessor}{@field\_validator("{}password"{})}}
-\DoxyCodeLine{00015\ \ \ \ \ \textcolor{preprocessor}{@classmethod}}
-\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{def\ }password\_complexity(cls,\ v:\ str)\ -\/>\ str:}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Vérifie\ que\ le\ mot\ de\ passe\ contient\ au\ moins\ une\ lettre\ et\ un\ chiffre."{}"{}"{}}}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ any(c.isdigit()\ \textcolor{keywordflow}{for}\ c\ \textcolor{keywordflow}{in}\ v):}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ ValueError(\textcolor{stringliteral}{"{}Le\ mot\ de\ passe\ doit\ contenir\ au\ moins\ un\ chiffre."{}})}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ any(c.isalpha()\ \textcolor{keywordflow}{for}\ c\ \textcolor{keywordflow}{in}\ v):}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ ValueError(\textcolor{stringliteral}{"{}Le\ mot\ de\ passe\ doit\ contenir\ au\ moins\ une\ lettre."{}})}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v}
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00025\ \textcolor{keyword}{class\ }UserInDB(BaseModel):}
-\DoxyCodeLine{00026\ \ \ \ \ id:\ UUID}
-\DoxyCodeLine{00027\ \ \ \ \ email:\ EmailStr}
-\DoxyCodeLine{00028\ \ \ \ \ password\_hash:\ str}
-\DoxyCodeLine{00029\ \ \ \ \ is\_active:\ bool}
-\DoxyCodeLine{00030\ \ \ \ \ created\_at:\ datetime}
-\DoxyCodeLine{00031\ \ \ \ \ updated\_at:\ datetime}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \textcolor{keyword}{class\ }UserResponse(BaseModel):}
-\DoxyCodeLine{00035\ \ \ \ \ id:\ UUID}
-\DoxyCodeLine{00036\ \ \ \ \ email:\ EmailStr}
-\DoxyCodeLine{00037\ \ \ \ \ is\_active:\ bool}
-\DoxyCodeLine{00038\ \ \ \ \ created\_at:\ datetime}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00001}\mbox{\hyperlink{namespaceuser}{00001}}\ \textcolor{keyword}{from}\ pydantic\ \textcolor{keyword}{import}\ BaseModel,\ EmailStr,\ Field,\ field\_validator}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00002}00002\ \textcolor{keyword}{from}\ datetime\ \textcolor{keyword}{import}\ datetime}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00003}00003\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00004}00004\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00006}\mbox{\hyperlink{namespaceuser_a65e8a25f4752cec8c7500e071e993f2a}{00006}}\ PASSWORD\_MIN\_LENGTH\ =\ 4}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00007}\mbox{\hyperlink{namespaceuser_a425870fe997d4e0e6841a92a19f78426}{00007}}\ PASSWORD\_MAX\_LENGTH\ =\ 4\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00010}\mbox{\hyperlink{classuser_1_1UserCreate}{00010}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classuser_1_1UserCreate}{UserCreate}}(BaseModel):}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00011}\mbox{\hyperlink{classuser_1_1UserCreate_a074eb4ec1d35d3408bb06656928fc56f}{00011}}\ \ \ \ \ email:\ EmailStr}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00012}\mbox{\hyperlink{classuser_1_1UserCreate_a288f0c3d81b188f5091b0b18d834e11e}{00012}}\ \ \ \ \ password:\ str\ =\ Field(min\_length=PASSWORD\_MIN\_LENGTH,\ max\_length=PASSWORD\_MAX\_LENGTH)}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00014}00014\ \ \ \ \ \textcolor{preprocessor}{@field\_validator("{}password"{})}}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00015}00015\ \ \ \ \ \textcolor{preprocessor}{@classmethod}}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00016}\mbox{\hyperlink{classuser_1_1UserCreate_a8a0183d739cbf7455d2e9a7569d0622a}{00016}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classuser_1_1UserCreate_a8a0183d739cbf7455d2e9a7569d0622a}{password\_complexity}}(cls,\ v:\ str)\ -\/>\ str:}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00017}00017\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Check\ that\ the\ password\ contains\ at\ least\ one\ letter\ and\ one\ number.."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00018}00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ any(c.isdigit()\ \textcolor{keywordflow}{for}\ c\ \textcolor{keywordflow}{in}\ v):}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ ValueError(\textcolor{stringliteral}{"{}The\ password\ must\ contain\ at\ least\ one\ number."{}})}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00020}00020\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ any(c.isalpha()\ \textcolor{keywordflow}{for}\ c\ \textcolor{keywordflow}{in}\ v):}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00021}00021\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ ValueError(\textcolor{stringliteral}{"{}The\ password\ must\ contain\ at\ least\ one\ letter."{}})}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00022}00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00025}\mbox{\hyperlink{classuser_1_1UserInDB}{00025}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classuser_1_1UserInDB}{UserInDB}}(BaseModel):}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00026}\mbox{\hyperlink{classuser_1_1UserInDB_a0dec11799025e39d69a43fa588933c06}{00026}}\ \ \ \ \ id:\ UUID}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00027}\mbox{\hyperlink{classuser_1_1UserInDB_a56e8ff8acc618577b891999b0b167c96}{00027}}\ \ \ \ \ email:\ EmailStr}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00028}\mbox{\hyperlink{classuser_1_1UserInDB_a4c624945c95d46106d04bbb21cbbf7d6}{00028}}\ \ \ \ \ password\_hash:\ str}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00029}\mbox{\hyperlink{classuser_1_1UserInDB_a18992e29ec065e68bdae2eddcabdb660}{00029}}\ \ \ \ \ is\_active:\ bool}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00030}\mbox{\hyperlink{classuser_1_1UserInDB_a0e0066483b597019c7a30866428306b7}{00030}}\ \ \ \ \ created\_at:\ datetime}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00031}\mbox{\hyperlink{classuser_1_1UserInDB_a818e87ecce38e4d4ce9bd832fd59a49b}{00031}}\ \ \ \ \ updated\_at:\ datetime}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00034}\mbox{\hyperlink{classuser_1_1UserResponse}{00034}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classuser_1_1UserResponse}{UserResponse}}(BaseModel):}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00035}\mbox{\hyperlink{classuser_1_1UserResponse_a6ad75c33e8f8821dbf66df812b2b2a4e}{00035}}\ \ \ \ \ id:\ UUID}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00036}\mbox{\hyperlink{classuser_1_1UserResponse_a832128f359e1fbe1b5b72b21e4aaa7b7}{00036}}\ \ \ \ \ email:\ EmailStr}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00037}\mbox{\hyperlink{classuser_1_1UserResponse_ad7437a4d92df01286416f294ac08dfce}{00037}}\ \ \ \ \ is\_active:\ bool}
+\DoxyCodeLine{\Hypertarget{user_8py_source_l00038}\mbox{\hyperlink{classuser_1_1UserResponse_ae488fc7cc135c2625ba92b68e9dcda7a}{00038}}\ \ \ \ \ created\_at:\ datetime}
 
 \end{DoxyCode}

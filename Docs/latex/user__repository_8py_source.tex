@@ -1,47 +1,47 @@
 \doxysection{user\+\_\+repository.\+py}
-\label{user__repository_8py_source}\index{db/repositories/user\_repository.py@{db/repositories/user\_repository.py}}
-
+\hypertarget{user__repository_8py_source}{}\label{user__repository_8py_source}\index{db/repositories/user\_repository.py@{db/repositories/user\_repository.py}}
+\mbox{\hyperlink{user__repository_8py}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{keyword}{from}\ app.db.connection\ \textcolor{keyword}{import}\ db}
-\DoxyCodeLine{00002\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserInDB,\ UserCreate}
-\DoxyCodeLine{00003\ \textcolor{keyword}{from}\ app.core.security\ \textcolor{keyword}{import}\ get\_password\_hash}
-\DoxyCodeLine{00004\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
-\DoxyCodeLine{00005\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
-\DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }UserRepository:}
-\DoxyCodeLine{00008\ \ \ \ \ \textcolor{keyword}{async\ def\ }create(self,\ user\_data:\ UserCreate)\ -\/>\ UserInDB:}
-\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ password\_hash\ =\ get\_password\_hash(user\_data.password)}
-\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}"{}"{}}}
-\DoxyCodeLine{00011\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ INSERT\ INTO\ users\ (email,\ password\_hash)}}
-\DoxyCodeLine{00012\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ VALUES\ (\$1,\ \$2)}}
-\DoxyCodeLine{00013\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ RETURNING\ id,\ email,\ password\_hash,\ is\_active,\ created\_at,\ updated\_at}}
-\DoxyCodeLine{00014\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ user\_data.email,\ password\_hash)}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ ValueError(\textcolor{stringliteral}{"{}Failed\ to\ create\ user\ -\/\ no\ row\ returned"{}})}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))}
-\DoxyCodeLine{00019\ }
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{async\ def\ }get\_by\_email(self,\ email:\ str)\ -\/>\ Optional[UserInDB]:}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ users\ WHERE\ email\ =\ \$1"{}}}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ email)}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{async\ def\ }get\_by\_id(self,\ user\_id:\ UUID)\ -\/>\ Optional[UserInDB]:}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ users\ WHERE\ id\ =\ \$1"{}}}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ user\_id)}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{async\ def\ }activate\_user(self,\ user\_id:\ UUID)\ -\/>\ \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ is\_active\ =\ TRUE,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$1"{}}}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ await\ db.execute(query,\ user\_id)}
-\DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{async\ def\ }update\_password(self,\ user\_id:\ UUID,\ new\_password:\ str)\ -\/>\ \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ password\_hash\ =\ get\_password\_hash(new\_password)}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ password\_hash\ =\ \$1,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$2"{}}}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ await\ db.execute(query,\ password\_hash,\ user\_id)}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00001}\mbox{\hyperlink{namespaceuser__repository}{00001}}\ \textcolor{keyword}{from}\ app.db.connection\ \textcolor{keyword}{import}\ db}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00002}00002\ \textcolor{keyword}{from}\ app.models.user\ \textcolor{keyword}{import}\ UserInDB,\ UserCreate}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00003}00003\ \textcolor{keyword}{from}\ app.core.security\ \textcolor{keyword}{import}\ get\_password\_hash}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00004}00004\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Optional}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00005}00005\ \textcolor{keyword}{from}\ uuid\ \textcolor{keyword}{import}\ UUID}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00007}\mbox{\hyperlink{classuser__repository_1_1UserRepository}{00007}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classuser__repository_1_1UserRepository}{UserRepository}}:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00008}\mbox{\hyperlink{classuser__repository_1_1UserRepository_a41d09ceb8a738b1d882c4169c21a2061}{00008}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classuser__repository_1_1UserRepository_a41d09ceb8a738b1d882c4169c21a2061}{create}}(self,\ user\_data:\ UserCreate)\ -\/>\ UserInDB:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00009}00009\ \ \ \ \ \ \ \ \ password\_hash\ =\ get\_password\_hash(user\_data.password)}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00010}00010\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00011}00011\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ INSERT\ INTO\ users\ (email,\ password\_hash)}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00012}00012\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ VALUES\ (\$1,\ \$2)}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00013}00013\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ RETURNING\ id,\ email,\ password\_hash,\ is\_active,\ created\_at,\ updated\_at}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00014}00014\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00015}00015\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ user\_data.email,\ password\_hash)}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00016}00016\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00017}00017\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ ValueError(\textcolor{stringliteral}{"{}Failed\ to\ create\ user\ -\/\ no\ row\ returned"{}})}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00018}00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00020}\mbox{\hyperlink{classuser__repository_1_1UserRepository_a674cead71c5a10bf031a85889675a827}{00020}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classuser__repository_1_1UserRepository_a674cead71c5a10bf031a85889675a827}{get\_by\_email}}(self,\ email:\ str)\ -\/>\ Optional[UserInDB]:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00021}00021\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ users\ WHERE\ email\ =\ \$1"{}}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00022}00022\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ email)}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00023}00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00027}\mbox{\hyperlink{classuser__repository_1_1UserRepository_aa09ce0f73dd0e7c98e7e642c2fbea570}{00027}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classuser__repository_1_1UserRepository_aa09ce0f73dd0e7c98e7e642c2fbea570}{get\_by\_id}}(self,\ user\_id:\ UUID)\ -\/>\ Optional[UserInDB]:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}SELECT\ *\ FROM\ users\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ row\ =\ await\ db.fetchrow(query,\ user\_id)}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00030}00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ row\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00032}00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ UserInDB(**dict(row))}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00034}\mbox{\hyperlink{classuser__repository_1_1UserRepository_ad1bc14b9a625a5d57bca6fab0bfc4796}{00034}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classuser__repository_1_1UserRepository_ad1bc14b9a625a5d57bca6fab0bfc4796}{activate\_user}}(self,\ user\_id:\ UUID)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00035}00035\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ is\_active\ =\ TRUE,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$1"{}}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00036}00036\ \ \ \ \ \ \ \ \ await\ db.execute(query,\ user\_id)}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00038}\mbox{\hyperlink{classuser__repository_1_1UserRepository_afcc2071b37c422dafe00882998b3cee8}{00038}}\ \ \ \ \ \textcolor{keyword}{async\ def\ }\mbox{\hyperlink{classuser__repository_1_1UserRepository_afcc2071b37c422dafe00882998b3cee8}{update\_password}}(self,\ user\_id:\ UUID,\ new\_password:\ str)\ -\/>\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00039}00039\ \ \ \ \ \ \ \ \ password\_hash\ =\ get\_password\_hash(new\_password)}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00040}00040\ \ \ \ \ \ \ \ \ query\ =\ \textcolor{stringliteral}{"{}UPDATE\ users\ SET\ password\_hash\ =\ \$1,\ updated\_at\ =\ CURRENT\_TIMESTAMP\ WHERE\ id\ =\ \$2"{}}}
+\DoxyCodeLine{\Hypertarget{user__repository_8py_source_l00041}00041\ \ \ \ \ \ \ \ \ await\ db.execute(query,\ password\_hash,\ user\_id)}
 
 \end{DoxyCode}

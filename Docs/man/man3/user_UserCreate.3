@@ -22,7 +22,7 @@ Inherits BaseModel\&.
 .RI "EmailStr \fBemail\fP"
 .br
 .ti -1c
-.RI "str \fBpassword\fP = Field(min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)"
+.RI "str \fBpassword\fP = Field(min_length=\fBPASSWORD_MIN_LENGTH\fP, max_length=\fBPASSWORD_MAX_LENGTH\fP)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -34,7 +34,7 @@ Definition at line \fB10\fP of file \fBuser\&.py\fP\&.
 
 .PP
 .nf
-Vérifie que le mot de passe contient au moins une lettre et un chiffre\&.
+Check that the password contains at least one letter and one number\&.\&.
 .fi
 .PP
  
@@ -46,7 +46,7 @@ Definition at line \fB16\fP of file \fBuser\&.py\fP\&.
 
 .PP
 Definition at line \fB11\fP of file \fBuser\&.py\fP\&.
-.SS "str user\&.UserCreate\&.password = Field(min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)\fC [static]\fP"
+.SS "str user\&.UserCreate\&.password = Field(min_length=\fBPASSWORD_MIN_LENGTH\fP, max_length=\fBPASSWORD_MAX_LENGTH\fP)\fC [static]\fP"
 
 .PP
 Definition at line \fB12\fP of file \fBuser\&.py\fP\&.

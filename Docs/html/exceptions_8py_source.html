@@ -81,7 +81,7 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">exceptions.py</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment"># app/core/exceptions.py</span></div>
+<a href="exceptions_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceexceptions.html">    1</a></span><span class="comment"># app/core/exceptions.py</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> fastapi <span class="keyword">import</span> HTTPException, status</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="foldopen" id="foldopen00004" data-start="" data-end="">
@@ -109,7 +109,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"># Function to set up FastAPI exception handlers</span></div>
 </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">def </span>setup_exception_handlers(app):</div>
+<div class="foldopen" id="foldopen00021" data-start="" data-end="">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="namespaceexceptions.html#ab6ff07c707750af27098430df7d5a49d">   21</a></span><span class="keyword">def </span>setup_exception_handlers(app):</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="stringliteral">&quot;&quot;&quot;Configure exception handlers for the FastAPI application&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="preprocessor">@app.exception_handler(UserAlreadyExistsError)</span></div>
@@ -139,6 +140,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            status_code=status.HTTP_400_BAD_REQUEST,</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            detail=<span class="stringliteral">&quot;User is already active&quot;</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        )</div>
+</div>
 <div class="ttc" id="aclassexceptions_1_1InvalidActivationCodeError_html"><div class="ttname"><a href="classexceptions_1_1InvalidActivationCodeError.html">exceptions.InvalidActivationCodeError</a></div><div class="ttdef"><b>Definition</b> <a href="exceptions_8py_source.html#l00012">exceptions.py:12</a></div></div>
 <div class="ttc" id="aclassexceptions_1_1UserAlreadyActiveError_html"><div class="ttname"><a href="classexceptions_1_1UserAlreadyActiveError.html">exceptions.UserAlreadyActiveError</a></div><div class="ttdef"><b>Definition</b> <a href="exceptions_8py_source.html#l00016">exceptions.py:16</a></div></div>
 <div class="ttc" id="aclassexceptions_1_1UserAlreadyExistsError_html"><div class="ttname"><a href="classexceptions_1_1UserAlreadyExistsError.html">exceptions.UserAlreadyExistsError</a></div><div class="ttdef"><b>Definition</b> <a href="exceptions_8py_source.html#l00004">exceptions.py:4</a></div></div>

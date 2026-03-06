@@ -141,6 +141,24 @@
   \doxynewunicodechar{²}{${}^{2}$}% Superscript two
   \doxynewunicodechar{³}{${}^{3}$}% Superscript three
   % Hyperlinks
+    % Hyperlinks (required, but should be loaded last)
+    \ifpdf
+      \usepackage[pdftex,pagebackref=true]{hyperref}
+    \else
+      \ifxetex
+        \usepackage[pagebackref=true]{hyperref}
+      \else
+        \usepackage[ps2pdf,pagebackref=true]{hyperref}
+      \fi
+    \fi
+    \hypersetup{%
+      colorlinks=true,%
+      linkcolor=blue,%
+      citecolor=blue,%
+      unicode,%
+      pdftitle={My Project},%
+      pdfsubject={}%
+    }
   % Custom commands used by the header
   % Custom commands
   \newcommand{\clearemptydoublepage}{%
@@ -165,6 +183,12 @@
 \begin{document}
   \raggedbottom
   % Titlepage & ToC
+    % To avoid duplicate page anchors due to reuse of same numbers for
+    % the index (be it as roman numbers)
+    \hypersetup{pageanchor=false,
+                bookmarksnumbered=true,
+                pdfencoding=unicode
+               }
   \pagenumbering{alph}
   \begin{titlepage}
   \vspace*{7cm}
@@ -179,13 +203,33 @@
   \tableofcontents
   \clearemptydoublepage
   \pagenumbering{arabic}
+  % re-enable anchors again
+  \hypersetup{pageanchor=true}
 %--- Begin generated contents ---
+\chapter{Namespace Index}
+\input{namespaces}
 \chapter{Hierarchical Index}
 \input{hierarchy}
 \chapter{Class Index}
 \input{annotated}
 \chapter{File Index}
 \input{files}
+\chapter{Namespace Documentation}
+\input{namespaceactivation}
+\input{namespaceactivation__repository}
+\input{namespaceactivation__service}
+\input{namespaceauth}
+\input{namespaceconfig}
+\input{namespaceconnection}
+\input{namespaceemail__service}
+\input{namespaceexceptions}
+\input{namespacemain}
+\input{namespaceregistration}
+\input{namespacerouter}
+\input{namespacesecurity}
+\input{namespaceuser}
+\input{namespaceuser__repository}
+\input{namespaceuser__service}
 \chapter{Class Documentation}
 \input{classactivation_1_1ActivationCodeCreate}
 \input{classactivation_1_1ActivationCodeInDB}
@@ -207,21 +251,37 @@
 \input{classuser_1_1UserResponse}
 \input{classuser__service_1_1UserService}
 \chapter{File Documentation}
+\input{api_2v1_2endpoints_2activation_8py}
 \input{api_2v1_2endpoints_2activation_8py_source}
+\input{models_2activation_8py}
 \input{models_2activation_8py_source}
+\input{registration_8py}
 \input{registration_8py_source}
+\input{router_8py}
 \input{router_8py_source}
+\input{config_8py}
 \input{config_8py_source}
+\input{exceptions_8py}
 \input{exceptions_8py_source}
+\input{security_8py}
 \input{security_8py_source}
+\input{connection_8py}
 \input{connection_8py_source}
+\input{activation__repository_8py}
 \input{activation__repository_8py_source}
+\input{user__repository_8py}
 \input{user__repository_8py_source}
+\input{auth_8py}
 \input{auth_8py_source}
+\input{main_8py}
 \input{main_8py_source}
+\input{user_8py}
 \input{user_8py_source}
+\input{activation__service_8py}
 \input{activation__service_8py_source}
+\input{email__service_8py}
 \input{email__service_8py_source}
+\input{user__service_8py}
 \input{user__service_8py_source}
 %--- End generated contents ---
 % Index
