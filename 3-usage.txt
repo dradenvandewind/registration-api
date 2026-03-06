@@ -20,6 +20,8 @@ docker compose up -d
 http://localhost:8000/docs
 
 
+
+
 #5 -  Run tests
 docker compose exec api pytest -v --cov=app
 
@@ -36,19 +38,6 @@ docker compose down -v
 
 
 
-#temp workround to get activation code email service no work for this moment 
-create a user with password  ex : erwan@example.com   and str1
 
-docker exec -it <container id> psql -U user -d registration_db
-SELECT u.email, a.code, a.expires_at, a.used_at 
-FROM activation_codes a
-JOIN users u ON u.id = a.user_id
-ORDER BY a.created_at DESC
-LIMIT 5;
+8 -  Open this http://localhost:8025/ to get activation code when you use http://localhost:8000/docs#/activation/activate_account_v1_activation_post
 
---> get good code  XXXX
-
-curl -X POST 'http://localhost:8000/v1/activation' \
-  -H 'Content-Type: application/json' \
-  -u 'erwan@example.com:str1' \
-  -d '{"code": "XXXX"}'

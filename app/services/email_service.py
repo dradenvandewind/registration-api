@@ -13,7 +13,7 @@ class EmailService:
     def __init__(self):
         parsed = urlparse(settings.smtp_api_url)
         self.smtp_host = parsed.hostname or "mailhog"
-        self.smtp_port = parsed.port or 1025
+        self.smtp_port = 1025
 
     async def send_activation_code(self, email: str, code: str) -> bool:
         """
@@ -30,7 +30,7 @@ class EmailService:
                 "plain"
             )
             msg.attach(body)
-
+            logger.info(f" {self.smtp_host}, {self.smtp_port} ")
             with smtplib.SMTP(self.smtp_host, self.smtp_port, timeout=10) as server:
                 server.sendmail(msg["From"], [email], msg.as_string())
 
