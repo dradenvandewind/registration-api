@@ -39,5 +39,5 @@ docker compose down -v
 
 
 
-8 -  Open this http://localhost:8025/ to get activation code when you use http://localhost:8000/docs#/activation/activate_account_v1_activation_post
+8 -  Open this link http://localhost:8025/ to get activation code when you use http://localhost:8000/docs#/activation/activate_account_v1_activation_post
 
