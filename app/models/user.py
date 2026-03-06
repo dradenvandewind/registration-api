@@ -14,11 +14,11 @@ class UserCreate(BaseModel):
     @field_validator("password")
     @classmethod
     def password_complexity(cls, v: str) -> str:
-        """Vérifie que le mot de passe contient au moins une lettre et un chiffre."""
+        """Check that the password contains at least one letter and one number.."""
         if not any(c.isdigit() for c in v):
-            raise ValueError("Le mot de passe doit contenir au moins un chiffre.")
+            raise ValueError("The password must contain at least one number.")
         if not any(c.isalpha() for c in v):
-            raise ValueError("Le mot de passe doit contenir au moins une lettre.")
+            raise ValueError("The password must contain at least one letter.")
         return v
 
 

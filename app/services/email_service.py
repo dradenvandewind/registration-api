@@ -1,48 +1,46 @@
-import httpx
+import smtplib
+import logging
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from urllib.parse import urlparse
 from app.core.config import settings
 from typing import Optional
 
+logger = logging.getLogger(__name__)
+
+
 class EmailService:
     def __init__(self):
-        self.api_url = settings.smtp_api_url
-        self.client: Optional[httpx.AsyncClient] = None
-
-    async def __aenter__(self):
-        self.client = httpx.AsyncClient()
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        if self.client:
-            await self.client.aclose()
+        parsed = urlparse(settings.smtp_api_url)
+        self.smtp_host = parsed.hostname or "mailhog"
+        self.smtp_port = parsed.port or 1025
 
     async def send_activation_code(self, email: str, code: str) -> bool:
         """
-        Send activation code via third-party email service
-        Mock implementation - in production this would call actual SMTP API
+        Envoie le code d'activation par SMTP (MailHog en dev).
         """
         try:
-            # Mock API call to email service
-            # In production, this would be a real HTTP request
-            print(f"📧 Sending activation code {code} to {email}")
-            
-            # Simulate API call
-            async with self.client or httpx.AsyncClient() as client:
-                response = await client.post(
-                    self.api_url,
-                    json={
-                        "to": email,
-                        "subject": "Your activation code",
-                        "body": f"Your activation code is: {code}"
-                    },
-                    timeout=10.0
-                )
-                response.raise_for_status()
-            
+            msg = MIMEMultipart("alternative")
+            msg["Subject"] = "Your activation code"
+            msg["From"] = "noreply@registration-api.local"
+            msg["To"] = email
+
+            body = MIMEText(
+                f"Your activation code is: {code}\n\nThis code expires in 1 hour.",
+                "plain"
+            )
+            msg.attach(body)
+
+            with smtplib.SMTP(self.smtp_host, self.smtp_port, timeout=10) as server:
+                server.sendmail(msg["From"], [email], msg.as_string())
+
+            logger.info(f"Activation email sent to {email} (code: {code})")
             return True
+
         except Exception as e:
-            print(f"Failed to send email: {e}")
-            # In production, we might want to retry or log to a dead letter queue
+            logger.error(f"Failed to send activation email to {email}: {e}")
             return False
+
 
 # Singleton instance
 email_service = EmailService()

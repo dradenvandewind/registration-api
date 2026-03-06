@@ -9,25 +9,25 @@ router = APIRouter(prefix="/registration", tags=["registration"])
 
 def _validate_password(password: str) -> None:
     """
-    Valide la longueur et la complexité du mot de passe.
-    Lève une HTTPException 422 avec un message clair en cas d'échec.
+    Validates password length and complexity.
+    Throws an HTTPException 422 with a clear message on failure..
     """
     if len(password) < PASSWORD_MIN_LENGTH:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=(
-                f"Le mot de passe est trop court : "
-                f"minimum {PASSWORD_MIN_LENGTH} caractères "
-                f"(reçu : {len(password)})."
+                f"The password is too short : "
+                f"minimum {PASSWORD_MIN_LENGTH} characters "
+                f"(received : {len(password)})."
             ),
         )
     if len(password) > PASSWORD_MAX_LENGTH:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=(
-                f"Le mot de passe est trop long : "
-                f"maximum {PASSWORD_MAX_LENGTH} caractères "
-                f"(reçu : {len(password)})."
+                f"The password is too long :  "
+                f"maximum {PASSWORD_MAX_LENGTH} characters "
+                f"(received : {len(password)})."
             ),
         )
 

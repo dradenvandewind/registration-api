@@ -20,7 +20,7 @@ class UserService:
         
         # Créer l'utilisateur
         user_in_db = await self.repository.create(user_data)
-        logger.info(f"Utilisateur créé en base: {user_in_db}")
+        logger.info(f"User created in the database: {user_in_db}")
         
         # SOLUTION: Créer manuellement le UserResponse
         user_response = UserResponse(
