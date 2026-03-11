@@ -1,0 +1,26 @@
+FROM python:3.11-slim AS builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc build-essential procps vim \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir cython setuptools wheel \
+    && pip install --no-cache-dir -r requirements.txt
+
+COPY app/ ./app/
+COPY ./setup.py /build/setup.py
+RUN python setup.py build_ext --inplace
+RUN find app/ -name "*.c" -delete
+RUN find app/ -name "*.py" ! -name "__init__.py" -delete
+
+FROM python:3.11-slim AS runtime
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY --from=builder /build/app ./app
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

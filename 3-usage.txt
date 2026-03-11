@@ -5,7 +5,7 @@ cd registration-api
 # 2 - You need generate a secret key
 ./GenerateSecretKey.sh
 
-# 3 -1 Build and Run
+# 3 -1 Build dev version and Run
 docker compose up -d --build
 
 or 
@@ -41,3 +41,11 @@ docker compose down -v
 
 8 -  Open this link http://localhost:8025/ to get activation code when you use http://localhost:8000/docs#/activation/activate_account_v1_activation_post
 
+9 - Build dev version
+
+docker compose -f docker-compose.yaml up
+
+
+10 - Build Prod version  
+
+docker compose -f docker-compose.prod.yaml up
